@@ -35,7 +35,6 @@ const Login = () => {
         <div className="page-container">
             <div className="login-container">
                 <div className="login-box">
-                    <h2>로그인</h2>
 
                     <div className="tab-container">
                         <button 
