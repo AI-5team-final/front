@@ -1,42 +1,78 @@
 import { useRef, useState } from 'react';
 
+const styles = {
+    uploadArea: {
+        border: '2px dashed #ccc',
+        padding: '20px',
+        textAlign: 'center',
+        cursor: 'pointer',
+        marginBottom: '10px'
+    },
+    button: (isSelected) => ({
+        opacity: isSelected ? 1 : 0.5,
+        cursor: isSelected ? 'pointer' : 'not-allowed',
+        padding: '10px 20px',
+        backgroundColor: isSelected ? '#007bff' : '#ccc',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        margin: '10px 0'
+    })
+};
+
 const MainContent = ({ role })=> {
     // if (role === 'HR') return <div>인사담당자 메인 페이지</div>;
     // return <div>취준생 메인 페이지</div>;
 
-    const [fileName, setFileName] = useState('');
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileState, setFileState] = useState({
+        name: '',
+        file: null
+    });
     const fileInputRef = useRef();
     
+    const validateFile = (file) => {
+        if (!file) return false;
+        if (file.type !== 'application/pdf') {
+            alert('PDF 파일만 업로드 가능합니다.');
+            return false;
+        }
+        return true;
+    };
+
+    const handleError = (error) => {
+        console.error('업로드 에러:', error);
+        alert('파일 업로드 중 오류가 발생했습니다.');
+    };
+
     const handleDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        if (file && file.type === 'application/pdf') {
-            setFileName(file.name);
-            setSelectedFile(file);
-        } else {
-            alert('PDF 파일만 업로드 가능합니다.');
+        if (validateFile(file)) {
+            setFileState({
+                name: file.name,
+                file: file
+            });
         }
     };
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
-        if (file && file.type === 'application/pdf') {
-            setFileName(file.name);
-            setSelectedFile(file);
-        } else {
-            alert('PDF 파일만 업로드 가능합니다.');
+        if (validateFile(file)) {
+            setFileState({
+                name: file.name,
+                file: file
+            });
         }
     };
 
     const handleSubmit = async () => {
-        if (!selectedFile) {
+        if (!fileState.file) {
             alert('PDF 파일을 선택해주세요.');
             return;
         }
 
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        formData.append('file', fileState.file);
 
         try {
             // TODO: API 엔드포인트로 변경 필요
@@ -54,14 +90,12 @@ const MainContent = ({ role })=> {
             alert('파일이 성공적으로 업로드되었습니다.');
             
             // 업로드 성공 후 상태 초기화
-            setFileName('');
-            setSelectedFile(null);
+            setFileState({ name: '', file: null });
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
         } catch (error) {
-            console.error('업로드 에러:', error);
-            alert('파일 업로드 중 오류가 발생했습니다.');
+            handleError(error);
         }
     };
 
@@ -77,16 +111,10 @@ const MainContent = ({ role })=> {
                                 onDrop={handleDrop}
                                 onDragOver={(e) => e.preventDefault()}
                                 onClick={() => fileInputRef.current.click()}
-                                style={{
-                                    border: '2px dashed #ccc',
-                                    padding: '20px',
-                                    textAlign: 'center',
-                                    cursor: 'pointer',
-                                    marginBottom: '10px'
-                                }}
+                                style={styles.uploadArea}
                             >
-                                {fileName ? (
-                                    <p>{fileName} 선택됨</p>
+                                {fileState.name ? (
+                                    <p>{fileState.name} 선택됨</p>
                                 ) : (
                                     <p>여기로 PDF 파일을 드래그하거나 클릭해서 선택</p>
                                 )}
@@ -102,17 +130,8 @@ const MainContent = ({ role })=> {
                             <button 
                                 type='button'
                                 onClick={handleSubmit}
-                                disabled={!selectedFile}
-                                style={{
-                                    opacity: selectedFile ? 1 : 0.5,
-                                    cursor: selectedFile ? 'pointer' : 'not-allowed',
-                                    padding: '10px 20px',
-                                    backgroundColor: selectedFile ? '#007bff' : '#ccc',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    margin: '10px 0'
-                                }}
+                                disabled={!fileState.file}
+                                style={styles.button(!!fileState.file)}
                             >
                                 <span>Import<br/>File</span>
                             </button>
