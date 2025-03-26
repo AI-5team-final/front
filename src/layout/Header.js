@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import useAuth from '../hooks/useAuth';
 import useRole from '../hooks/useRole';
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
-    // JWT token에서 role 가져오는 것
-	const role = useRole();
+    const role = useRole();
+    const { logout } = useAuth();
     const [name, setName] = useState("테스트");
     const headerRef = useRef(null);
 
@@ -32,7 +33,7 @@ const Header = () => {
                 <div>
                     <p>{role==='HR'? "함께 성장하는" : "취업 성공기원"}, <strong>{name}</strong>님</p>
                     <span></span>
-                    <Link to="">로그아웃</Link>
+                    <Link to="" onClick={logout}>로그아웃</Link>
                 </div>
 
             </div>
