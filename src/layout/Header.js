@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useToken from '../hooks/useToken';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Header = () => {
     const { logout } = useAuth();
-    const { role } = useToken();
-    const [name, setName] = useState("테스트");
+    const { role, name } = useToken();
     const headerRef = useRef(null);
 
     useEffect(() => {
@@ -43,10 +42,9 @@ const Header = () => {
                         로그아웃
                     </button>
                 </div>
-
             </div>
         </header>
     );
-
 }
+
 export default Header;

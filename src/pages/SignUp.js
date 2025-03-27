@@ -161,6 +161,13 @@ const SignUp = () => {
                         <button type="submit" className="signup-button">
                             회원가입
                         </button>
+                        <button 
+                            type="button" 
+                            onClick={() => navigate('/login')} 
+                            className="back-to-login-button"
+                        >
+                            로그인으로 돌아가기
+                        </button>
                     </form>
 
                     {error && <p className="error-message">{error}</p>}
@@ -266,6 +273,23 @@ const SignUp = () => {
 
                 .signup-button:hover {
                     background-color: #0056b3;
+                }
+
+                .back-to-login-button {
+                    background-color: #6c757d;
+                    color: white;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                    margin-top: 10px;
+                    width: 100%;
+                }
+
+                .back-to-login-button:hover {
+                    background-color: #5a6268;
                 }
 
                 .error-message {
