@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
+import '../styles/fonts.css';
 
 const styles = {
     container: {
         padding: '60px 0',
         minHeight: '100vh',
+        fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
     },
     inner: {
         maxWidth: '1200px',
