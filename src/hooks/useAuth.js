@@ -7,7 +7,7 @@ const useAuth = () => {
 
   const login = async (username, password, userRole) => {
     try {
-      const res = await fetch('/auth/login', {
+      const res = await fetch('http://localhost:8080/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, role: userRole }),
@@ -17,6 +17,7 @@ const useAuth = () => {
 
       const { accessToken } = await res.json();
       setToken(accessToken);
+      alert('로그인 성공!');
       navigate('/');
     } catch (err) {
       throw err;
