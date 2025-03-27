@@ -1,15 +1,20 @@
-import useRole from '../hooks/useRole';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainContent from '../components/MainContent';
+import useToken from '../hooks/useToken';
 import './Main.css'
 
 const Main = () => {
-	// JWT token에서 role 가져오는 것
-	// const role = useRole();
-
-  	// return <MainContent role={role} />;
+	const navigate = useNavigate();
+	const { role } = useToken();
 	
-	// 테스트용
-	return <MainContent />;
+	useEffect(() => {
+		if (!role) {
+			navigate('/login');
+		}
+	}, [role, navigate]);
+
+	return <MainContent role={role} />;
 }
 
 export default Main;

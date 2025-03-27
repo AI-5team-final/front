@@ -1,19 +1,40 @@
 import { jwtDecode } from 'jwt-decode';
+import { useState, useEffect } from 'react';
 
 export default function useToken() {
-  const getToken = () => localStorage.getItem('accessToken');
-  const removeToken = () => localStorage.removeItem('accessToken');
+  const [token, setToken] = useState(() => localStorage.getItem('accessToken'));
+  const [role, setRole] = useState(null);
 
-  const getRole = () => {
-    const token = getToken();
-    try {
-      const decoded = token && jwtDecode(token);
-      return decoded?.role || null;
-    } catch (e) {
-      console.error("JWT decode error:", e);
-      return null;
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setRole(decoded?.role || null);
+      } catch (e) {
+        console.error("Token decode error:", e);
+        setRole(null);
+        removeToken();
+      }
+    } else {
+      setRole(null);
     }
+  }, [token]);
+
+  const setTokenValue = (newToken) => {
+    localStorage.setItem('accessToken', newToken);
+    setToken(newToken);
   };
 
-  return { getToken, removeToken, getRole };
+  const removeToken = () => {
+    localStorage.removeItem('accessToken');
+    setToken(null);
+    setRole(null);
+  };
+
+  return { 
+    token, 
+    role,
+    setToken: setTokenValue, 
+    removeToken 
+  };
 }

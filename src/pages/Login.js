@@ -1,10 +1,11 @@
 // 로그인 예시
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
-    const navigate = useNavigate();
+    const { login } = useAuth();
     const [activeTab, setActiveTab] = useState('APPLICANT'); // 기본 개인회원
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,17 +16,7 @@ const Login = () => {
         setError('');
 
         try {
-            const res = await fetch('/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password, role: activeTab }), // role 같이 넘김
-            });
-
-            if (!res.ok) throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-
-            const { accessToken } = await res.json();
-            localStorage.setItem('accessToken', accessToken);
-            navigate('/');
+            await login(username, password, activeTab);
         } catch (err) {
             setError(err.message);
         }

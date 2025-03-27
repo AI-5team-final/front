@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
-import useRole from '../hooks/useRole';
+import useToken from '../hooks/useToken';
 
 const List = () => {
     const navigate = useNavigate();
-    // JWT token에서 role 가져오는 것
-    const role = useRole();
+    const { role } = useToken();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

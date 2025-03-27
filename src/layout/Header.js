@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
-import useRole from '../hooks/useRole';
+import useToken from '../hooks/useToken';
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
-    const role = useRole();
     const { logout } = useAuth();
+    const { role } = useToken();
     const [name, setName] = useState("테스트");
     const headerRef = useRef(null);
 
