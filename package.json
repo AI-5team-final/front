@@ -11,10 +11,12 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "the-new-css-reset": "^1.11.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.98.0"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
