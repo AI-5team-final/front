@@ -76,7 +76,7 @@ const MainContent = ({ role })=> {
 
         try {
             // TODO: API 엔드포인트로 변경 필요
-            const response = await fetch('/api/upload', {
+            const response = await fetch('/api/upload-pdf', {
                 method: 'POST',
                 body: formData
             });
