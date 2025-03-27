@@ -28,11 +28,13 @@ const SignUp = () => {
     const handleSignUp = async (e) => {
         e.preventDefault();
         setError('');
+        console.log(form);
 
         try {
             const res = await fetch('/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ ...form, role: activeTab }),
             });
 
