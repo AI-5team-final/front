@@ -8,10 +8,10 @@ export default function useToken() {
     const token = getToken();
     try {
       const decoded = token && jwtDecode(token);
-      return decoded?.role || 'GUEST';
+      return decoded?.role || null;
     } catch (e) {
       console.error("JWT decode error:", e);
-      return 'GUEST';
+      return null;
     }
   };
 
