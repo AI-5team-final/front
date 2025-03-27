@@ -16,9 +16,9 @@ function App() {
             <Routes>
                 {/* 로그인 안하면 전체 막히는 구간 */}
                 <Route path="/" element={
-                    // <PrivateRoute>
+                    <PrivateRoute>
                         <Layout />
-                    // </PrivateRoute>
+                    </PrivateRoute>
                 }>
                     <Route index element={<Main />} />
                     <Route path="list" element={<List />} />
