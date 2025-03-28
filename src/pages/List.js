@@ -20,21 +20,6 @@ const List = () => {
 
         const fetchData = async () => {
             try {
-                // 더미 데이터 주석 처리
-                // const dummyData = role === 'HR' 
-                //     ? [{ id: 1, name: 'HR User 1' }, { id: 2, name: 'HR User 2' }]
-                //     : [{ id: 1, name: 'Applicant 1' }, { id: 2, name: 'Applicant 2' }];
-
-                // 실제 API 호출 대신 더미 데이터 설정
-                // setData(dummyData);
-
-                // 실제 API 호출 예시 (주석 처리)
-                // const response = await fetch(role === 'HR' ? '/api/hr-list' : '/api/applicant-list');
-                // if (!response.ok) {
-                //     throw new Error('데이터를 가져오는 데 실패했습니다.');
-                // }
-                // const result = await response.json();
-                // setData(result);
             } catch (err) {
                 setError(err.message);
             } finally {
