@@ -8,6 +8,12 @@ const Header = () => {
     const { role, name } = useToken();
     const headerRef = useRef(null);
 
+    const headerStyle = {
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e0e0e0',
+        zIndex: 1000
+    };
+
     useEffect(() => {
         const handleScroll = () => {
             if (headerRef.current) {
@@ -24,7 +30,7 @@ const Header = () => {
     }, []);
     
     return (
-        <header ref={headerRef}>
+        <header ref={headerRef} style={headerStyle}>
             <div className="inner">
                 <h1 className="logo">
                     <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>

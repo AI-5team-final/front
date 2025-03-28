@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
+import { TbHeartHandshake } from 'react-icons/tb';
 import '../styles/fonts.css';
 
 const styles = {
@@ -19,19 +20,22 @@ const styles = {
         alignItems: 'center',
         marginBottom: '60px',
         gap: '40px',
+        backgroundColor: '#A8D7FF',
+        padding: '40px',
     },
     heroContent: {
         flex: '1',
     },
     heroTitle: {
         fontSize: '2.5rem',
-        color: '#1A237E',
+        color: '#013A72',
         marginBottom: '20px',
         lineHeight: '1.4',
+        fontWeight: 'bold',
     },
     heroSubtitle: {
         fontSize: '1.1rem',
-        color: '#455A64',
+        color: '#013A72',
     },
     heroImage: {
         flex: '1',
@@ -49,16 +53,17 @@ const styles = {
     },
     serviceTitle: {
         fontSize: '1.5rem',
-        color: '#1A237E',
+        color: '#013A72',
         marginBottom: '30px',
     },
     uploadContainer: {
         display: 'flex',
         gap: '20px',
         marginBottom: '20px',
+        width: '100%'
     },
     uploadArea: {
-        flex: '1',
+        flex: '2',
         border: '2px dashed #ccc',
         borderRadius: '12px',
         padding: '40px 20px',
@@ -71,13 +76,17 @@ const styles = {
         alignItems: 'center',
         gap: '15px',
         '&:hover': {
-            borderColor: '#007bff',
+            borderColor: '#013A72',
             backgroundColor: '#f1f8ff',
         },
     },
     icon: {
         fontSize: '40px',
-        color: '#007bff',
+        color: '#013A72',
+    },
+    cloudIcon: {
+        fontSize: '40px',
+        color: '#ffffff',
     },
     uploadText: {
         color: '#666',
@@ -88,6 +97,7 @@ const styles = {
         fontWeight: '500',
     },
     button: (isSelected) => ({
+        flex: '1',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -96,7 +106,7 @@ const styles = {
         opacity: isSelected ? 1 : 0.5,
         cursor: isSelected ? 'pointer' : 'not-allowed',
         padding: '20px',
-        backgroundColor: isSelected ? '#007bff' : '#ccc',
+        backgroundColor: isSelected ? '#013A72' : '#ccc',
         color: 'white',
         border: 'none',
         borderRadius: '12px',
@@ -109,15 +119,47 @@ const styles = {
         fontSize: '14px',
         marginTop: '10px',
     },
+    modalBackdrop: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+    },
+    modal: {
+        backgroundColor: '#fff',
+        padding: '30px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+        textAlign: 'center',
+        minWidth: '300px',
+    },
+    modalFileName: {
+        fontSize: '1.2rem',
+        fontWeight: '600',
+        color: '#013A72',
+        margin: '15px 0',
+        wordBreak: 'break-all'
+    },
+    modalButtons: {
+        marginTop: '20px',
+        display: 'flex',
+        gap: '10px',
+        justifyContent: 'center'
+    }
 };
 
 const ContentApplicant = () => {
-    const [fileState, setFileState] = useState({
-        name: '',
-        file: null
-    });
+    const [fileState, setFileState] = useState({ name: '', file: null });
+    const [isModalOpen, setIsModalOpen] = useState(false); // 제출 확인 모달
+    const [isLoadModalOpen, setIsLoadModalOpen] = useState(false); // 불러오기 모달
     const fileInputRef = useRef();
-    
+
     const validateFile = (file) => {
         if (!file) return false;
         if (file.type !== 'application/pdf') {
@@ -136,20 +178,16 @@ const ContentApplicant = () => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (validateFile(file)) {
-            setFileState({
-                name: file.name,
-                file: file
-            });
+            setFileState({ name: file.name, file });
+            setIsModalOpen(true); // 바로 제출 모달 열기
         }
     };
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
         if (validateFile(file)) {
-            setFileState({
-                name: file.name,
-                file: file
-            });
+            setFileState({ name: file.name, file });
+            setIsModalOpen(true); // 바로 제출 모달 열기
         }
     };
 
@@ -163,7 +201,7 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload', {
+            const response = await fetch('/api/upload-pdf', {
                 method: 'POST',
                 body: formData
             });
@@ -175,11 +213,12 @@ const ContentApplicant = () => {
             const result = await response.json();
             console.log('업로드 성공:', result);
             alert('파일이 성공적으로 업로드되었습니다.');
-            
+
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
+            setIsModalOpen(false);
         } catch (error) {
             handleError(error);
         }
@@ -195,7 +234,7 @@ const ContentApplicant = () => {
                             한 걸음 더
                         </h1>
                         <p style={styles.heroSubtitle}>
-                            내게 맞는 채용공고만 정확히 추천해드려요.
+                            내게 맞는 채용공고만 정확히 추천해드려요
                         </p>
                     </div>
                     <div style={styles.heroImage}>
@@ -217,7 +256,7 @@ const ContentApplicant = () => {
                             onClick={() => fileInputRef.current.click()}
                         >
                             <FaPlusCircle style={styles.icon} />
-                            <span style={styles.uploadText}>이력서 매칭하기</span>
+                            <span style={styles.uploadText}>PDF로 이력서 매칭하기</span>
                             {fileState.name && (
                                 <p style={styles.selectedFile}>{fileState.name}</p>
                             )}
@@ -229,21 +268,62 @@ const ContentApplicant = () => {
                                 style={{ display: 'none' }}
                             />
                         </div>
+
                         <button 
                             type="button"
-                            onClick={handleSubmit}
-                            disabled={!fileState.file}
-                            style={styles.button(!!fileState.file)}
+                            onClick={() => setIsLoadModalOpen(true)}
+                            style={styles.button(true)}
                         >
-                            <FaCloudDownloadAlt style={styles.icon} />
-                            <span>이력서<br/>불러오기</span>
+                            <FaCloudDownloadAlt style={styles.cloudIcon} />
+                            <span>내 이력서<br/>불러오기</span>
+                        </button>
+
+                        <button 
+                            type="button"
+                            onClick={() => setIsLoadModalOpen(true)}
+                            style={styles.button(true)}
+                        >
+                            <TbHeartHandshake style={styles.cloudIcon} />
+                            <span>1대1 매칭하기</span>
                         </button>
                     </div>
                     <p style={styles.fileNote}>*등록가능한 파일 형식 및 확장자: PDF</p>
                 </section>
+
+                {/* 제출 확인 모달 */}
+                {isModalOpen && (
+                    <div style={styles.modalBackdrop}>
+                        <div style={styles.modal}>
+                            <p>이 이력서를 업로드하시겠습니까?</p>
+                            <p style={styles.modalFileName}>{fileState.name}</p>
+                            <div style={styles.modalButtons}>
+                                <button onClick={handleSubmit}>확인</button>
+                                <button onClick={() => setIsModalOpen(false)}>취소</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+                {/* 불러오기 모달 */}
+                {isLoadModalOpen && (
+                    <div style={styles.modalBackdrop}>
+                        <div style={styles.modal}>
+                            <p>불러오기 모달입니다. (임시)</p>
+                            <button
+                                onClick={() => {
+                                    setIsLoadModalOpen(false);
+                                    setIsModalOpen(true);
+                                }}
+                                style={{ marginTop: '20px' }}
+                            >
+                                넘어가기
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </main>
     );
-}
+};
 
-export default ContentApplicant; 
+export default ContentApplicant;
