@@ -20,6 +20,8 @@ const styles = {
         alignItems: 'center',
         marginBottom: '60px',
         gap: '40px',
+        backgroundColor: '#A8D7FF',
+        padding: '40px',
     },
     heroContent: {
         flex: '1',
@@ -136,6 +138,19 @@ const styles = {
         textAlign: 'center',
         minWidth: '300px',
     },
+    modalFileName: {
+        fontSize: '1.2rem',
+        fontWeight: '600',
+        color: '#1A237E',
+        margin: '15px 0',
+        wordBreak: 'break-all'
+    },
+    modalButtons: {
+        marginTop: '20px',
+        display: 'flex',
+        gap: '10px',
+        justifyContent: 'center'
+    }
 };
 
 const ContentApplicant = () => {
@@ -278,7 +293,8 @@ const ContentApplicant = () => {
                     <div style={styles.modalBackdrop}>
                         <div style={styles.modal}>
                             <p>이 이력서를 업로드하시겠습니까?</p>
-                            <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                            <p style={styles.modalFileName}>{fileState.name}</p>
+                            <div style={styles.modalButtons}>
                                 <button onClick={handleSubmit}>확인</button>
                                 <button onClick={() => setIsModalOpen(false)}>취소</button>
                             </div>
