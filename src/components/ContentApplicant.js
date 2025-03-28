@@ -28,13 +28,14 @@ const styles = {
     },
     heroTitle: {
         fontSize: '2.5rem',
-        color: '#1A237E',
+        color: '#013A72',
         marginBottom: '20px',
         lineHeight: '1.4',
+        fontWeight: 'bold',
     },
     heroSubtitle: {
         fontSize: '1.1rem',
-        color: '#455A64',
+        color: '#013A72',
     },
     heroImage: {
         flex: '1',
@@ -52,7 +53,7 @@ const styles = {
     },
     serviceTitle: {
         fontSize: '1.5rem',
-        color: '#1A237E',
+        color: '#013A72',
         marginBottom: '30px',
     },
     uploadContainer: {
@@ -75,13 +76,13 @@ const styles = {
         alignItems: 'center',
         gap: '15px',
         '&:hover': {
-            borderColor: '#1A237E',
+            borderColor: '#013A72',
             backgroundColor: '#f1f8ff',
         },
     },
     icon: {
         fontSize: '40px',
-        color: '#1A237E',
+        color: '#013A72',
     },
     cloudIcon: {
         fontSize: '40px',
@@ -105,7 +106,7 @@ const styles = {
         opacity: isSelected ? 1 : 0.5,
         cursor: isSelected ? 'pointer' : 'not-allowed',
         padding: '20px',
-        backgroundColor: isSelected ? '#1A237E' : '#ccc',
+        backgroundColor: isSelected ? '#013A72' : '#ccc',
         color: 'white',
         border: 'none',
         borderRadius: '12px',
@@ -141,7 +142,7 @@ const styles = {
     modalFileName: {
         fontSize: '1.2rem',
         fontWeight: '600',
-        color: '#1A237E',
+        color: '#013A72',
         margin: '15px 0',
         wordBreak: 'break-all'
     },
@@ -200,7 +201,7 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload', {
+            const response = await fetch('/api/upload-pdf', {
                 method: 'POST',
                 body: formData
             });
@@ -233,7 +234,7 @@ const ContentApplicant = () => {
                             한 걸음 더
                         </h1>
                         <p style={styles.heroSubtitle}>
-                            내게 맞는 채용공고만 정확히 추천해드려요.
+                            내게 맞는 채용공고만 정확히 추천해드려요
                         </p>
                     </div>
                     <div style={styles.heroImage}>
@@ -267,14 +268,6 @@ const ContentApplicant = () => {
                                 style={{ display: 'none' }}
                             />
                         </div>
-                        <button 
-                            type="button"
-                            onClick={() => setIsLoadModalOpen(true)}
-                            style={styles.button(true)}
-                        >
-                            <TbHeartHandshake style={styles.cloudIcon} />
-                            <span>1대1 매칭하기</span>
-                        </button>
 
                         <button 
                             type="button"
@@ -283,6 +276,15 @@ const ContentApplicant = () => {
                         >
                             <FaCloudDownloadAlt style={styles.cloudIcon} />
                             <span>내 이력서<br/>불러오기</span>
+                        </button>
+
+                        <button 
+                            type="button"
+                            onClick={() => setIsLoadModalOpen(true)}
+                            style={styles.button(true)}
+                        >
+                            <TbHeartHandshake style={styles.cloudIcon} />
+                            <span>1대1 매칭하기</span>
                         </button>
                     </div>
                     <p style={styles.fileNote}>*등록가능한 파일 형식 및 확장자: PDF</p>
