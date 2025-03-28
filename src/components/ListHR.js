@@ -19,6 +19,7 @@ const ListHR = () => {
     const topFour = applicantData.slice(0, 4);
     const PAGE_SIZE = 6;
     const [page, setPage] = useState(0);
+    const [selectedApplicant, setSelectedApplicant] = useState(null);
 
     const pagedApplicants = applicantData.slice(4 + page * PAGE_SIZE, 4 + (page + 1) * PAGE_SIZE);
     const maxPage = Math.floor((applicantData.length - 4) / PAGE_SIZE);
@@ -38,12 +39,19 @@ const ListHR = () => {
                 {topFour.map((user) => (
                     <div 
                         key={user.id} 
+                        onClick={() => setSelectedApplicant(user)}
                         style={{
                             flex: '1 1 200px',
                             border: '1px solid #ccc',
                             borderRadius: '12px',
                             padding: '20px',
-                            backgroundColor: '#f9f9f9'
+                            backgroundColor: '#f9f9f9',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                            }
                         }}
                     >
                         <h3>{user.name}</h3>
@@ -63,6 +71,21 @@ const ListHR = () => {
                         padding: '15px 0'
                     }}>
                         <strong>{user.name}</strong> - {user.position} - {user.date} - 매칭률: {user.matchRate}%
+                        <button 
+                            onClick={() => setSelectedApplicant(user)} 
+                            style={{ 
+                                marginLeft: '10px', 
+                                padding: '5px 10px', 
+                                border: '1px solid #ccc', 
+                                borderRadius: '6px', 
+                                cursor: 'pointer',
+                                backgroundColor: '#013A72',
+                                color: 'white',
+                                border: 'none'
+                            }}
+                        >
+                            더보기
+                        </button>
                     </li>
                 ))}
             </ul>
@@ -100,6 +123,58 @@ const ListHR = () => {
                     다음 ▶
                 </button>
             </div>
+
+            {/* 상세 정보 모달 */}
+            {selectedApplicant && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000
+                    }}
+                    onClick={() => setSelectedApplicant(null)}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: 'white',
+                            padding: '30px',
+                            borderRadius: '12px',
+                            width: '400px',
+                            maxWidth: '90%',
+                            textAlign: 'left'
+                        }}
+                    >
+                        <h3 style={{ color: '#013A72', fontSize: '1.5rem', marginBottom: '15px' }}>{selectedApplicant.name}</h3>
+                        <p style={{ fontSize: '1.2rem', fontWeight: '500', marginBottom: '10px' }}>{selectedApplicant.position}</p>
+                        <p style={{ color: '#666', marginBottom: '15px' }}>{selectedApplicant.description}</p>
+                        <p style={{ color: '#444' }}>지원일: {selectedApplicant.date}</p>
+                        <p style={{ color: '#013A72', fontWeight: '600' }}>AI 매칭률: {selectedApplicant.matchRate}%</p>
+                        <button
+                            onClick={() => setSelectedApplicant(null)}
+                            style={{
+                                marginTop: '20px',
+                                padding: '8px 16px',
+                                border: 'none',
+                                background: '#013A72',
+                                color: 'white',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                width: '100%'
+                            }}
+                        >
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
