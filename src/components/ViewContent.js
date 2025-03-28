@@ -9,7 +9,6 @@ const ViewContent = ({role, id}) => {
         );
     }
     
-
     return (
         <main className="l-view">
             <div className="inner">
