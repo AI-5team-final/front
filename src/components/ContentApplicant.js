@@ -207,7 +207,7 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload', {
+            const response = await fetch('/api/upload-pdf', {
                 method: 'POST',
                 body: formData
             });

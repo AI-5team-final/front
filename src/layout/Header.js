@@ -28,7 +28,7 @@ const Header = () => {
 
     const handlePageRedirect = () => {
         if (role === 'HR') {
-            navigate('/job-postings'); // HR → 공고 관리
+            navigate('/postings'); // HR → 공고 관리
         } else {
             navigate('/resume'); // 지원자 → 이력서 관리
         }
