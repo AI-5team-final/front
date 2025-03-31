@@ -7,6 +7,7 @@ import Error from "./pages/Error";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import PrivateRoute from "./components/PrivateRoute";
+import PanelResume from './components/PanelResume';
 import "the-new-css-reset/css/reset.css";
 import './Style.css'
 
@@ -22,7 +23,10 @@ function App() {
                 }>
                     <Route index element={<Main />} />
                     <Route path="list" element={<List />} />
+                    {/* 매칭 결과 상세 보기 */}
                     <Route path="view/:id" element={<View />} />
+                    {/* 이력서 관리 */}
+                    <Route path="/resume" element={<PanelResume />} />
                 </Route>
 
                 {/* 로그인 */}

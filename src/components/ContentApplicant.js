@@ -17,8 +17,7 @@ const styles = {
     hero: {
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '60px',
+        marginBottom: '0px',
         gap: '40px',
         backgroundColor: '#A8D7FF',
         padding: '40px',
@@ -29,11 +28,12 @@ const styles = {
     heroTitle: {
         fontSize: '2.5rem',
         color: '#013A72',
-        marginBottom: '20px',
+        marginTop: '125px',
         lineHeight: '1.4',
         fontWeight: 'bold',
     },
     heroSubtitle: {
+        marginTop: '30px',
         fontSize: '1.1rem',
         color: '#013A72',
     },
@@ -53,8 +53,14 @@ const styles = {
     },
     serviceTitle: {
         fontSize: '1.5rem',
-        color: '#013A72',
+        color: '#000000',
         marginBottom: '30px',
+        fontWeight: 'bold',
+    },
+    serviceSubTitle: {
+        fontSize: '1.1rem',
+        color: '#000000',
+        marginBottom: '20px',
     },
     uploadContainer: {
         display: 'flex',
@@ -226,7 +232,6 @@ const ContentApplicant = () => {
 
     return (
         <main style={styles.container}>
-            <div style={styles.inner}>
                 <section style={styles.hero}>
                     <div style={styles.heroContent}>
                         <h1 style={styles.heroTitle}>
@@ -234,7 +239,8 @@ const ContentApplicant = () => {
                             한 걸음 더
                         </h1>
                         <p style={styles.heroSubtitle}>
-                            내게 맞는 채용공고만 정확히 추천해드려요
+                            내게 맞는 채용공고만 정확히 추천해드려요 <br />
+                            이력서 첨부하고 나에게 딱 맞는 채용공고 매칭 받으세요
                         </p>
                     </div>
                     <div style={styles.heroImage}>
@@ -245,9 +251,7 @@ const ContentApplicant = () => {
                         />
                     </div>
                 </section>
-
                 <section style={styles.serviceSection}>
-                    <h2 style={styles.serviceTitle}>AI 매칭 서비스</h2>
                     <div style={styles.uploadContainer}>
                         <div
                             style={styles.uploadArea}
@@ -288,6 +292,7 @@ const ContentApplicant = () => {
                         </button>
                     </div>
                     <p style={styles.fileNote}>*등록가능한 파일 형식 및 확장자: PDF</p>
+                    <p style={styles.fileNote}>**불필요한 개인정보가 포함되지 않도록 확인 후 첨부하세요</p>
                 </section>
 
                 {/* 제출 확인 모달 */}
@@ -321,7 +326,6 @@ const ContentApplicant = () => {
                         </div>
                     </div>
                 )}
-            </div>
         </main>
     );
 };
