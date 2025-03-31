@@ -22,6 +22,7 @@ function App() {
                 }>
                     <Route index element={<Main />} />
                     <Route path="list" element={<List />} />
+                    {/* 매칭 결과 상세 보기 */}
                     <Route path="view/:id" element={<View />} />
                 </Route>
 
@@ -30,6 +31,8 @@ function App() {
 
                 {/* 회원가입 - 개인/기업 role 따라 다르게 */}
                 <Route path="/signup" element={<SignUp />} />
+                
+                
 
                 {/* 잘못된 URL */}
                 <Route path="*" element={<Error />} />

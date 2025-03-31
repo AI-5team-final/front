@@ -207,7 +207,7 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload-pdf', {
+            const response = await fetch('/api/upload', {
                 method: 'POST',
                 body: formData
             });
@@ -232,7 +232,6 @@ const ContentApplicant = () => {
 
     return (
         <main style={styles.container}>
-            <div style={styles.inner}>
                 <section style={styles.hero}>
                     <div style={styles.heroContent}>
                         <h1 style={styles.heroTitle}>
@@ -252,9 +251,6 @@ const ContentApplicant = () => {
                         />
                     </div>
                 </section>
-
-
-
                 <section style={styles.serviceSection}>
                     <div style={styles.uploadContainer}>
                         <div
@@ -330,7 +326,6 @@ const ContentApplicant = () => {
                         </div>
                     </div>
                 )}
-            </div>
         </main>
     );
 };
