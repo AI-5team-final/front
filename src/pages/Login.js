@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import useAuth from '../hooks/useAuth';
+import '../styles/Login.css';
 
 const Login = () => {
     const { login } = useAuth();
@@ -79,135 +80,6 @@ const Login = () => {
                 </div>
             </div>
             <Footer />
-
-            <style jsx>{`
-                .page-container {
-                    display: flex;
-                    flex-direction: column;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-
-                .login-container {
-                    flex: 1;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 20px;
-                }
-
-                .login-box {
-                    background: white;
-                    padding: 40px;
-                    border-radius: 10px;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                    width: 100%;
-                    max-width: 500px;
-                }
-
-                h2 {
-                    text-align: center;
-                    color: #333;
-                    margin-bottom: 30px;
-                }
-
-                .tab-container {
-                    display: flex;
-                    margin-bottom: 30px;
-                    border-bottom: 2px solid #eee;
-                }
-
-                .tab-button {
-                    flex: 1;
-                    padding: 15px;
-                    border: none;
-                    background: none;
-                    font-size: 16px;
-                    cursor: pointer;
-                    color: #666;
-                    transition: all 0.3s ease;
-                }
-
-                .tab-button.active {
-                    color: #007bff;
-                    border-bottom: 2px solid #007bff;
-                    margin-bottom: -2px;
-                }
-
-                .login-form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                }
-
-                .form-group {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                }
-
-                .form-group label {
-                    color: #555;
-                    font-weight: 500;
-                }
-
-                .form-group input {
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    transition: border-color 0.3s ease;
-                }
-
-                .form-group input:focus {
-                    border-color: #007bff;
-                    outline: none;
-                }
-
-                .login-button {
-                    background-color: #007bff;
-                    color: white;
-                    padding: 12px;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-
-                .login-button:hover {
-                    background-color: #0056b3;
-                }
-
-                .error-message {
-                    color: #dc3545;
-                    text-align: center;
-                    margin-top: 15px;
-                }
-
-                .signup-section {
-                    text-align: center;
-                    margin-top: 30px;
-                    padding-top: 20px;
-                    border-top: 1px solid #eee;
-                }
-
-                .signup-section p {
-                    color: #666;
-                    margin-bottom: 15px;
-                }
-
-                .signup-link {
-                    display: inline-block;
-                    color: #007bff;
-                    text-decoration: none;
-                    font-weight: 500;
-                }
-
-                .signup-link:hover {
-                    text-decoration: underline;
-                }
-            `}</style>
         </div>
     );
 }

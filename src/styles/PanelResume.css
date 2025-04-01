@@ -1,0 +1,275 @@
+.hero-section {
+  width: 100%;
+  background-color: #9fd3fd;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 60px;
+  height: 350px;
+}
+
+.hero-image-container {
+  width: 80%;
+  max-width: 900px;
+  border-radius: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  overflow: hidden;
+  padding: 0 30px;
+}
+
+.hero-text {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding-right: 20px;
+}
+
+.hero-img {
+  height: 100%;
+  width: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #013a72;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #013a72;
+}
+
+.container {
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  padding: 40px 20px 20px;
+  background-color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.upload-card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 40px 20px;
+  margin-bottom: 40px;
+  width: 80%;
+  max-width: 900px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+}
+
+.upload-area {
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.upload-area:hover {
+  border-color: #013a72;
+  background-color: #f1f8ff;
+}
+
+.upload-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.upload-paragraph {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.upload-note {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.icon {
+  font-size: 40px;
+  color: #013a72;
+}
+
+.resume-list {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  width: 80%;
+  max-width: 900px;
+}
+
+.resume-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.resume-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 24px;
+}
+
+.resume-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.resume-date {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.resume-link {
+  color: #013a72;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.resume-link:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #ffffff;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  min-width: 300px;
+}
+
+.modal-file-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #013a72;
+  margin: 15px 0;
+  word-break: break-word;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #6B7280;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: #6B7280;
+}
