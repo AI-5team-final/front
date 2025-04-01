@@ -1,10 +1,11 @@
-// 회원가입 예시
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth'; // ✅ 추가
 import '../styles/SignUp.css';
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuth(); // ✅ 로그인 여부 확인
     const { search } = useLocation();
     const defaultRole = new URLSearchParams(search).get('role') || 'APPLICANT';
     const [activeTab, setActiveTab] = useState(defaultRole);
@@ -18,6 +19,13 @@ const SignUp = () => {
         businessNumber: ''
     });
     const [error, setError] = useState('');
+
+    // ✅ 로그인 상태면 회원가입 페이지 접근 시 홈으로 이동
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/');
+        }
+    }, [isLoggedIn]);
 
     const handleChange = (e) => {
         setForm({
@@ -175,6 +183,6 @@ const SignUp = () => {
             </div>
         </div>
     );
-}
+};
 
 export default SignUp;

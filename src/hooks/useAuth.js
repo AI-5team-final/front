@@ -43,7 +43,10 @@ const useAuth = () => {
     }
   };
 
-  return { login, logout, role };
+  // ✅ 로그인 여부 체크용 플래그
+  const isLoggedIn = !!localStorage.getItem('accessToken');
+
+  return { login, logout, role, isLoggedIn };
 };
 
 export default useAuth;

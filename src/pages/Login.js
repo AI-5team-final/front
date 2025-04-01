@@ -1,16 +1,23 @@
-// 로그인 예시
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import useAuth from '../hooks/useAuth';
 import '../styles/Login.css';
 
 const Login = () => {
-    const { login } = useAuth();
-    const [activeTab, setActiveTab] = useState('APPLICANT'); // 기본 개인회원
+    const navigate = useNavigate();
+    const { login, isLoggedIn } = useAuth(); // ✅ 로그인 여부 가져오기
+    const [activeTab, setActiveTab] = useState('APPLICANT');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    // ✅ 로그인 상태면 로그인 페이지 접근 시 자동 리다이렉트
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/');
+        }
+    }, [isLoggedIn]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -82,6 +89,6 @@ const Login = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default Login;
