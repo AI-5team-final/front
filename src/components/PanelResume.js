@@ -131,11 +131,13 @@ const PanelResume = () => {
         }
 
         try {
-            const response = await fetch(`/pdf/delete/${deleteTarget.id}`, {
-                method: 'DELETE',
+            const response = await fetch('/pdf/delete', {
+                method: 'POST', 
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({ pdfId: deleteTarget.id }) 
             });
 
             if (response.status === 401) {
@@ -183,7 +185,7 @@ const PanelResume = () => {
             }
 
             const data = await res.json();
-            setResumes(Array.isArray(data) ? data : []);
+            setResumes(Array.isArray(data.pdfs) ? data.pdfs : []);
         } catch (err) {
             handleError(err);
             setResumes([]);
@@ -250,10 +252,12 @@ const PanelResume = () => {
                                 <div className="resume-info">
                                     <GrDocumentPdf size={40} color="#6B7280" />
                                     <div style={{ marginLeft: '10px' }}>
-                                        <a className="resume-link" onClick={() => alert(`'${resume.name}' 다운로드 기능은 추후 제공됩니다.`)}>
-                                            {resume.name}
-                                        </a>
-                                        <p className="resume-date">등록일: {resume.date}</p>
+                                      <a className="resume-link" onClick={() => alert(`'${resume.pdfFileName}' 다운로드 기능은 추후 제공됩니다.`)}>
+                                        {resume.pdfFileName}
+                                      </a>
+                                      <p className="resume-date">
+                                        등록일: {new Date(resume.uploadedAt).toLocaleString()}
+                                      </p>
                                     </div>
                                 </div>
                                 <button
