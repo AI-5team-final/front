@@ -28,14 +28,6 @@ export default function useToken() {
   useEffect(() => {
     if (token) {
       const info = decodeToken(token);
-      console.log('=== JWT 토큰 디버깅 ===');
-      console.log('전체 토큰:', token);
-      console.log('디코딩된 정보:', {
-        sub: info.sub,           // 사용자 식별자
-        name: info.name,         // 사용자 이름
-        role: info.role,         // 사용자 역할
-      });
-      console.log('=====================');
       setDecodedInfo(info);
     } else {
       setDecodedInfo(null);
@@ -43,19 +35,14 @@ export default function useToken() {
   }, [token]);
 
   const setTokenValue = (newToken) => {
-    console.log('=== 새 토큰 설정 ===');
-    console.log('새로운 토큰:', newToken);
     localStorage.setItem('accessToken', newToken);
     setToken(newToken);
-    console.log('=====================');
   };
 
   const removeToken = () => {
-    console.log('=== 토큰 제거 ===');
     localStorage.removeItem('accessToken');
     setToken(null);
     setDecodedInfo(null);
-    console.log('=====================');
   };
 
   return { 

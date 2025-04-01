@@ -1,15 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
-import '../styles/fonts.css'; 
-
-const INITIAL_RESUMES = [
-  { id: 1, name: '이력서_홍길동.pdf', date: '2025-03-28' },
-  { id: 2, name: '이력서_홍길동.pdf', date: '2025-03-25' },
-  { id: 3, name: '이력서_홍길동.pdf', date: '2025-03-25' },
-  { id: 4, name: '이력서_홍길동.pdf', date: '2025-03-28' },
-  { id: 5, name: '이력서_홍길동.pdf', date: '2025-03-28' },
-];
+import { useEffect } from 'react';
+import '../styles/fonts.css';
+import useToken from '../hooks/useToken';
+import { useNavigate } from 'react-router-dom';
 
 const styles = {
   heroSection: {
@@ -177,12 +172,32 @@ const styles = {
 };
 
 const PanelResume = () => {
-    const [resumes, setResumes] = useState(INITIAL_RESUMES);
+    const [resumes, setResumes] = useState([]);
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const fileInputRef = useRef();
-  
+    const { token, removeToken } = useToken();
+    const navigate = useNavigate();
+
+    const handleAuthError = () => {
+        alert('로그인이 필요합니다.');
+        removeToken();
+        navigate('/login');
+    };
+
+    const handleError = (error) => {
+        console.error('에러 발생:', error);
+        if (error instanceof Error) {
+            alert(error.message);
+        } else if (typeof error === 'object') {
+            alert(JSON.stringify(error, null, 2));
+        } else {
+            alert(String(error));
+        }
+    };
+
     const validateFile = (file) => {
       if (!file) return false;
       if (file.type !== 'application/pdf') {
@@ -200,20 +215,154 @@ const PanelResume = () => {
       }
     };
   
-    const handleConfirmUpload = () => {
-      alert(`${fileState.name} 파일이 업로드되었습니다.`);
-      setIsModalOpen(false);
+    const handleConfirmUpload = async () => {
+      if (!fileState.file) {
+        alert('PDF 파일을 선택해주세요.');
+        return;
+      }
+
+      if (!token) {
+        handleAuthError();
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', fileState.file);
+
+      try {
+        const response = await fetch('/pdf/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (response.status === 401) {
+          handleAuthError();
+          return;
+        }
+
+        const responseText = await response.text();
+        let errorMessage;
+        
+        try {
+          const responseData = JSON.parse(responseText);
+          errorMessage = responseData.message || responseText;
+        } catch {
+          errorMessage = responseText;
+        }
+
+        if (!response.ok) {
+          switch (response.status) {
+            case 400:
+              throw new Error(`파일 업로드 실패: ${errorMessage}`);
+            case 403:
+              throw new Error('접근 권한이 없습니다.');
+            case 413:
+              throw new Error('파일 크기가 너무 큽니다.');
+            case 415:
+              throw new Error('지원하지 않는 파일 형식입니다.');
+            case 500:
+              throw new Error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            default:
+              throw new Error(`업로드 실패: ${errorMessage}`);
+          }
+        }
+
+        console.log('업로드 성공:', errorMessage);
+        alert('이력서가 성공적으로 업로드되었습니다.');
+
+        setFileState({ name: '', file: null });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        setIsModalOpen(false);
+
+        fetchResumes();
+      } catch (error) {
+        handleError(error);
+      }
     };
   
     const handleDeleteRequest = (resume) => {
       setDeleteTarget(resume);
     };
   
-    const handleConfirmDelete = () => {
-      setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
-      setDeleteTarget(null);
+    const handleConfirmDelete = async () => {
+        if (!token) {
+          handleAuthError();
+          return;
+        }
+
+        try {
+          const response = await fetch(`/pdf/delete/${deleteTarget.id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (response.status === 401) {
+            handleAuthError();
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error('삭제 실패');
+          }
+      
+          setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
+          setDeleteTarget(null);
+        } catch (error) {
+          handleError(error);
+        }
     };
-  
+
+    const fetchResumes = async () => {
+      if (!token) {
+        handleAuthError();
+        return;
+      }
+
+      try {
+          setIsLoading(true);
+          const res = await fetch('/pdf/list', {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          });
+
+          if (res.status === 401) {
+            handleAuthError();
+            return;
+          }
+
+          if (res.status === 403) {
+            alert('접근 권한이 없습니다.');
+            return;
+          }
+
+          if (!res.ok) {
+              throw new Error('서버 응답 에러');
+          }
+
+          const data = await res.json();
+          setResumes(Array.isArray(data) ? data : []);
+      } catch (err) {
+          handleError(err);
+          setResumes([]);
+      } finally {
+          setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+        if (token) {
+            fetchResumes();
+        }
+    }, [token]);
+    
     return (
         <>
           <section style={styles.heroSection}>
@@ -252,27 +401,37 @@ const PanelResume = () => {
             </div>
     
             <div style={styles.resumeList}>
-              {resumes.map((resume) => (
-                <div key={resume.id} style={styles.resumeItem}>
-                  <div style={styles.resumeInfo}>
-                    <GrDocumentPdf size={40} color="#6B7280" />
-                    <div style={{ marginLeft: '10px' }}>
-                      <a style={styles.resumeLink} onClick={() => alert(`'${resume.name}' 다운로드 기능은 추후 제공됩니다.`)}>
-                        {resume.name}
-                      </a>
-                      <p style={styles.resumeDate}>등록일: {resume.date}</p>
-                    </div>
-                  </div>
-                  <button
-                    style={styles.deleteButton}
-                    onClick={() => handleDeleteRequest(resume)}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.deleteButtonHover.backgroundColor}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
-                  >
-                    삭제하기
-                  </button>
+              {isLoading ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                  이력서 목록을 불러오는 중...
                 </div>
-              ))}
+              ) : !Array.isArray(resumes) || resumes.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                  등록된 이력서가 없습니다.
+                </div>
+              ) : (
+                resumes.map((resume) => (
+                  <div key={resume.id} style={styles.resumeItem}>
+                    <div style={styles.resumeInfo}>
+                      <GrDocumentPdf size={40} color="#6B7280" />
+                      <div style={{ marginLeft: '10px' }}>
+                        <a style={styles.resumeLink} onClick={() => alert(`'${resume.name}' 다운로드 기능은 추후 제공됩니다.`)}>
+                          {resume.name}
+                        </a>
+                        <p style={styles.resumeDate}>등록일: {resume.date}</p>
+                      </div>
+                    </div>
+                    <button
+                      style={styles.deleteButton}
+                      onClick={() => handleDeleteRequest(resume)}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.deleteButtonHover.backgroundColor}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
+                    >
+                      삭제하기
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
     

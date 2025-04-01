@@ -1,7 +1,17 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
+import { GrDocumentPdf } from 'react-icons/gr';
+import { RiRobot2Line } from "react-icons/ri";
 import '../styles/fonts.css';
+
+const mockResumes = [
+    { id: 1, name: '이력서_홍길동.pdf', date: '2025-03-28' },
+    { id: 2, name: '이력서_마케팅팀.pdf', date: '2025-02-14' },
+    { id: 3, name: '디자이너_지원서.pdf', date: '2025-01-03' },
+    { id: 4, name: '경력직_기획서.pdf', date: '2024-12-20' },
+    { id: 5, name: '졸업작품_포트폴리오.pdf', date: '2024-11-11' },
+  ];
 
 const styles = {
     container: {
@@ -157,13 +167,96 @@ const styles = {
         display: 'flex',
         gap: '10px',
         justifyContent: 'center'
-    }
+    },
+    modalTitle: {
+        fontSize: '1.5rem',
+        fontWeight: '600',
+        color: '#013A72',
+        marginBottom: '20px',
+        textAlign: 'left',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px'
+    },
+    modalSubTitle: {
+        fontSize: '1.1rem',
+        color: '#455A64',
+        marginBottom: '30px',
+        textAlign: 'left',
+        lineHeight: '1.6',
+        backgroundColor: '#F5F9FF',
+        padding: '15px 20px',
+        borderRadius: '8px'
+    },
+    resumeListHeader: {
+        fontSize: '1rem',
+        color: '#666',
+        marginBottom: '16px',
+        textAlign: 'left'
+    },
+    resumeListItem: {
+        padding: '12px 16px',
+        margin: '8px 0',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        backgroundColor: '#ffffff',
+        transition: 'all 0.2s ease',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px'
+    },
+    selectedResumeItem: {
+        backgroundColor: '#f1f8ff',
+        border: '1px solid #013A72'
+    },
+    divider: {
+        borderBottom: '1px solid #e5e7eb',
+        margin: '16px 0'
+    },
+    modalButton: {
+        padding: '8px 16px',
+        borderRadius: '6px',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '500',
+        backgroundColor: '#013A72',
+        color: '#ffffff',
+        transition: 'all 0.2s ease'
+    },
+    cancelButton: {
+        backgroundColor: '#6B7280',
+        marginLeft: '8px'
+    },
+    uploadSection: {
+        marginTop: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px'
+    },
+    loadButton: {
+        padding: '8px 16px',
+        borderRadius: '6px',
+        border: '1px solid #013A72',
+        backgroundColor: '#ffffff',
+        color: '#013A72',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '500',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px'
+    },
 };
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
-    const [isModalOpen, setIsModalOpen] = useState(false); // 제출 확인 모달
-    const [isLoadModalOpen, setIsLoadModalOpen] = useState(false); // 불러오기 모달
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
+    const [isMatchingModalOpen, setIsMatchingModalOpen] = useState(false);
+    const [matchingFiles, setMatchingFiles] = useState({ resume: null, jobPost: null });
+    const [selectedId, setSelectedId] = useState(null);
     const fileInputRef = useRef();
 
     const validateFile = (file) => {
@@ -185,7 +278,7 @@ const ContentApplicant = () => {
         const file = e.dataTransfer.files[0];
         if (validateFile(file)) {
             setFileState({ name: file.name, file });
-            setIsModalOpen(true); // 바로 제출 모달 열기
+            setIsUploadModalOpen(true);
         }
     };
 
@@ -193,7 +286,7 @@ const ContentApplicant = () => {
         const file = e.target.files[0];
         if (validateFile(file)) {
             setFileState({ name: file.name, file });
-            setIsModalOpen(true); // 바로 제출 모달 열기
+            setIsUploadModalOpen(true);
         }
     };
 
@@ -224,10 +317,21 @@ const ContentApplicant = () => {
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            setIsModalOpen(false);
+            setIsUploadModalOpen(false);
         } catch (error) {
             handleError(error);
         }
+    };
+
+    const handleLoadConfirm = () => {
+        if (!selectedId) {
+            alert('이력서를 선택해주세요.');
+            return;
+        }
+        const selectedResume = mockResumes.find(resume => resume.id === selectedId);
+        setFileState({ name: selectedResume.name, file: null });
+        setIsLoadModalOpen(false);
+        setIsUploadModalOpen(true);
     };
 
     return (
@@ -284,45 +388,153 @@ const ContentApplicant = () => {
 
                         <button 
                             type="button"
-                            onClick={() => setIsLoadModalOpen(true)}
+                            onClick={() => setIsMatchingModalOpen(true)}
                             style={styles.button(true)}
                         >
                             <TbHeartHandshake style={styles.cloudIcon} />
-                            <span>1대1 매칭하기</span>
+                            <p>
+                                Fit Advisor로 <br/>
+                                1대1 매칭하기
+                            </p>
                         </button>
                     </div>
                     <p style={styles.fileNote}>*등록가능한 파일 형식 및 확장자: PDF</p>
                     <p style={styles.fileNote}>**불필요한 개인정보가 포함되지 않도록 확인 후 첨부하세요</p>
                 </section>
 
-                {/* 제출 확인 모달 */}
-                {isModalOpen && (
+                {/* 이력서 업로드 확인 모달 */}
+                {isUploadModalOpen && (
                     <div style={styles.modalBackdrop}>
                         <div style={styles.modal}>
                             <p>이 이력서를 업로드하시겠습니까?</p>
                             <p style={styles.modalFileName}>{fileState.name}</p>
                             <div style={styles.modalButtons}>
                                 <button onClick={handleSubmit}>확인</button>
-                                <button onClick={() => setIsModalOpen(false)}>취소</button>
+                                <button onClick={() => setIsUploadModalOpen(false)}>취소</button>
                             </div>
                         </div>
                     </div>
                 )}
-                
-                {/* 불러오기 모달 */}
+
+                {/* 이력서 불러오기 모달 */}
                 {isLoadModalOpen && (
                     <div style={styles.modalBackdrop}>
                         <div style={styles.modal}>
-                            <p>불러오기 모달입니다. (임시)</p>
-                            <button
-                                onClick={() => {
-                                    setIsLoadModalOpen(false);
-                                    setIsModalOpen(true);
-                                }}
-                                style={{ marginTop: '20px' }}
-                            >
-                                넘어가기
-                            </button>
+                            <div style={styles.modalTitle}>내 이력서 불러오기</div>
+                            <p style={styles.resumeListHeader}>불러올 이력서를 선택해주세요</p>
+                            <div style={styles.divider} />
+                            {mockResumes.map((resume) => (
+                                <div
+                                    key={resume.id}
+                                    style={{
+                                        ...styles.resumeListItem,
+                                        ...(selectedId === resume.id ? styles.selectedResumeItem : {})
+                                    }}
+                                    onClick={() => setSelectedId(prev => prev === resume.id ? null : resume.id)}
+                                >
+                                    <GrDocumentPdf size={20} color="#6B7280" />
+                                    <span>{resume.name} ({resume.date})</span>
+                                </div>
+                            ))}
+                            <div style={styles.modalButtons}>
+                                <button
+                                    style={styles.modalButton}
+                                    onClick={handleLoadConfirm}
+                                >
+                                    선택하기
+                                </button>
+                                <button
+                                    style={{ ...styles.modalButton, ...styles.cancelButton }}
+                                    onClick={() => {
+                                        setIsLoadModalOpen(false);
+                                        setSelectedId(null);
+                                    }}
+                                >
+                                    취소
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {isMatchingModalOpen && (
+                    <div style={styles.modalBackdrop}>
+                        <div style={styles.modal}>
+                            <div style={styles.modalTitle}>
+                                <RiRobot2Line size={24} color="#013A72" />
+                                <span>Fit Advisor</span>
+                            </div>
+                            <div style={styles.modalSubTitle}>
+                                AI agent "Fit Advisor"는 당신이 가고 싶은 회사에 맞는 로드맵을 만들어줘요
+                            </div>
+                            <div style={styles.divider} />
+                            <p style={styles.resumeListHeader}>이력서 PDF 업로드</p>
+                            <div style={styles.uploadSection}>
+                                <input
+                                    type="file"
+                                    accept="application/pdf"
+                                    onChange={(e) =>
+                                        setMatchingFiles((prev) => ({
+                                            ...prev,
+                                            resume: e.target.files[0],
+                                        }))
+                                    }
+                                />
+                                <button 
+                                    style={styles.loadButton}
+                                    onClick={() => {
+                                        setIsMatchingModalOpen(false);
+                                        setIsLoadModalOpen(true);
+                                    }}
+                                >
+                                    <FaCloudDownloadAlt size={16} />
+                                    이력서 불러오기
+                                </button>
+                            </div>
+                            {matchingFiles.resume && (
+                                <p style={styles.modalFileName}>{matchingFiles.resume.name}</p>
+                            )}
+                            <div style={styles.divider} />
+                            <p style={styles.resumeListHeader}>공고 PDF 업로드</p>
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                onChange={(e) =>
+                                    setMatchingFiles((prev) => ({
+                                        ...prev,
+                                        jobPost: e.target.files[0],
+                                    }))
+                                }
+                            />
+                            {matchingFiles.jobPost && (
+                                <p style={styles.modalFileName}>{matchingFiles.jobPost.name}</p>
+                            )}
+                            <div style={styles.modalButtons}>
+                                <button
+                                    style={styles.modalButton}
+                                    onClick={() => {
+                                        if (!matchingFiles.resume || !matchingFiles.jobPost) {
+                                            alert('이력서와 공고 파일 모두 등록해주세요.');
+                                            return;
+                                        }
+                                        // 여기서 매칭 요청 처리 API 등을 추가하면 됩니다
+                                        alert('매칭 요청 완료!');
+                                        setMatchingFiles({ resume: null, jobPost: null });
+                                        setIsMatchingModalOpen(false);
+                                    }}
+                                >
+                                    매칭 요청
+                                </button>
+                                <button
+                                    style={{ ...styles.modalButton, ...styles.cancelButton }}
+                                    onClick={() => {
+                                        setIsMatchingModalOpen(false);
+                                        setMatchingFiles({ resume: null, jobPost: null });
+                                    }}
+                                >
+                                    취소
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
