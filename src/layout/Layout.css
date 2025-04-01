@@ -5,6 +5,7 @@ header {
   right: 0;
   border-bottom: 1px solid #000;
 }
+
 header .inner {
   height: 68px;
   display: -webkit-box;
@@ -17,6 +18,7 @@ header .inner {
       -ms-flex-align: center;
           align-items: center;
 }
+
 header .inner > div {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -25,10 +27,12 @@ header .inner > div {
       -ms-flex-align: center;
           align-items: center;
 }
+
 header .inner > div p strong {
   font-size: 20px;
   font-weight: 700;
 }
+
 header .inner > div span {
   display: block;
   width: 1px;
@@ -36,6 +40,7 @@ header .inner > div span {
   background: #000;
   margin: 0 20px;
 }
+
 header .inner > div a {
   font-size: 14px;
 }
