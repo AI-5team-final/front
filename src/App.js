@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp";
 import PrivateRoute from "./components/PrivateRoute";
 import PanelResume from './components/PanelResume';
 import "the-new-css-reset/css/reset.css";
-import './styles/Style.css'
+import './Style.css'
 
 function App() {
     return (
