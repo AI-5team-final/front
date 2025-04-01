@@ -1,0 +1,148 @@
+// Variables
+$primary-color: #007bff;
+$primary-hover: #0056b3;
+$secondary-color: #6c757d;
+$secondary-hover: #5a6268;
+$text-color: #333;
+$gray-color: #666;
+$border-color: #ddd;
+$error-color: #dc3545;
+$white: #ffffff;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin input-focus {
+  border-color: $primary-color;
+  outline: none;
+}
+
+// Page Container
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+// Signup Container
+.signup-container {
+  flex: 1;
+  @include flex-center;
+  padding: 20px;
+}
+
+// Signup Box
+.signup-box {
+  background: $white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+
+  h2 {
+    text-align: center;
+    color: $text-color;
+    margin-bottom: 30px;
+  }
+}
+
+// Tab Container
+.tab-container {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid $border-color;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: $gray-color;
+  transition: all 0.3s ease;
+
+  &.active {
+    color: $primary-color;
+    border-bottom: 2px solid $primary-color;
+    margin-bottom: -2px;
+  }
+}
+
+// Signup Form
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    color: #555;
+    font-weight: 500;
+  }
+
+  input {
+    padding: 12px;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      @include input-focus;
+    }
+  }
+}
+
+// Buttons
+.signup-button {
+  background-color: $primary-color;
+  color: $white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: $primary-hover;
+  }
+}
+
+.back-to-login-button {
+  background-color: $secondary-color;
+  color: $white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+
+  &:hover {
+    background-color: $secondary-hover;
+  }
+}
+
+// Error Message
+.error-message {
+  color: $error-color;
+  text-align: center;
+  margin-top: 15px;
+} 
