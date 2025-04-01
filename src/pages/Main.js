@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainContent from '../components/MainContent';
 import useToken from '../hooks/useToken';
-import './Main.css'
+import '../styles/Main.css'
 
 const Main = () => {
 	const navigate = useNavigate();
