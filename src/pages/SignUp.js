@@ -1,10 +1,11 @@
-// 회원가입 예시
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Footer from '../layout/Footer';
+import useAuth from '../hooks/useAuth'; // ✅ 추가
+import '../styles/SignUp.css';
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuth(); // ✅ 로그인 여부 확인
     const { search } = useLocation();
     const defaultRole = new URLSearchParams(search).get('role') || 'APPLICANT';
     const [activeTab, setActiveTab] = useState(defaultRole);
@@ -18,6 +19,13 @@ const SignUp = () => {
         businessNumber: ''
     });
     const [error, setError] = useState('');
+
+    // ✅ 로그인 상태면 회원가입 페이지 접근 시 홈으로 이동
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/');
+        }
+    }, [isLoggedIn]);
 
     const handleChange = (e) => {
         setForm({
@@ -173,133 +181,8 @@ const SignUp = () => {
                     {error && <p className="error-message">{error}</p>}
                 </div>
             </div>
-            <Footer />
-
-            <style jsx>{`
-                .page-container {
-                    display: flex;
-                    flex-direction: column;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-
-                .signup-container {
-                    flex: 1;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 20px;
-                }
-
-                .signup-box {
-                    background: white;
-                    padding: 40px;
-                    border-radius: 10px;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                    width: 100%;
-                    max-width: 500px;
-                }
-
-                h2 {
-                    text-align: center;
-                    color: #333;
-                    margin-bottom: 30px;
-                }
-
-                .tab-container {
-                    display: flex;
-                    margin-bottom: 30px;
-                    border-bottom: 2px solid #eee;
-                }
-
-                .tab-button {
-                    flex: 1;
-                    padding: 15px;
-                    border: none;
-                    background: none;
-                    font-size: 16px;
-                    cursor: pointer;
-                    color: #666;
-                    transition: all 0.3s ease;
-                }
-
-                .tab-button.active {
-                    color: #007bff;
-                    border-bottom: 2px solid #007bff;
-                    margin-bottom: -2px;
-                }
-
-                .signup-form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                }
-
-                .form-group {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                }
-
-                .form-group label {
-                    color: #555;
-                    font-weight: 500;
-                }
-
-                .form-group input {
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    transition: border-color 0.3s ease;
-                }
-
-                .form-group input:focus {
-                    border-color: #007bff;
-                    outline: none;
-                }
-
-                .signup-button {
-                    background-color: #007bff;
-                    color: white;
-                    padding: 12px;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                    margin-top: 20px;
-                }
-
-                .signup-button:hover {
-                    background-color: #0056b3;
-                }
-
-                .back-to-login-button {
-                    background-color: #6c757d;
-                    color: white;
-                    padding: 12px;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                    margin-top: 10px;
-                    width: 100%;
-                }
-
-                .back-to-login-button:hover {
-                    background-color: #5a6268;
-                }
-
-                .error-message {
-                    color: #dc3545;
-                    text-align: center;
-                    margin-top: 15px;
-                }
-            `}</style>
         </div>
     );
-}
+};
 
 export default SignUp;

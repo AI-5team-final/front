@@ -4,9 +4,6 @@ import useToken from "../hooks/useToken";
 const PrivateRoute = ({ children, allowedRoles = [] }) => {
   const { token, role } = useToken();
   
-  console.log('PrivateRoute - Token:', token ? '있음' : '없음');
-  console.log('PrivateRoute - Role:', role || '없음');
-  
   // 토큰이 없으면 로그인 페이지로
   if (!token) {
     console.log('토큰이 없어서 로그인 페이지로 리다이렉트');
