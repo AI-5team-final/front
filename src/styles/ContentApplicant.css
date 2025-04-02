@@ -54,6 +54,9 @@
     height: auto;
 }
 
+.service {
+    margin-top: 50px;
+}
 .service-section {
     background-color: #FFFFFF;
     border-radius: 16px;
@@ -301,5 +304,18 @@
     .hero .inner .hero-image {
         max-width: 400px;
         margin-top: 40px;
+    }
+}
+
+@media (max-width: 767px) {
+    .upload-container {
+        flex-wrap: wrap;
+    }
+    .upload-area {
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .upload-container .button {
+        flex-basis: 46%;
     }
 }

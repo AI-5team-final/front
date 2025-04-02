@@ -91,7 +91,7 @@ const ContentApplicant = () => {
     };
 
     return (
-        <main className="container">
+        <main>
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -113,52 +113,54 @@ const ContentApplicant = () => {
                     </div>
                 </div>
             </section>
-            <section className="service-section">
+            <section className="service">
                 <div className='inner'>
-                    <div className="upload-container">
-                        <div
-                            className="upload-area"
-                            onDrop={handleDrop}
-                            onDragOver={(e) => e.preventDefault()}
-                            onClick={() => fileInputRef.current.click()}
-                        >
-                            <FaPlusCircle className="icon" />
-                            <span className="upload-text">PDF로 이력서 매칭하기</span>
-                            {fileState.name && (
-                                <p className="selected-file">{fileState.name}</p>
-                            )}
-                            <input
-                                type="file"
-                                accept="application/pdf"
-                                ref={fileInputRef}
-                                onChange={handleFileSelect}
-                                style={{ display: 'none' }}
-                            />
+                    <div className="service-section">
+                        <div className="upload-container">
+                            <div
+                                className="upload-area"
+                                onDrop={handleDrop}
+                                onDragOver={(e) => e.preventDefault()}
+                                onClick={() => fileInputRef.current.click()}
+                            >
+                                <FaPlusCircle className="icon" />
+                                <span className="upload-text">PDF로 이력서 매칭하기</span>
+                                {fileState.name && (
+                                    <p className="selected-file">{fileState.name}</p>
+                                )}
+                                <input
+                                    type="file"
+                                    accept="application/pdf"
+                                    ref={fileInputRef}
+                                    onChange={handleFileSelect}
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
+                        
+                            <button 
+                                type="button"
+                                onClick={() => setIsLoadModalOpen(true)}
+                                className="button active"
+                            >
+                                <FaCloudDownloadAlt className="cloud-icon" />
+                                <span>내 이력서<br/>불러오기</span>
+                            </button>
+                        
+                            <button 
+                                type="button"
+                                onClick={() => setIsMatchingModalOpen(true)}
+                                className="button active"
+                            >
+                                <TbHeartHandshake className="cloud-icon" />
+                                <p>
+                                    Fit Advisor로 <br/>
+                                    1대1 매칭하기
+                                </p>
+                            </button>
                         </div>
-                    
-                        <button 
-                            type="button"
-                            onClick={() => setIsLoadModalOpen(true)}
-                            className="button active"
-                        >
-                            <FaCloudDownloadAlt className="cloud-icon" />
-                            <span>내 이력서<br/>불러오기</span>
-                        </button>
-                    
-                        <button 
-                            type="button"
-                            onClick={() => setIsMatchingModalOpen(true)}
-                            className="button active"
-                        >
-                            <TbHeartHandshake className="cloud-icon" />
-                            <p>
-                                Fit Advisor로 <br/>
-                                1대1 매칭하기
-                            </p>
-                        </button>
+                        <p className="file-note">*등록가능한 파일 형식 및 확장자: PDF</p>
+                        <p className="file-note">**불필요한 개인정보가 포함되지 않도록 확인 후 첨부하세요</p>
                     </div>
-                    <p className="file-note">*등록가능한 파일 형식 및 확장자: PDF</p>
-                    <p className="file-note">**불필요한 개인정보가 포함되지 않도록 확인 후 첨부하세요</p>
                 </div>
             </section>
 

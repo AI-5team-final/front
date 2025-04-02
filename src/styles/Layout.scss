@@ -1,3 +1,5 @@
+@import '_Common';
+
 header {
     position: fixed;
     top: 0;
@@ -28,12 +30,21 @@ header {
             a {
                 font-size: 14px;
             }
+            .btn-logout {
+                font-size: 14px;
+                border-radius: 999px;
+                background: $pointColor;
+                color: white;
+                padding: 6px 12px;
+                margin-left: 20px;
+            }
             .btn-menu {
+                display: none;
                 width: 30px;
                 height: 20px;
-                display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                cursor: pointer;
                 span {
                     display: block;
                     margin: 0;
@@ -51,7 +62,29 @@ footer {
     width: 100%;
     text-align: center;
     padding: 40px 0;
-    font-size: 12px;
-    height: 128px;
+    font-size: 24px;
+    a {
+        + a {
+            margin-left: 15px;
+        }
+    }
+    small {
+        font-size: 12px;
+    }
 }
 
+@media (max-width: $tablet) {
+    header {
+        .inner {
+            >div {
+                p, button, span {
+                    display: none;   
+                }
+                .btn-menu {
+                    display: flex;
+                
+                }
+            }
+        }
+    }   
+}

@@ -52,13 +52,13 @@ const Header = () => {
                     >
                         {role === 'HR' ? "공고 관리" : "이력서 관리"}
                     </button>
-                    <span></span>
                     <button 
                         onClick={logout} 
-                        style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                        style={{ border: 'none', cursor: 'pointer' }}
                         aria-label="로그아웃"
                         role="button"
                         tabIndex={0}
+                        className="btn-logout"
                     >
                         로그아웃
                     </button>

@@ -114,7 +114,6 @@
   gap: 15px;
   width: 100%;
 }
-
 .upload-area:hover {
   border-color: #013a72;
   background-color: #f1f8ff;
@@ -195,7 +194,6 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .resume-link:hover {
   text-decoration: underline;
 }
@@ -209,7 +207,6 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .delete-button:hover {
   background-color: #f0f0f0;
 }

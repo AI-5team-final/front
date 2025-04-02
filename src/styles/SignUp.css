@@ -35,7 +35,6 @@
   width: 100%;
   max-width: 500px;
 }
-
 .signup-box h2 {
   text-align: center;
   color: #333;
@@ -63,7 +62,6 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .tab-button.active {
   color: #007bff;
   border-bottom: 2px solid #007bff;
@@ -91,12 +89,10 @@
           flex-direction: column;
   gap: 8px;
 }
-
 .form-group label {
   color: #555;
   font-weight: 500;
 }
-
 .form-group input {
   padding: 12px;
   border: 1px solid #ddd;
@@ -105,7 +101,6 @@
   -webkit-transition: border-color 0.3s ease;
   transition: border-color 0.3s ease;
 }
-
 .form-group input:focus {
   border-color: #007bff;
   outline: none;
@@ -123,7 +118,6 @@
   transition: background-color 0.3s ease;
   margin-top: 20px;
 }
-
 .signup-button:hover {
   background-color: #0056b3;
 }
@@ -141,7 +135,6 @@
   margin-top: 10px;
   width: 100%;
 }
-
 .back-to-login-button:hover {
   background-color: #5a6268;
 }
