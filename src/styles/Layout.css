@@ -39,6 +39,28 @@ header .inner > div span {
 header .inner > div a {
   font-size: 14px;
 }
+header .inner > div .btn-menu {
+  width: 30px;
+  height: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+header .inner > div .btn-menu span {
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: 2px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
 
 footer {
   width: 100%;

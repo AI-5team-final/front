@@ -1,5 +1,5 @@
-#root {
-  height: 100vh;
+body {
+  font-family: "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif";
 }
 
 main {
@@ -15,4 +15,11 @@ main {
 .sub-tit {
   font-size: 3rem;
   font-weight: 700;
+}
+
+@media (max-width: 1439px) {
+  .inner {
+    width: 100%;
+    padding: 0 20px;
+  }
 }

@@ -26,7 +26,7 @@ function App() {
                     {/* 매칭 결과 상세 보기 */}
                     <Route path="view/:id" element={<View />} />
                     {/* 이력서 관리 */}
-                    <Route path="/resume" element={<PanelResume />} />
+                    <Route path="resume" element={<PanelResume />} />
                 </Route>
 
                 {/* 로그인 */}

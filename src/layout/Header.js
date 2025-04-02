@@ -62,6 +62,7 @@ const Header = () => {
                     >
                         로그아웃
                     </button>
+                    <button type="button" className="btn-menu"><span></span><span></span><span></span></button>
                 </div>
             </div>
         </header>
