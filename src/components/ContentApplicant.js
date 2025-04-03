@@ -3,6 +3,7 @@ import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { RiRobot2Line } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 import '../styles/ContentApplicant.css';
 
 const ContentApplicant = () => {
@@ -13,7 +14,9 @@ const ContentApplicant = () => {
     const [matchingFiles, setMatchingFiles] = useState({ resume: null, jobPost: null });
     const [selectedId, setSelectedId] = useState(null);
     const [resumes, setResumes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef();
+    const navigate = useNavigate();
 
     const validateFile = (file) => {
         if (!file) return false;
@@ -27,6 +30,12 @@ const ContentApplicant = () => {
     const handleError = (error) => {
         console.error('업로드 에러:', error);
         alert('파일 업로드 중 오류가 발생했습니다.');
+    };
+
+    const handleAuthError = () => {
+        alert('로그인이 필요합니다.');
+        localStorage.removeItem('accessToken');
+        navigate('/login');
     };
 
     const handleDrop = (e) => {
@@ -52,14 +61,28 @@ const ContentApplicant = () => {
             return;
         }
 
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError();
+            return;
+        }
+
         const formData = new FormData();
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload-pdf', {
+            const response = await fetch('/pdf/EtoC', {
                 method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
                 body: formData
             });
+
+            if (response.status === 401) {
+                handleAuthError();
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('업로드 실패');
@@ -79,15 +102,53 @@ const ContentApplicant = () => {
         }
     };
 
+    const fetchResumes = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError();
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await fetch('/pdf/list', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 401) {
+                handleAuthError();
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error('이력서 목록을 불러오는데 실패했습니다.');
+            }
+
+            const data = await response.json();
+            setResumes(data.pdfs || []);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleLoadConfirm = () => {
         if (!selectedId) {
             alert('이력서를 선택해주세요.');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
-        setFileState({ name: selectedResume.name, file: null });
+        setFileState({ name: selectedResume.pdfFileName, file: null });
         setIsLoadModalOpen(false);
         setIsUploadModalOpen(true);
+    };
+
+    const handleLoadModalOpen = () => {
+        setIsLoadModalOpen(true);
+        fetchResumes();
     };
 
     return (
@@ -139,7 +200,7 @@ const ContentApplicant = () => {
                         
                             <button 
                                 type="button"
-                                onClick={() => setIsLoadModalOpen(true)}
+                                onClick={handleLoadModalOpen}
                                 className="button active"
                             >
                                 <FaCloudDownloadAlt className="cloud-icon" />
@@ -185,16 +246,22 @@ const ContentApplicant = () => {
                         <div className="modal-title">내 이력서 불러오기</div>
                         <p className="resume-list-header">불러올 이력서를 선택해주세요</p>
                         <div className="divider" />
-                        {resumes.map((resume) => (
-                            <div
-                                key={resume.id}
-                                className={`resume-list-item ${selectedId === resume.id ? 'selected-resume-item' : ''}`}
-                                onClick={() => setSelectedId(prev => prev === resume.id ? null : resume.id)}
-                            >
-                                <GrDocumentPdf size={20} color="#6B7280" />
-                                <span>{resume.name} ({resume.date})</span>
-                            </div>
-                        ))}
+                        {isLoading ? (
+                            <div className="loading">이력서 목록을 불러오는 중...</div>
+                        ) : resumes.length === 0 ? (
+                            <div className="empty-state">등록된 이력서가 없습니다.</div>
+                        ) : (
+                            resumes.map((resume) => (
+                                <div
+                                    key={resume.id}
+                                    className={`resume-list-item ${selectedId === resume.id ? 'selected-resume-item' : ''}`}
+                                    onClick={() => setSelectedId(prev => prev === resume.id ? null : resume.id)}
+                                >
+                                    <GrDocumentPdf size={20} color="#6B7280" />
+                                    <span>{resume.pdfFileName} ({new Date(resume.uploadedAt).toLocaleString()})</span>
+                                </div>
+                            ))
+                        )}
                         <div className="modal-buttons">
                             <button
                                 className="modal-button"

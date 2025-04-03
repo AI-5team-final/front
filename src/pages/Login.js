@@ -17,14 +17,15 @@ const Login = () => {
         if (isLoggedIn) {
             navigate('/');
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            await login(username, password, activeTab);
+            const userRole = activeTab === 'APPLICANT' ? 'APPLICANT' : 'HR';
+            await login(username, password, userRole);
         } catch (err) {
             setError(err.message);
         }
