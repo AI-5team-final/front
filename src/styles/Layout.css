@@ -4,6 +4,7 @@ header {
   left: 0;
   right: 0;
   border-bottom: 1px solid #000;
+  background-color: #fff;
 }
 
 header .inner {
@@ -28,9 +29,42 @@ header .inner > div {
           align-items: center;
 }
 
-header .inner > div p strong {
+header .inner > div p {
   font-size: 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+header .inner > div p strong {
   font-weight: 700;
+  margin-right: 5px;
+}
+
+header .inner > div p a, header .inner > div p button {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 5px;
+}
+
+header .inner > div p svg {
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+header .inner > div p span {
+  margin: 0 10px;
 }
 
 header .inner > div span {
@@ -75,6 +109,24 @@ header .inner > div .btn-menu span {
   height: 2px;
   -webkit-transition: 0.3s;
   transition: 0.3s;
+}
+
+header .coin-display {
+  margin-left: 12px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: #013A72;
+}
+
+header .separator {
+  margin: 0 10px;
+  color: #999;
 }
 
 footer {
