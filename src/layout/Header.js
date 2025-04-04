@@ -9,23 +9,7 @@ const Header = () => {
     const headerRef = useRef(null);
     const navigate = useNavigate(); // navigate 선언
 
-    const headerStyle = {
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e0e0e0',
-        zIndex: 1000
-    };
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (headerRef.current) {
-                headerRef.current.style.left = -window.scrollX + 'px';
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
+  
     const handlePageRedirect = () => {
         if (role === 'HR') {
             navigate('/postings'); // HR → 공고 관리
@@ -35,7 +19,7 @@ const Header = () => {
     };
 
     return (
-        <header ref={headerRef} style={headerStyle}>
+        <header ref={headerRef}>
             <div className="inner">
                 <h1 className="logo">
                     <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>
@@ -45,7 +29,6 @@ const Header = () => {
                     <span></span>
                     <button 
                         onClick={handlePageRedirect} 
-                        style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                         aria-label={role === 'HR' ? "공고 관리" : "이력서 관리"}
                         role="button"
                         tabIndex={0}
@@ -54,7 +37,6 @@ const Header = () => {
                     </button>
                     <button 
                         onClick={logout} 
-                        style={{ border: 'none', cursor: 'pointer' }}
                         aria-label="로그아웃"
                         role="button"
                         tabIndex={0}
@@ -62,7 +44,9 @@ const Header = () => {
                     >
                         로그아웃
                     </button>
-                    <button type="button" className="btn-menu"><span></span><span></span><span></span></button>
+                    <button type="button" className="btn-menu">
+                        <span></span><span></span><span></span>
+                    </button>
                 </div>
             </div>
         </header>

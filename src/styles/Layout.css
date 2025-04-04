@@ -3,7 +3,9 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+  z-index: 1000;
 }
 header .inner {
   height: 68px;
@@ -39,6 +41,9 @@ header .inner > div span {
 header .inner > div a {
   font-size: 14px;
 }
+header .inner > div button {
+  cursor: pointer;
+}
 header .inner > div .btn-logout {
   font-size: 14px;
   border-radius: 999px;
@@ -50,7 +55,7 @@ header .inner > div .btn-logout {
 header .inner > div .btn-menu {
   display: none;
   width: 30px;
-  height: 20px;
+  height: 30px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -67,6 +72,13 @@ header .inner > div .btn-menu span {
   height: 2px;
   -webkit-transition: 0.3s;
   transition: 0.3s;
+}
+header .inner > div .btn-menu span:nth-of-type(2) {
+  margin: 7px auto;
+}
+
+main {
+  padding-top: 68px;
 }
 
 footer {
@@ -87,8 +99,24 @@ footer small {
     display: none;
   }
   header .inner > div .btn-menu {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  header .inner {
+    height: 58px;
+  }
+  header .inner .logo {
+    width: 85px;
+  }
+  header .inner .logo a {
+    display: block;
+  }
+  header .inner > div .btn-menu {
+    width: 25px;
+    height: 25px;
+  }
+  main {
+    padding-top: 58px;
   }
 }

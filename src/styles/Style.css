@@ -2,10 +2,6 @@ body {
   font-family: "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif";
 }
 
-main {
-  padding-top: 68px;
-}
-
 .inner {
   width: 1400px;
   padding: 0 20px;
