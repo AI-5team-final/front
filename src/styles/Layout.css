@@ -3,10 +3,10 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  border-bottom: 1px solid #000;
-  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+  z-index: 1000;
 }
-
 header .inner {
   height: 68px;
   display: -webkit-box;
@@ -19,7 +19,6 @@ header .inner {
       -ms-flex-align: center;
           align-items: center;
 }
-
 header .inner > div {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -28,10 +27,9 @@ header .inner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-
 header .inner > div p {
   font-size: 20px;
-  font-family: Arial, sans-serif;
+  font-family: "Pretendard", sans-serif;
   line-height: 1.5;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -41,14 +39,12 @@ header .inner > div p {
           align-items: center;
   gap: 10px;
 }
-
 header .inner > div p strong {
   font-weight: 700;
   margin-right: 5px;
 }
-
 header .inner > div p a, header .inner > div p button {
-  font-family: Arial, sans-serif;
+  font-family: "Pretendard", sans-serif;
   line-height: 1.5;
   background: none;
   border: none;
@@ -57,16 +53,19 @@ header .inner > div p a, header .inner > div p button {
   font-size: 20px;
   margin: 0 5px;
 }
-
 header .inner > div p svg {
   vertical-align: middle;
   margin: 0 5px;
 }
-
-header .inner > div p span {
-  margin: 0 10px;
+header .inner > div .coin-display {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
 }
-
 header .inner > div span {
   display: block;
   width: 1px;
@@ -74,11 +73,12 @@ header .inner > div span {
   background: #000;
   margin: 0 20px;
 }
-
 header .inner > div a {
   font-size: 14px;
 }
-
+header .inner > div button {
+  cursor: pointer;
+}
 header .inner > div .btn-logout {
   font-size: 14px;
   border-radius: 999px;
@@ -87,11 +87,10 @@ header .inner > div .btn-logout {
   padding: 6px 12px;
   margin-left: 20px;
 }
-
 header .inner > div .btn-menu {
   display: none;
   width: 30px;
-  height: 20px;
+  height: 30px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -101,7 +100,6 @@ header .inner > div .btn-menu {
           justify-content: space-between;
   cursor: pointer;
 }
-
 header .inner > div .btn-menu span {
   display: block;
   margin: 0;
@@ -110,23 +108,13 @@ header .inner > div .btn-menu span {
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-
-header .coin-display {
-  margin-left: 12px;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 4px;
-  font-weight: 500;
-  color: #013A72;
+header .inner > div .btn-menu span:nth-of-type(2) {
+  margin: 7px auto;
 }
 
-header .separator {
-  margin: 0 10px;
-  color: #999;
+main {
+  padding-top: 68px;
+  min-height: calc(100vh - 132px);
 }
 
 footer {
@@ -135,13 +123,15 @@ footer {
   padding: 40px 0;
   font-size: 24px;
 }
-
 footer a + a {
   margin-left: 15px;
 }
-
 footer small {
+  display: block;
   font-size: 12px;
+}
+footer small strong {
+  font-weight: 600;
 }
 
 @media (max-width: 1023px) {
@@ -149,8 +139,28 @@ footer small {
     display: none;
   }
   header .inner > div .btn-menu {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  header .inner {
+    height: 58px;
+  }
+  header .inner .logo {
+    width: 85px;
+  }
+  header .inner .logo a {
+    display: block;
+  }
+  header .inner > div .btn-menu {
+    width: 25px;
+    height: 25px;
+  }
+  main {
+    padding-top: 58px;
+    min-height: calc(100vh - 92px);
+  }
+  footer {
+    padding: 20px 0;
   }
 }

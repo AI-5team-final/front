@@ -22,7 +22,6 @@
     "web-vitals": "^2.1.4",
     "webpack": "^5.98.0"
   },
-  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -4,26 +4,24 @@ import useToken from "../hooks/useToken";
 const PrivateRoute = ({ children, allowedRoles = [] }) => {
   const { token, role } = useToken();
   
-  // 토큰이 없으면 로그인 페이지로
   if (!token) {
-    console.log('토큰이 없어서 로그인 페이지로 리다이렉트');
-    return <Navigate to="/login" />;
+    console.log('🔒 토큰 없음 → 로그인으로 리다이렉트');
+    return <Navigate to="/login" replace />;
   }
 
-  // role이 없으면 로그인 페이지로
   if (!role) {
-    console.log('role이 없어서 로그인 페이지로 리다이렉트');
-    return <Navigate to="/login" />;
+    console.log('❌ 유저 role 없음 → 로그인으로 리다이렉트');
+    return <Navigate to="/login" replace />;
   }
 
-  // 특정 role만 허용하는 경우
   if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    console.log('허용되지 않은 role이어서 메인 페이지로 리다이렉트');
-    return <Navigate to="/" />;
+    console.log('🚫 접근 권한 없음 → 메인으로');
+    return <Navigate to="/" replace />;
   }
 
-  console.log('인증 성공, 컨텐츠 렌더링');
+  console.log('✅ 인증 성공 → 컨텐츠 렌더링');
   return children;
-}
+};
+
 
 export default PrivateRoute;

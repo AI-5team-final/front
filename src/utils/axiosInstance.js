@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import config from '../config';
 
 // 토큰 유효성 검사 함수
 // 요청 전에 JWT를 decode해서 만료되었는지 확인함
@@ -23,7 +24,7 @@ const getAccessToken = () => {
 // 만료 시, /auth/token/refresh로 refreshToken을 보내서 새 accessToken을 발급받음
 const refreshAccessToken = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/auth/token/refresh', null, {
+    const response = await axios.post(`${config.baseURL}/auth/token/refresh`, null, {
       withCredentials: true, // 쿠키에 있는 refreshToken 전송
     });
 
@@ -42,7 +43,7 @@ const refreshAccessToken = async () => {
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: config.baseURL,
   withCredentials: true, // 쿠키 포함
   headers: {
     'Content-Type': 'application/json',

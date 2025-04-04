@@ -14,6 +14,7 @@ const Login = () => {
 
     // ✅ 로그인 상태면 로그인 페이지 접근 시 자동 리다이렉트
     useEffect(() => {
+        // console.log('🚀 useEffect 실행됨. isLoggedIn:', isLoggedIn);
         if (isLoggedIn) {
             navigate('/');
         }
