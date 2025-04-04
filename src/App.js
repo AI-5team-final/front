@@ -33,9 +33,9 @@ function App() {
                         {/* 이력서 관리 */}
                         <Route path="resume" element={<PanelResume />} />
                         {/* 결제 */}
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/success" element={<PaySuccess />} />
-                        <Route path="/fail" element={<PayFail />} />
+                        <Route path="payment" element={<Payment />} />
+                        <Route path="success" element={<PaySuccess />} />
+                        <Route path="fail" element={<PayFail />} />
                     </Route>
 
                     {/* 로그인 */}
