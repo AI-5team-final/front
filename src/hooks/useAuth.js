@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import useToken from './useToken';
+import { useUser } from '../context/UserContext'; // 1. context import
 
 const useAuth = () => {
   const navigate = useNavigate();
   const { setToken, removeToken, role } = useToken();
+  const { setUserInfo } = useUser(); // 2. setter 가져오기
 
   const login = async (username, password, userRole) => {
     try {
@@ -15,8 +17,13 @@ const useAuth = () => {
 
       if (!res.ok) throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
 
-      const { accessToken } = await res.json();
+      // 3. 전체 응답 구조 받아오기
+      const { accessToken, name, email, credit, phone } = await res.json();
+
+      // 4. 저장
       setToken(accessToken);
+      setUserInfo({ name, email, credit, phone }); // Context에 저장하여 전역에서 사용
+
       alert('로그인 성공!');
       navigate('/');
     } catch (err) {
@@ -33,7 +40,7 @@ const useAuth = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-        credentials: 'include' // refreshToken 쿠키와 함께 보낼 때 필요
+        credentials: 'include'
       });
     } catch (err) {
       console.warn('서버 로그아웃 실패:', err);
@@ -43,7 +50,6 @@ const useAuth = () => {
     }
   };
 
-  // ✅ 로그인 여부 체크용 플래그
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
   return { login, logout, role, isLoggedIn };
