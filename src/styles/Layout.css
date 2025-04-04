@@ -4,7 +4,9 @@ header {
   left: 0;
   right: 0;
   border-bottom: 1px solid #000;
+  background-color: #fff;
 }
+
 header .inner {
   height: 68px;
   display: -webkit-box;
@@ -17,6 +19,7 @@ header .inner {
       -ms-flex-align: center;
           align-items: center;
 }
+
 header .inner > div {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -25,10 +28,45 @@ header .inner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-header .inner > div p strong {
+
+header .inner > div p {
   font-size: 20px;
-  font-weight: 700;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
 }
+
+header .inner > div p strong {
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+header .inner > div p a, header .inner > div p button {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 5px;
+}
+
+header .inner > div p svg {
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+header .inner > div p span {
+  margin: 0 10px;
+}
+
 header .inner > div span {
   display: block;
   width: 1px;
@@ -36,9 +74,11 @@ header .inner > div span {
   background: #000;
   margin: 0 20px;
 }
+
 header .inner > div a {
   font-size: 14px;
 }
+
 header .inner > div .btn-logout {
   font-size: 14px;
   border-radius: 999px;
@@ -47,6 +87,7 @@ header .inner > div .btn-logout {
   padding: 6px 12px;
   margin-left: 20px;
 }
+
 header .inner > div .btn-menu {
   display: none;
   width: 30px;
@@ -60,6 +101,7 @@ header .inner > div .btn-menu {
           justify-content: space-between;
   cursor: pointer;
 }
+
 header .inner > div .btn-menu span {
   display: block;
   margin: 0;
@@ -69,15 +111,35 @@ header .inner > div .btn-menu span {
   transition: 0.3s;
 }
 
+header .coin-display {
+  margin-left: 12px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: #013A72;
+}
+
+header .separator {
+  margin: 0 10px;
+  color: #999;
+}
+
 footer {
   width: 100%;
   text-align: center;
   padding: 40px 0;
   font-size: 24px;
 }
+
 footer a + a {
   margin-left: 15px;
 }
+
 footer small {
   font-size: 12px;
 }
