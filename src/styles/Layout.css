@@ -27,16 +27,50 @@ header .inner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-header .inner > div p strong {
+header .inner > div p {
   font-size: 20px;
+  font-family: "Pretendard", sans-serif;
+  line-height: 1.5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+header .inner > div p strong {
   font-weight: 700;
+  margin-right: 5px;
+}
+header .inner > div p a, header .inner > div p button {
+  font-family: "Pretendard", sans-serif;
+  line-height: 1.5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 5px;
+}
+header .inner > div p svg {
+  vertical-align: middle;
+  margin: 0 5px;
+}
+header .inner > div p .coin-display {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
 }
 header .inner > div span {
   display: block;
   width: 1px;
   height: 16px;
   background: #000;
-  margin: 0 20px;
 }
 header .inner > div a {
   font-size: 14px;
