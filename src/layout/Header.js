@@ -1,14 +1,16 @@
 import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import useAuth from '../hooks/useAuth';
 import useToken from '../hooks/useToken';
+import { useUser } from '../context/UserContext';
 import { useEffect, useRef, useState } from "react";
 import { RiCopperCoinLine } from 'react-icons/ri'; // 아이콘 변경
 
 const Header = () => {
-    const { logout, credit } = useAuth();
+    const { logout } = useAuth();
     const { role, name } = useToken();
+    const { userInfo } = useUser();
     const headerRef = useRef(null);
-    const navigate = useNavigate(); // navigate 선언
+    const navigate = useNavigate(); 
     
     useEffect(() => {
         const handleScroll = () => {
@@ -39,10 +41,8 @@ const Header = () => {
                     <p>
                         {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{name}</strong>님 
                         <span></span>
-                        <p className="coin-display">
-                            <RiCopperCoinLine /> 
-                        </p>
-                        <p>{credit || 0}</p>
+                        <RiCopperCoinLine /> 
+                        {userInfo?.credit || 0}
                         <span></span>
                         <button 
                             className="button" 

@@ -135,15 +135,33 @@ const ContentApplicant = () => {
         }
     };
 
-    const handleLoadConfirm = () => {
+    const handleLoadConfirm = async () => {
         if (!selectedId) {
             alert('이력서를 선택해주세요.');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
-        setFileState({ name: selectedResume.pdfFileName, file: null });
-        setIsLoadModalOpen(false);
-        setIsUploadModalOpen(true);
+        if (selectedResume) {
+            try {
+                const token = localStorage.getItem('accessToken');
+                const response = await fetch(selectedResume.pdfUri);
+                console.log('response', response);
+                if (!response.ok) {
+                    throw new Error('이력서를 불러오는데 실패했습니다.');
+                }
+                const blob = await response.blob();
+                const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
+                setFileState({ 
+                    name: selectedResume.pdfFileName, 
+                    file: file 
+                });
+                setIsLoadModalOpen(false);
+                setIsUploadModalOpen(true);
+            } catch (error) {
+                console.error('이력서 불러오기 에러:', error);
+                alert('저장소에서 이력서를 불러오는데 실패했습니다.');
+            }
+        }
     };
 
     const handleLoadModalOpen = () => {
@@ -343,7 +361,6 @@ const ContentApplicant = () => {
                                         alert('이력서와 공고 파일 모두 등록해주세요.');
                                         return;
                                     }
-                                    // 여기서 매칭 요청 처리 API 등을 추가하면 됩니다
                                     alert('매칭 요청 완료!');
                                     setMatchingFiles({ resume: null, jobPost: null });
                                     setIsMatchingModalOpen(false);
