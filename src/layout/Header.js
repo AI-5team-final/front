@@ -3,7 +3,7 @@ import useAuth from '../hooks/useAuth';
 import useToken from '../hooks/useToken';
 import { useRef } from "react";
 import { RiCopperCoinLine } from 'react-icons/ri'; // 아이콘 변경
-import { useUser } from '../contexts/UserContext';
+import { useUser } from '../context/UserContext';
 
 const Header = () => {
     const { userInfo } = useUser();
@@ -11,9 +11,6 @@ const Header = () => {
     const { role, name } = useToken();
     const headerRef = useRef(null);
     const navigate = useNavigate(); // navigate 선언
-
-    // console.log("credit", credit);
-    console.log(userInfo);
 
 
     const handlePageRedirect = () => {
@@ -38,7 +35,7 @@ const Header = () => {
                     <p className="coin-display">
                         <RiCopperCoinLine /> 
                     </p>
-                    {/* <p>{userInfo? userInfo.credit : 0}</p> */}
+                    <p>{userInfo? userInfo.credit : 0}</p>
                     <span></span>
                     <button 
                         className="button" 

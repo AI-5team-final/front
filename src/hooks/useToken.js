@@ -7,7 +7,6 @@ const decodeToken = (token) => {
     const decoded = jwtDecode(token);
     return {
       role: decoded?.role || null,
-      name: decoded?.name || null,
       sub: decoded?.sub || null,
       exp: decoded?.exp || null,
       iat: decoded?.iat || null
@@ -48,7 +47,6 @@ export default function useToken() {
   return { 
     token, 
     role: decodedInfo?.role,
-    name: decodedInfo?.name,
     setToken: setTokenValue, 
     removeToken 
   };

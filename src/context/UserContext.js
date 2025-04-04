@@ -5,6 +5,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
+  
 
   const updateCredit = (newCredit) => {
     setUserInfo((prev) => ({
@@ -23,6 +24,7 @@ export const UserProvider = ({ children }) => {
         email: decoded?.sub || prev?.email,
         phone: decoded?.phone || prev?.phone,
         credit: decoded?.credit || prev?.credit,
+        // role: decoded?.role || prev?.role
       }));
     } catch (err) {
       console.error('❌ 토큰 디코딩 실패:', err);
