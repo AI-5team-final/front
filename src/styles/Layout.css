@@ -79,6 +79,7 @@ header .inner > div .btn-menu span:nth-of-type(2) {
 
 main {
   padding-top: 68px;
+  min-height: calc(100vh - 132px);
 }
 
 footer {
@@ -91,7 +92,11 @@ footer a + a {
   margin-left: 15px;
 }
 footer small {
+  display: block;
   font-size: 12px;
+}
+footer small strong {
+  font-weight: 600;
 }
 
 @media (max-width: 1023px) {
@@ -118,5 +123,9 @@ footer small {
   }
   main {
     padding-top: 58px;
+    min-height: calc(100vh - 92px);
+  }
+  footer {
+    padding: 20px 0;
   }
 }

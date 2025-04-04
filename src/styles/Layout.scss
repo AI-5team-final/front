@@ -1,6 +1,7 @@
 @import '_Common';
 
 $headerHeight: 68px;
+$footerHeight: 132px;
 header {
     position: fixed;
     top: 0;
@@ -70,7 +71,9 @@ header {
 
 main {
     padding-top: $headerHeight;
+    min-height: calc(100vh - $footerHeight);
 }
+
 
 footer {
     width: 100%;
@@ -83,7 +86,11 @@ footer {
         }
     }
     small {
+        display: block;
         font-size: 12px;
+        strong {
+            font-weight: 600;
+        }
     }
 }
 
@@ -105,6 +112,7 @@ footer {
 
 @media (max-width: $mobile){
     $headerHeight: 58px;
+    $footerHeight: 92px;
     header {
         .inner {
             height: $headerHeight;
@@ -125,5 +133,10 @@ footer {
 
     main {
         padding-top: $headerHeight;
+        min-height: calc(100vh - $footerHeight);
+    }
+
+    footer {
+        padding: 20px 0;
     }
 }

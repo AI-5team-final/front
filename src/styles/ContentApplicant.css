@@ -104,19 +104,17 @@
     background-color: #f1f8ff;
 }
 
-.icon {
+.upload-container .icon {
     font-size: 40px;
     color: #013A72;
 }
 
-.cloud-icon {
-    font-size: 40px;
+.upload-container .icon-white {
     color: #ffffff;
 }
 
 .upload-text {
     color: #666;
-    font-size: 16px;
 }
 
 .selected-file {
@@ -308,9 +306,33 @@
 }
 
 @media (max-width: 767px) {
+
+    .hero {
+        padding: 80px 0;
+
+    }
+
+    .hero .inner .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero .inner .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+
     .upload-container {
         flex-wrap: wrap;
     }
+
+    .upload-container .icon {
+        font-size: 32px;
+    }
+
+    .upload-container span {
+        font-size: 0.9rem;
+    }
+    
     .upload-area {
         width: 100%;
         flex-basis: 100%;

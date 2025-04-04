@@ -142,7 +142,7 @@ const ContentApplicant = () => {
                                 onClick={() => setIsLoadModalOpen(true)}
                                 className="button active"
                             >
-                                <FaCloudDownloadAlt className="cloud-icon" />
+                                <FaCloudDownloadAlt className="icon icon-white" />
                                 <span>내 이력서<br/>불러오기</span>
                             </button>
                         
@@ -151,7 +151,7 @@ const ContentApplicant = () => {
                                 onClick={() => setIsMatchingModalOpen(true)}
                                 className="button active"
                             >
-                                <TbHeartHandshake className="cloud-icon" />
+                                <TbHeartHandshake className="icon icon-white" />
                                 <p>
                                     Fit Advisor로 <br/>
                                     1대1 매칭하기
