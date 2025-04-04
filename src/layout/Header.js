@@ -15,7 +15,7 @@ const Header = () => {
     // console.log("credit", credit);
     console.log(userInfo);
 
-  
+
     const handlePageRedirect = () => {
         if (role === 'HR') {
             navigate('/postings'); // HR → 공고 관리
@@ -36,17 +36,17 @@ const Header = () => {
                     </p>
                     <span></span>
                     <p className="coin-display">
-                            <RiCopperCoinLine /> 
-                        </p>
-                        {/* <p>{userInfo? userInfo.credit : 0}</p> */}
-                        <span></span>
-                        <button 
-                            className="button" 
-                            onClick={handlePageRedirect} 
-                            aria-label={role === 'HR' ? "공고 관리" : "이력서 관리"}
-                        >
-                            {role === 'HR' ? "공고 관리" : "이력서 관리"}
-                        </button>
+                        <RiCopperCoinLine /> 
+                    </p>
+                    {/* <p>{userInfo? userInfo.credit : 0}</p> */}
+                    <span></span>
+                    <button 
+                        className="button" 
+                        onClick={handlePageRedirect} 
+                        aria-label={role === 'HR' ? "공고 관리" : "이력서 관리"}
+                    >
+                        {role === 'HR' ? "공고 관리" : "이력서 관리"}
+                    </button>
                     <button 
                         onClick={logout} 
                         aria-label="로그아웃"

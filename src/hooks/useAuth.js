@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import useToken from './useToken';
 import { useUser } from '../context/UserContext'; // 1. context import
-import { CgLogIn } from 'react-icons/cg';
 
 const useAuth = () => {
   const navigate = useNavigate();
