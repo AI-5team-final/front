@@ -57,7 +57,7 @@ header .inner > div p svg {
   vertical-align: middle;
   margin: 0 5px;
 }
-header .inner > div p .coin-display {
+header .inner > div .coin-display {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -71,6 +71,7 @@ header .inner > div span {
   width: 1px;
   height: 16px;
   background: #000;
+  margin: 0 20px;
 }
 header .inner > div a {
   font-size: 14px;

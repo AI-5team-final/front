@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import useToken from './useToken';
 import { useUser } from '../context/UserContext'; // 1. context import
+import { CgLogIn } from 'react-icons/cg';
 
 const useAuth = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const useAuth = () => {
       });
 
       if (!res.ok) throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+
 
       // 3. 전체 응답 구조 받아오기
       const { accessToken, name, email, credit, phone } = await res.json();
