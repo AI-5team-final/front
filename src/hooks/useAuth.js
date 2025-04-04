@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import useToken from './useToken';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from '../context/UserContext'; // 1. context import
 
 const useAuth = () => {
   const navigate = useNavigate();
   const { setToken, removeToken, role } = useToken();
-  const { setUserInfo } = useUser(); // 2. setter 가져오기
+  const { setUserInfo, userInfo } = useUser(); // 2. setter 가져오기
 
   const login = async (username, password, userRole) => {
     try {
@@ -34,25 +36,26 @@ const useAuth = () => {
   const logout = async () => {
     try {
       const accessToken = localStorage.getItem('accessToken');
-
+  
       await fetch('http://localhost:8080/auth/token/logout', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-        credentials: 'include'
+        headers: { Authorization: `Bearer ${accessToken}` },
+        credentials: 'include',
       });
+  
+      toast.success('로그아웃 되었습니다!');
     } catch (err) {
-      console.warn('서버 로그아웃 실패:', err);
+      toast.error('서버와의 연결에 실패했습니다.');
     } finally {
       removeToken();
+      setUserInfo(null);
       navigate('/login');
     }
   };
 
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
-  return { login, logout, role, isLoggedIn };
+  return { login, logout, role, isLoggedIn, credit: userInfo?.credit, name: userInfo?.name,};
 };
 
 export default useAuth;
