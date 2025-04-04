@@ -252,7 +252,13 @@ const PanelResume = () => {
                                 <div className="resume-info">
                                     <GrDocumentPdf size={40} color="#6B7280" />
                                     <div style={{ marginLeft: '10px' }}>
-                                      <a className="resume-link" onClick={() => alert(`'${resume.pdfFileName}' 다운로드 기능은 추후 제공됩니다.`)}>
+                                      <a
+                                        className="resume-link"
+                                        href={resume.pdfUri}
+                                        download
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        >
                                         {resume.pdfFileName}
                                       </a>
                                       <p className="resume-date">
