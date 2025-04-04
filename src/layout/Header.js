@@ -9,6 +9,7 @@ const Header = () => {
     const { userInfo } = useUser();
     const { logout } = useAuth();
     const { role, name } = useToken();
+    const { userInfo } = useUser();
     const headerRef = useRef(null);
     const navigate = useNavigate(); // navigate 선언
 
