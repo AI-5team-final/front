@@ -6,6 +6,7 @@ header {
     left: 0;
     right: 0;
     border-bottom: 1px solid #000;
+    background-color: #fff;
     .inner {
         height: 68px;
         display: flex;
@@ -15,9 +16,34 @@ header {
             display: flex;
             align-items: center;
             p {
+                font-size: 20px;
+                font-family: 'Pretendard', sans-serif;
+                line-height: 1.5;
+                display: flex;
+                align-items: center;
+                gap: 10px;
                 strong {
-                    font-size: 20px;
                     font-weight: 700;
+                    margin-right: 5px;
+                }
+                a, button {
+                    font-family: 'Pretendard', sans-serif;
+                    line-height: 1.5;
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    font-size: 20px;
+                    margin: 0 5px;
+                }
+                svg {
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+                .coin-display {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
                 }
             }
             span {
@@ -25,7 +51,6 @@ header {
                 width: 1px;
                 height: 16px;
                 background: #000;
-                margin: 0 20px;
             }
             a {
                 font-size: 14px;
