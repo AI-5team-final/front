@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import useAuth from '../hooks/useAuth';
 import useToken from '../hooks/useToken';
 import { useUser } from '../context/UserContext';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { RiCopperCoinLine } from 'react-icons/ri'; // 아이콘 변경
 
 const Header = () => {

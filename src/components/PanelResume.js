@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/fonts.css';
 import '../styles/PanelResume.css';
 import useToken from '../hooks/useToken';
@@ -12,12 +14,12 @@ const PanelResume = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const fileInputRef = useRef();
     const { token, removeToken } = useToken();
+    const fileInputRef = useRef();
     const navigate = useNavigate();
 
     const handleAuthError = () => {
-        alert('로그인이 필요합니다.');
+        toast.error('로그인이 필요한 서비스입니다.');
         removeToken();
         navigate('/login');
     };
@@ -25,18 +27,18 @@ const PanelResume = () => {
     const handleError = (error) => {
         console.error('에러 발생:', error);
         if (error instanceof Error) {
-            alert(error.message);
+            toast.error(error.message);
         } else if (typeof error === 'object') {
-            alert(JSON.stringify(error, null, 2));
+            toast.error(JSON.stringify(error, null, 2));
         } else {
-            alert(String(error));
+            toast.error(String(error));
         }
     };
 
     const validateFile = (file) => {
         if (!file) return false;
         if (file.type !== 'application/pdf') {
-            alert('PDF 파일만 업로드 가능합니다.');
+            toast.error('PDF 파일만 업로드 가능합니다.');
             return false;
         }
         return true;
@@ -52,7 +54,7 @@ const PanelResume = () => {
 
     const handleConfirmUpload = async () => {
         if (!fileState.file) {
-            alert('PDF 파일을 선택해주세요.');
+            toast.error('PDF 파일을 선택해주세요.');
             return;
         }
 
@@ -105,8 +107,7 @@ const PanelResume = () => {
                 }
             }
 
-            console.log('업로드 성공:', errorMessage);
-            alert('이력서가 성공적으로 업로드되었습니다.');
+            toast.success('이력서가 성공적으로 업로드되었습니다.');
 
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
@@ -176,7 +177,7 @@ const PanelResume = () => {
             }
 
             if (res.status === 403) {
-                alert('접근 권한이 없습니다.');
+                toast.error('접근 권한이 없습니다.');
                 return;
             }
 
