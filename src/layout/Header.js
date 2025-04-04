@@ -8,7 +8,7 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
     const { userInfo } = useUser();
     const { logout } = useAuth();
-    const { role, name } = useToken();
+    const { role } = useToken();
     const headerRef = useRef(null);
     const navigate = useNavigate(); // navigate 선언
 
@@ -29,7 +29,7 @@ const Header = () => {
                 </h1>
                 <div>
                     <p>
-                        {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{name}</strong>님 
+                        {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{userInfo ? userInfo.name : '' }</strong>님 
                     </p>
                     <span></span>
                     <p className="coin-display">
