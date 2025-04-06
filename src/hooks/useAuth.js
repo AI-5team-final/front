@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import useToken from './useToken';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useUser } from '../context/UserContext'; // 1. context import
+import { useUser } from '../context/UserContext'; 
 import axiosClient from '../utils/axiosInstance';
 import fetchClient from '../utils/fetchClient';
 
@@ -10,7 +10,7 @@ import fetchClient from '../utils/fetchClient';
 const useAuth = () => {
   const navigate = useNavigate();
   const { setToken, removeToken, role } = useToken();
-  const { setUserInfo, userInfo } = useUser(); // 2. setter 가져오기
+  const { setUserInfo, userInfo } = useUser();
 
   const login = async (username, password, userRole) => {
     try {
@@ -37,8 +37,6 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      const accessToken = localStorage.getItem('accessToken');
-  
       await axiosClient.post('/auth/token/logout'); 
       toast.success('로그아웃 되었습니다!');
     } catch (err) {
