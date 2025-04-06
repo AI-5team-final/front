@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth'; // ✅ 추가
 import '../styles/SignUp.css';
+import fetchClient from '../utils/fetchClient';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -40,10 +41,8 @@ const SignUp = () => {
         console.log(form);
 
         try {
-            const res = await fetch('/auth/signup', {
+            const res = await fetchClient('/auth/signup', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
                 body: JSON.stringify({ ...form, role: activeTab }),
             });
 
