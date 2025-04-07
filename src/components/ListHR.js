@@ -63,6 +63,7 @@ const ListHR = () => {
                         <button 
                             onClick={() => setSelectedApplicant(user)} 
                             className="button"
+
                         >
                             더보기
                         </button>
