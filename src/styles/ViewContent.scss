@@ -1,0 +1,117 @@
+.view-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .back-button {
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        padding: 0.5rem 0;
+
+        &:hover {
+            color: #333;
+        }
+    }
+
+    .title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        color: #333;
+    }
+
+    .match-info {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+
+        .pdf-info {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+
+            h3 {
+                color: #666;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: #333;
+                margin: 0.25rem 0;
+            }
+        }
+
+        .company-info {
+            margin-bottom: 2rem;
+
+            h2 {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 1rem;
+            }
+
+            .match-score {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .score-label {
+                    color: #666;
+                }
+
+                .score-value {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                    color: #0066cc;
+                }
+            }
+        }
+
+        .match-detail {
+            .summary-section, .analysis-section {
+                margin-bottom: 2rem;
+
+                h3 {
+                    color: #333;
+                    margin-bottom: 1rem;
+                    font-size: 1.25rem;
+                }
+
+                p {
+                    color: #666;
+                    line-height: 1.6;
+                }
+            }
+
+            .gpt-analysis {
+                .score-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin: 0.5rem 0;
+                    padding: 0.5rem;
+                    background: #f8f9fa;
+                    border-radius: 4px;
+
+                    .category {
+                        color: #666;
+                        flex: 1;
+                    }
+
+                    .score {
+                        color: #0066cc;
+                        font-weight: bold;
+                    }
+                }
+
+                p {
+                    margin: 0.5rem 0;
+                }
+            }
+        }
+    }
+} 
