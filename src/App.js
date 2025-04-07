@@ -49,7 +49,9 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
+
         <AppRoutes />
+
       </BrowserRouter>
       <ToastContainer position="top-center" autoClose={2000} />
     </UserProvider>
