@@ -31,11 +31,11 @@ const Header = () => {
                     <p>
                         {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{userInfo ? userInfo.name : '' }</strong>님 
                     </p>
-                    <span></span>
+                    {/* <span></span>
                     <p className="coin-display">
                         <RiCopperCoinLine /> 
                     </p>
-                    <p>{userInfo? userInfo.credit : 0}</p>
+                    <p>{userInfo? userInfo.credit : 0}</p> */}
                     <span></span>
                     <button 
                         className="button" 

@@ -5,6 +5,7 @@ import { GrDocumentPdf } from 'react-icons/gr';
 import { RiRobot2Line } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import '../styles/ContentApplicant.css';
+import fetchClient from '../utils/fetchClient';
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -71,7 +72,7 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/pdf/EtoC', {
+            const response = await fetchClient('/pdf/EtoC', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -111,7 +112,7 @@ const ContentApplicant = () => {
 
         try {
             setIsLoading(true);
-            const response = await fetch('/pdf/list', {
+            const response = await fetchClient('/pdf/list', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -144,7 +145,7 @@ const ContentApplicant = () => {
         if (selectedResume) {
             try {
                 const token = localStorage.getItem('accessToken');
-                const response = await fetch(selectedResume.pdfUri);
+                const response = await fetchClient(selectedResume.pdfUri);
                 console.log('response', response);
                 if (!response.ok) {
                     throw new Error('이력서를 불러오는데 실패했습니다.');
