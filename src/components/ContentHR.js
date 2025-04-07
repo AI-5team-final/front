@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import '../styles/fonts.css';
+import fetchClient from '../utils/fetchClient';
 
 const styles = {
     container: {
@@ -163,7 +164,7 @@ const ContentHR = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/api/upload', {
+            const response = await fetchClient('/api/upload', {
                 method: 'POST',
                 body: formData
             });

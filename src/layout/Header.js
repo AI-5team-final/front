@@ -9,7 +9,7 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
     const { userInfo } = useUser();
     const { logout } = useAuth();
-    const { role, name } = useToken();
+    const { role } = useToken();
     const headerRef = useRef(null);
     const navigate = useNavigate(); // navigate 선언
 
@@ -18,16 +18,6 @@ const Header = () => {
     const openPaymentModal = () => setIsPaymentModalOpen(true);
     const closePaymentModal = () => setIsPaymentModalOpen(false);
     
-    useEffect(() => {
-        const handleScroll = () => {
-            if (headerRef.current) {
-                headerRef.current.style.left = -window.scrollX + 'px';
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     const handlePageRedirect = () => {
         if (role === 'HR') {
@@ -38,20 +28,23 @@ const Header = () => {
     };
 
     return (
-        <header ref={headerRef}>
-            <div className="inner">
-                <h1 className="logo">
-                    <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>
-                </h1>
-                <div>
-                    <p>
-                        {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{name}</strong>님 
+        <>
+            <PaymentModal />
+            <header ref={headerRef}>
+                <div className="inner">
+                    <h1 className="logo">
+                        <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>
+                    </h1>
+                    <div>
+                        <p>
+                            {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{userInfo? userInfo.name: ""}</strong>님 
+                        </p>
                         <span></span>
                         <p className="coin-display" onClick={openPaymentModal} style={{ cursor: 'pointer' }}>
                             <RiCopperCoinLine /> 
                         </p>
                         <p onClick={openPaymentModal} style={{ cursor: 'pointer' }}>
-                            {userInfo?.credit || 0}
+                            {userInfo? userInfo.credit : 0}
                         </p>
                         <span></span>
                         <button 
@@ -61,25 +54,24 @@ const Header = () => {
                         >
                             {role === 'HR' ? "공고 관리" : "이력서 관리"}
                         </button>
-                        <span></span>
-                    </p>
-                    <button 
-                        onClick={logout} 
-                        aria-label="로그아웃"
-                        role="button"
-                        tabIndex={0}
-                        className="btn-logout"
-                    >
-                        로그아웃
-                    </button>
-                    <button type="button" className="btn-menu">
-                        <span></span><span></span><span></span>
-                    </button>
+                        <button 
+                            onClick={logout} 
+                            aria-label="로그아웃"
+                            role="button"
+                            tabIndex={0}
+                            className="btn-logout"
+                        >
+                            로그아웃
+                        </button>
+                        <button type="button" className="btn-menu">
+                            <span></span><span></span><span></span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            {/* PaymentModal 컴포넌트를 조건부로 렌더링 */}
-            <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
-        </header>
+                {/* PaymentModal 컴포넌트를 조건부로 렌더링 */}
+                <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
+            </header>
+        </>
     );
 };
 

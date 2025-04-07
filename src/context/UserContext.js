@@ -33,11 +33,11 @@ export const UserProvider = ({ children }) => {
       const decoded = jwtDecode(token);
       setUserInfo((prev) => ({
         ...prev,
-        name: decoded?.name || prev?.name,
-        email: decoded?.sub || prev?.email,
-        phone: decoded?.phone || prev?.phone,
-        credit: decoded?.credit || prev?.credit,
-        // role: decoded?.role || prev?.role
+        name: decoded?.name ?? prev?.name,
+        email: decoded?.sub ?? prev?.email,
+        phone: decoded?.phone ?? prev?.phone,
+        credit: decoded?.credit ?? prev?.credit,
+        // role: decoded?.role ?? prev?.role
       }));
     } catch (err) {
       console.error('❌ 토큰 디코딩 실패:', err);
