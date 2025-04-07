@@ -4,34 +4,29 @@ import { jwtDecode } from 'jwt-decode';
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(() => {
+    const saved = localStorage.getItem('userInfo');
+    return saved ? JSON.parse(saved) : null;
+  });
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('accessToken');
-  //   if (token) {
-  //     try {
-  //       const decoded = jwtDecode(token);
-  //       setUserInfo({
-  //         name: decoded?.name,
-  //         email: decoded?.sub,
-  //         phone: decoded?.phone,
-  //         credit: decoded?.credit,
-  //         role: decoded?.role,
-  //       });
-  //       console.log(decoded?.name, decoded?.sub, decoded?.phone,decoded?.credit, decoded?.role)
-  //     } catch (e) {
-  //       console.error('❌ 토큰 파싱 실패:', e);
-  //     }
-  //   }   
-  // }, []);
+  // 💾 userInfo 변경될 때 localStorage에 동기화
+  useEffect(() => {
+    if (userInfo) {
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    } else {
+      localStorage.removeItem('userInfo');
+    }
+  }, [userInfo]);
 
+  // 💳 크레딧 업데이트 함수
   const updateCredit = (newCredit) => {
     setUserInfo((prev) => ({
       ...prev,
-      credit: newCredit
+      credit: newCredit,
     }));
   };
 
+  // 🔓 토큰 기반 유저 정보 업데이트
   const updateUserInfoFromToken = (token) => {
     if (!token) return;
     try {
@@ -50,7 +45,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo, updateCredit, updateUserInfoFromToken }}>
+    <UserContext.Provider
+      value={{ userInfo, setUserInfo, updateCredit, updateUserInfoFromToken }}
+    >
       {children}
     </UserContext.Provider>
   );
