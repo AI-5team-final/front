@@ -91,6 +91,17 @@ const ContentApplicant = () => {
                 fileInputRef.current.value = '';
             }
             setIsUploadModalOpen(false);
+            
+            // 매칭 결과와 업로드된 PDF 정보를 함께 전달
+            navigate('/list', { 
+                state: { 
+                    results: data,  // 전체 매칭 결과
+                    uploadedPdf: {
+                        fileName: fileState.name,
+                        uploadedAt: new Date().toISOString()
+                    }
+                } 
+            });
         } catch (error) {
             console.error('PDF 업로드 에러:', error);
             if (error.response?.status === 401) {
