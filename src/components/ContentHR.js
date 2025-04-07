@@ -1,116 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import '../styles/fonts.css';
+import '../styles/ContentHR.scss';
 import fetchClient from '../utils/fetchClient';
-
-const styles = {
-    container: {
-        padding: '60px 0',
-        minHeight: '100vh',
-        fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
-    },
-    inner: {
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '0 20px',
-    },
-    hero: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '60px',
-        gap: '40px',
-    },
-    heroContent: {
-        flex: '1',
-    },
-    heroTitle: {
-        fontSize: '2.5rem',
-        color: '#1A237E',
-        marginBottom: '20px',
-        lineHeight: '1.4',
-    },
-    heroSubtitle: {
-        fontSize: '1.1rem',
-        color: '#455A64',
-    },
-    heroImage: {
-        flex: '1',
-        maxWidth: '500px',
-    },
-    heroImg: {
-        width: '100%',
-        height: 'auto',
-    },
-    serviceSection: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: '16px',
-        padding: '40px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    },
-    serviceTitle: {
-        fontSize: '1.5rem',
-        color: '#1A237E',
-        marginBottom: '30px',
-    },
-    uploadContainer: {
-        display: 'flex',
-        gap: '20px',
-        marginBottom: '20px',
-    },
-    uploadArea: {
-        flex: '1',
-        border: '2px dashed #ccc',
-        borderRadius: '12px',
-        padding: '40px 20px',
-        textAlign: 'center',
-        cursor: 'pointer',
-        backgroundColor: '#f8f9fa',
-        transition: 'all 0.3s ease',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '15px',
-        '&:hover': {
-            borderColor: '#007bff',
-            backgroundColor: '#f1f8ff',
-        },
-    },
-    icon: {
-        fontSize: '40px',
-        color: '#007bff',
-    },
-    uploadText: {
-        color: '#666',
-        fontSize: '16px',
-    },
-    selectedFile: {
-        color: '#28a745',
-        fontWeight: '500',
-    },
-    button: (isSelected) => ({
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '10px',
-        opacity: isSelected ? 1 : 0.5,
-        cursor: isSelected ? 'pointer' : 'not-allowed',
-        padding: '20px',
-        backgroundColor: isSelected ? '#007bff' : '#ccc',
-        color: 'white',
-        border: 'none',
-        borderRadius: '12px',
-        fontSize: '16px',
-        transition: 'all 0.3s ease',
-        minWidth: '120px',
-    }),
-    fileNote: {
-        color: '#666',
-        fontSize: '14px',
-        marginTop: '10px',
-    },
-};
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({
@@ -187,40 +79,40 @@ const ContentHR = () => {
     };
 
     return (
-        <main style={styles.container}>
-            <div style={styles.inner}>
-                <section style={styles.hero}>
-                    <div style={styles.heroContent}>
-                        <h1 style={styles.heroTitle}>
+        <main className="container">
+            <div className="inner">
+                <section className="hero">
+                    <div className="hero-content">
+                        <h1 className="hero-title">
                             AI 매칭으로 인재 채용까지<br />
                             한 걸음 더
                         </h1>
-                        <p style={styles.heroSubtitle}>
+                        <p className="hero-subtitle">
                             우리 회사에 맞는 인재를 정확히 추천해드려요.
                         </p>
                     </div>
-                    <div style={styles.heroImage}>
+                    <div className="hero-image">
                         <img 
                             src="/images/HR_MainContent_none.png" 
                             alt="AI 매칭 서비스" 
-                            style={styles.heroImg}
+                            className="hero-img"
                         />
                     </div>
                 </section>
 
-                <section style={styles.serviceSection}>
-                    <h2 style={styles.serviceTitle}>AI 매칭 서비스</h2>
-                    <div style={styles.uploadContainer}>
+                <section className="service-section">
+                    <h2 className="service-title">AI 매칭 서비스</h2>
+                    <div className="upload-container">
                         <div
-                            style={styles.uploadArea}
+                            className="upload-area"
                             onDrop={handleDrop}
                             onDragOver={(e) => e.preventDefault()}
                             onClick={() => fileInputRef.current.click()}
                         >
-                            <FaPlusCircle style={styles.icon} />
-                            <span style={styles.uploadText}>채용공고 등록하기</span>
+                            <FaPlusCircle className="icon" />
+                            <span className="upload-text">채용공고 등록하기</span>
                             {fileState.name && (
-                                <p style={styles.selectedFile}>{fileState.name}</p>
+                                <p className="selected-file">{fileState.name}</p>
                             )}
                             <input
                                 type="file"
@@ -234,13 +126,13 @@ const ContentHR = () => {
                             type="button"
                             onClick={handleSubmit}
                             disabled={!fileState.file}
-                            style={styles.button(!!fileState.file)}
+                            className="button"
                         >
-                            <FaCloudDownloadAlt style={styles.icon} />
+                            <FaCloudDownloadAlt className="icon" />
                             <span>채용공고<br/>불러오기</span>
                         </button>
                     </div>
-                    <p style={styles.fileNote}>*등록가능한 파일 형식 및 확장자: PDF</p>
+                    <p className="file-note">*등록가능한 파일 형식 및 확장자: PDF</p>
                 </section>
             </div>
         </main>

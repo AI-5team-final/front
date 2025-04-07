@@ -70,49 +70,20 @@ const PanelResume = () => {
         try {
             const response = await fetchClient('/pdf/upload', {
                 method: 'POST',
-                body: formData,
+                body: formData
             });
 
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
-
-            const responseText = await response.text();
-            let errorMessage;
-            
-            try {
-                const responseData = JSON.parse(responseText);
-                errorMessage = responseData.message || responseText;
-            } catch {
-                errorMessage = responseText;
-            }
-
             if (!response.ok) {
-                switch (response.status) {
-                    case 400:
-                        throw new Error(`파일 업로드 실패: ${errorMessage}`);
-                    case 403:
-                        throw new Error('접근 권한이 없습니다.');
-                    case 413:
-                        throw new Error('파일 크기가 너무 큽니다.');
-                    case 415:
-                        throw new Error('지원하지 않는 파일 형식입니다.');
-                    case 500:
-                        throw new Error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-                    default:
-                        throw new Error(`업로드 실패: ${errorMessage}`);
-                }
+                const errorData = await response.json();
+                throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
             }
 
             toast.success('이력서가 성공적으로 업로드되었습니다.');
-
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
             setIsModalOpen(false);
-
             fetchResumes();
         } catch (error) {
             handleError(error);
@@ -131,19 +102,16 @@ const PanelResume = () => {
 
         try {
             const response = await fetchClient('/pdf/delete', {
-                method: 'POST', 
-                body: JSON.stringify({ pdfId: deleteTarget.id }) 
+                method: 'POST',
+                body: JSON.stringify({ pdfId: deleteTarget.id })
             });
 
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
-
             if (!response.ok) {
-                throw new Error('삭제 실패');
+                const errorData = await response.json();
+                throw new Error(errorData.message || '삭제에 실패했습니다.');
             }
 
+            toast.success('이력서가 삭제되었습니다.');
             setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
             setDeleteTarget(null);
         } catch (error) {
@@ -159,26 +127,17 @@ const PanelResume = () => {
 
         try {
             setIsLoading(true);
-            const res = await fetchClient('/pdf/list');
+            const response = await fetchClient('/pdf/list');
 
-            if (res.status === 401) {
-                handleAuthError();
-                return;
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || '이력서 목록을 불러오는데 실패했습니다.');
             }
 
-            if (res.status === 403) {
-                toast.error('접근 권한이 없습니다.');
-                return;
-            }
-
-            if (!res.ok) {
-                throw new Error('서버 응답 에러');
-            }
-
-            const data = await res.json();
+            const data = await response.json();
             setResumes(Array.isArray(data.pdfs) ? data.pdfs : []);
-        } catch (err) {
-            handleError(err);
+        } catch (error) {
+            handleError(error);
             setResumes([]);
         } finally {
             setIsLoading(false);
@@ -243,18 +202,18 @@ const PanelResume = () => {
                                 <div className="resume-info">
                                     <GrDocumentPdf size={40} color="#6B7280" />
                                     <div style={{ marginLeft: '10px' }}>
-                                      <a
-                                        className="resume-link"
-                                        href={resume.pdfUri}
-                                        download
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        <a
+                                            className="resume-link"
+                                            href={resume.pdfUri}
+                                            download
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                         >
-                                        {resume.pdfFileName}
-                                      </a>
-                                      <p className="resume-date">
-                                        등록일: {new Date(resume.uploadedAt).toLocaleString()}
-                                      </p>
+                                            {resume.pdfFileName}
+                                        </a>
+                                        <p className="resume-date">
+                                            등록일: {new Date(resume.uploadedAt).toLocaleString()}
+                                        </p>
                                     </div>
                                 </div>
                                 <button
@@ -286,7 +245,7 @@ const PanelResume = () => {
                 <div className="modal-backdrop">
                     <div className="modal">
                         <p>정말 이 이력서를 삭제하시겠습니까?</p>
-                        <p className="modal-file-name">{deleteTarget.name}</p>
+                        <p className="modal-file-name">{deleteTarget.pdfFileName}</p>
                         <div className="modal-buttons">
                             <button onClick={handleConfirmDelete}>삭제</button>
                             <button onClick={() => setDeleteTarget(null)}>취소</button>

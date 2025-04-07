@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useToken from '../hooks/useToken';
 import { useNavigate } from 'react-router-dom';
 import '../styles/fonts.css';
+import '../styles/ListApplicant.scss';
 
 // 더미 데이터 상수
 const COMPANIES = ["네이버", "카카오", "배달의민족", "토스", "쿠팡", "라인", "우아한형제들", "당근마켓", "야놀자", "리디북스"];
@@ -15,101 +16,6 @@ const DESCRIPTIONS = [
     "CI/CD 환경 구축 및 운영",
     "전자책 리더 앱 개발"
 ];
-
-const styles = {
-    container: {
-        fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
-        padding: '40px 20px'
-    },
-    title: {
-        fontSize: '2.5rem',
-        color: '#000000',
-        marginBottom: '15px',
-        fontWeight: 'bold'
-    },
-    subtitle: {
-        fontSize: '1.2rem',
-        color: '#455A64',
-        marginBottom: '40px'
-    },
-    topCardsContainer: {
-        display: 'flex',
-        gap: '20px',
-        flexWrap: 'wrap',
-        marginBottom: '40px'
-    },
-    card: {
-        flex: '1 1 200px',
-        border: '1px solid #ccc',
-        borderRadius: '12px',
-        padding: '20px',
-        backgroundColor: '#f9f9f9',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-        }
-    },
-    cardHeader: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '8px'
-    },
-    cardCompanyHeading: {
-        margin: 0,
-        fontWeight: 'bold',
-        fontSize: '1.2rem'
-    },
-    cardMatchRate: {
-        color: '#013A72',
-        backgroundColor: '#ffffff',
-        fontWeight: '600',
-        display: 'inline-block',
-        padding: '4px 8px',
-        borderRadius: '6px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-    },
-    listContainer: {
-        listStyle: 'none',
-        padding: 0,
-        margin: 0,
-        borderTop: '1px solid #ddd',
-        borderBottom: '1px solid #ddd'
-    },
-    listItem: {
-        borderTop: '1px solid #ddd',
-        borderBottom: '1px solid #ddd',
-        padding: '15px 0',
-        marginBottom: '-1px'
-    },
-    button: {
-        marginLeft: '10px',
-        padding: '5px 10px',
-        borderRadius: '6px',
-        cursor: 'pointer',
-        backgroundColor: '#013A72',
-        color: 'white',
-        border: 'none'
-    },
-    paginationContainer: {
-        marginTop: '40px',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '10px'
-    },
-    paginationButton: (isDisabled) => ({
-        padding: '10px 20px',
-        fontSize: '16px',
-        backgroundColor: isDisabled ? '#ccc' : '#013A72',
-        color: 'white',
-        border: 'none',
-        borderRadius: '8px',
-        cursor: isDisabled ? 'default' : 'pointer'
-    })
-};
 
 const ListApplicant = () => {
     const PAGE_SIZE = 6;
@@ -144,21 +50,21 @@ const ListApplicant = () => {
     };
 
     return (
-        <main style={styles.container}>
-            <h1 style={styles.title}>취업 성공 기원, Ai매치</h1>
-            <p style={styles.subtitle}>{name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
+        <main className="container">
+            <h1 className="title">취업 성공 기원, Ai매치</h1>
+            <p className="subtitle">{name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
         
             <div className="list-applicant">
-                <div className="top-cards" style={styles.topCardsContainer}>
+                <div className="top-cards">
                     {topFour.map((job) => (
                         <div 
                             key={job.id} 
                             onClick={() => handleViewDetail(job.id)}
-                            style={styles.card}
+                            className="card"
                         >
-                            <div style={styles.cardHeader}>
-                                <h3 style={styles.cardCompanyHeading}>{job.company}</h3>
-                                <span style={styles.cardMatchRate}>AI매칭 {job.matchRate}점</span>
+                            <div className="card-header">
+                                <h3 className="card-company-heading">{job.company}</h3>
+                                <span className="card-match-rate">AI매칭 {job.matchRate}점</span>
                             </div>
                             <p>{job.position}</p>
                             <p>{job.description}</p>
@@ -167,13 +73,13 @@ const ListApplicant = () => {
                     ))}
                 </div>
 
-                <ul style={styles.listContainer}>
+                <ul className="list-container">
                     {pagedJobs.map((job) => (
-                        <li key={job.id} style={styles.listItem}>
+                        <li key={job.id} className="list-item">
                             <strong>{job.company}</strong> - {job.position} - {job.date} - 매칭률: {job.matchRate}%
                             <button 
                                 onClick={() => handleViewDetail(job.id)}
-                                style={styles.button}
+                                className="button"
                             >
                                 매칭 결과보기
                             </button>
@@ -181,18 +87,18 @@ const ListApplicant = () => {
                     ))}
                 </ul>
 
-                <div style={styles.paginationContainer}>
+                <div className="pagination-container">
                     <button
                         onClick={handlePrev}
                         disabled={page === 0}
-                        style={styles.paginationButton(page === 0)}
+                        className="pagination-button"
                     >
                         ◀ 이전
                     </button>
                     <button
                         onClick={handleNext}
                         disabled={page === maxPage}
-                        style={styles.paginationButton(page === maxPage)}
+                        className="pagination-button"
                     >
                         다음 ▶
                     </button>
