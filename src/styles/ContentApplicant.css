@@ -2,7 +2,6 @@
   background-color: #A8D7FF;
   height: 600px;
 }
-
 .hero .inner {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -15,33 +14,28 @@
           align-items: center;
   height: 100%;
 }
-
 .hero-content {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
 }
-
 .hero-title {
   font-size: 2.5rem;
   color: #013A72;
   line-height: 1.4;
   font-weight: bold;
 }
-
 .hero-subtitle {
   margin-top: 30px;
   font-size: 1.1rem;
   color: #013A72;
 }
-
 .hero-image {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   max-width: 500px;
 }
-
 .hero-image .hero-img {
   width: 100%;
   height: auto;
@@ -50,7 +44,6 @@
 .service {
   margin-top: 50px;
 }
-
 .service-section {
   background-color: #FFFFFF;
   border-radius: 16px;
@@ -58,14 +51,12 @@
   -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .service-title {
   font-size: 1.5rem;
   color: #000000;
   margin-bottom: 30px;
   font-weight: bold;
 }
-
 .service-sub-title {
   font-size: 1.1rem;
   color: #000000;
@@ -80,7 +71,6 @@
   margin-bottom: 20px;
   width: 100%;
 }
-
 .upload-container .upload-area {
   -webkit-box-flex: 2;
       -ms-flex: 2;
@@ -105,27 +95,22 @@
           align-items: center;
   gap: 15px;
 }
-
 .upload-container .upload-area:hover {
   border-color: #013A72;
   background-color: #f1f8ff;
 }
-
 .upload-container .upload-area .icon {
   font-size: 40px;
   color: #013A72;
 }
-
 .upload-container .upload-area .upload-text {
   color: #666;
   font-size: 16px;
 }
-
 .upload-container .upload-area .selected-file {
   color: #28a745;
   font-weight: 500;
 }
-
 .upload-container .button {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -152,13 +137,11 @@
   transition: all 0.3s ease;
   min-width: 120px;
 }
-
 .upload-container .button.active {
   background-color: #013A72;
   color: white;
   cursor: pointer;
 }
-
 .upload-container .button.inactive {
   background-color: #ccc;
   color: white;
@@ -190,7 +173,6 @@
           justify-content: center;
   z-index: 1000;
 }
-
 .modal-backdrop .modal {
   background-color: #fff;
   padding: 30px;
@@ -200,7 +182,6 @@
   text-align: center;
   min-width: 300px;
 }
-
 .modal-backdrop .modal .modal-filename {
   font-size: 1.2rem;
   font-weight: 600;
@@ -208,7 +189,6 @@
   margin: 15px 0;
   word-break: break-word;
 }
-
 .modal-backdrop .modal .modal-buttons {
   margin-top: 20px;
   display: -webkit-box;
@@ -219,7 +199,6 @@
       -ms-flex-pack: center;
           justify-content: center;
 }
-
 .modal-backdrop .modal .modal-buttons .modal-button {
   padding: 8px 16px;
   border-radius: 6px;
@@ -232,12 +211,10 @@
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
-
 .modal-backdrop .modal .modal-buttons .modal-button.cancel-button {
   background-color: #6B7280;
   margin-left: 8px;
 }
-
 .modal-backdrop .modal .modal-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -252,7 +229,6 @@
           align-items: center;
   gap: 10px;
 }
-
 .modal-backdrop .modal .modal-subtitle {
   font-size: 1.1rem;
   color: #455A64;
@@ -263,14 +239,12 @@
   padding: 15px 20px;
   border-radius: 8px;
 }
-
 .modal-backdrop .modal .resume-list-header {
   font-size: 1rem;
   color: #666;
   margin-bottom: 16px;
   text-align: left;
 }
-
 .modal-backdrop .modal .resume-list-item {
   padding: 12px 16px;
   margin: 8px 0;
@@ -288,17 +262,14 @@
           align-items: center;
   gap: 10px;
 }
-
 .modal-backdrop .modal .resume-list-item.selected-resume-item {
   background-color: #f1f8ff;
   border: 1px solid #013A72;
 }
-
 .modal-backdrop .modal .divider {
   border-bottom: 1px solid #e5e7eb;
   margin: 16px 0;
 }
-
 .modal-backdrop .modal .upload-section {
   margin-top: 20px;
   display: -webkit-box;
@@ -309,7 +280,6 @@
           align-items: center;
   gap: 10px;
 }
-
 .modal-backdrop .modal .upload-section .load-button {
   padding: 8px 16px;
   border-radius: 6px;
@@ -357,11 +327,16 @@
     margin-top: 40px;
   }
 }
-
 @media (max-width: 767px) {
   .upload-container {
     -ms-flex-wrap: wrap;
+  .upload-container {
+    -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+  }
+  .upload-container .upload-area {
+    width: 100%;
+    -ms-flex-preferred-size: 100%;
   }
   .upload-container .upload-area {
     width: 100%;
