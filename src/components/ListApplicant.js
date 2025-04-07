@@ -9,7 +9,6 @@ const ListApplicant = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [matchResults, setMatchResults] = useState([]);
-    const [uploadedPdf, setUploadedPdf] = useState(null);
 
     useEffect(() => {
         console.log('Location state:', location.state);
@@ -25,8 +24,7 @@ const ListApplicant = () => {
     const handleViewDetail = (result, index) => {
         navigate(`/view/${index}`, { 
             state: { 
-                matchResult: result,
-                uploadedPdf: uploadedPdf
+                matchResult: result
             } 
         });
     };

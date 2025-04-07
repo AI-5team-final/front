@@ -95,11 +95,7 @@ const ContentApplicant = () => {
             // 매칭 결과와 업로드된 PDF 정보를 함께 전달
             navigate('/list', { 
                 state: { 
-                    results: data,  // 전체 매칭 결과
-                    uploadedPdf: {
-                        fileName: fileState.name,
-                        uploadedAt: new Date().toISOString()
-                    }
+                    results: data  // 전체 매칭 결과만 전달
                 } 
             });
         } catch (error) {
