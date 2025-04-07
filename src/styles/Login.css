@@ -57,7 +57,6 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .tab-button.active {
   color: #007bff;
   border-bottom: 2px solid #007bff;
@@ -85,12 +84,10 @@
           flex-direction: column;
   gap: 8px;
 }
-
 .form-group label {
   color: #555;
   font-weight: 500;
 }
-
 .form-group input {
   padding: 12px;
   border: 1px solid #ddd;
@@ -99,7 +96,6 @@
   -webkit-transition: border-color 0.3s ease;
   transition: border-color 0.3s ease;
 }
-
 .form-group input:focus {
   border-color: #007bff;
   outline: none;
@@ -116,7 +112,6 @@
   -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
 }
-
 .login-button:hover {
   background-color: #0056b3;
 }
@@ -133,7 +128,6 @@
   padding-top: 20px;
   border-top: 1px solid #ddd;
 }
-
 .signup-section p {
   color: #666;
   margin-bottom: 15px;
@@ -145,7 +139,6 @@
   text-decoration: none;
   font-weight: 500;
 }
-
 .signup-link:hover {
   text-decoration: underline;
 }

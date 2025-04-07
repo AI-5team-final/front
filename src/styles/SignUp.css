@@ -35,7 +35,6 @@
   width: 100%;
   max-width: 500px;
 }
-
 .signup-box h2 {
   text-align: center;
   color: #333;
@@ -63,7 +62,6 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .tab-button.active {
   color: #007bff;
   border-bottom: 2px solid #007bff;
@@ -91,12 +89,10 @@
           flex-direction: column;
   gap: 8px;
 }
-
 .form-group label {
   color: #555;
   font-weight: 500;
 }
-
 .form-group input {
   padding: 12px;
   border: 1px solid #ddd;
@@ -105,14 +101,38 @@
   -webkit-transition: border-color 0.3s ease;
   transition: border-color 0.3s ease;
 }
-
 .form-group input:focus {
   border-color: #007bff;
   outline: none;
 }
+.form-group input:not(:focus):not(:-moz-placeholder-shown) {
+  border-color: green;
+}
+.form-group input:not(:focus):not(:-ms-input-placeholder) {
+  border-color: green;
+}
+.form-group input:not(:focus):not(:placeholder-shown) {
+  border-color: green;
+}
+
+input:not(:focus):not(:-moz-placeholder-shown) {
+  border-color: green;
+}
+
+input:not(:focus):not(:-ms-input-placeholder) {
+  border-color: green;
+}
+
+input:not(:focus):not(:placeholder-shown) {
+  border-color: green;
+}
+
+input.error {
+  border-color: red;
+}
 
 .signup-button {
-  background-color: #007bff;
+  background-color: #6c757d;
   color: #ffffff;
   padding: 12px;
   border: none;
@@ -121,11 +141,13 @@
   cursor: pointer;
   -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
-  margin-top: 20px;
 }
-
-.signup-button:hover {
-  background-color: #0056b3;
+.signup-button.active {
+  background-color: green;
+}
+.signup-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
 }
 
 .back-to-login-button {
@@ -141,9 +163,33 @@
   margin-top: 10px;
   width: 100%;
 }
-
 .back-to-login-button:hover {
   background-color: #5a6268;
+}
+
+.domain-select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  -webkit-transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease;
+  width: 45%;
+}
+.domain-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+.domain-select.has-value {
+  border-color: green;
+}
+
+input.match {
+  border: 1px solid green;
+}
+
+input.mismatch {
+  border: 1px solid red;
 }
 
 .error-message {
