@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import '../styles/SignUp.scss';
+import config from "../config";
 
 const SignUp = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuth();
     const { search } = useLocation();
     const defaultRole = new URLSearchParams(search).get('role') || 'APPLICANT';
-
+    const [isEmailAvailable, setIsEmailAvailable] = useState(null);
+    const [emailCheckMessage, setEmailCheckMessage] = useState('');
     const [activeTab, setActiveTab] = useState(defaultRole);
     const [form, setForm] = useState({
         password: '',
@@ -30,6 +32,10 @@ const SignUp = () => {
     const [isValid, setIsValid] = useState(false);
 
     useEffect(() => {
+        setIsEmailAvailable(null); // 이메일 확인 초기화
+        setEmailCheckMessage('');  // 메시지도 초기화
+    }, [emailId, emailDomain, customDomain]);
+    useEffect(() => {
         if (isLoggedIn) navigate('/');
     }, [isLoggedIn]);
 
@@ -38,7 +44,8 @@ const SignUp = () => {
         const passwordValid = form.password === form.confirmPassword && form.password.length > 0;
         const emailValid =
             emailId.length > 0 &&
-            (isCustomDomain ? customDomain.length > 0 : emailDomain.length > 0);
+            (isCustomDomain ? customDomain.length > 0 : emailDomain.length > 0) &&
+            isEmailAvailable === true;
 
         if (activeTab === 'APPLICANT') {
             return phoneValid && passwordValid && emailValid && form.name && form.age;
@@ -49,7 +56,7 @@ const SignUp = () => {
 
     useEffect(() => {
         setIsValid(validateForm());
-    }, [form, emailId, emailDomain, customDomain, phoneError, activeTab]);
+    }, [form, emailId, emailDomain, customDomain, phoneError, activeTab, isEmailAvailable]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -76,25 +83,57 @@ const SignUp = () => {
         setForm(prev => ({ ...prev, [name]: newValue }));
 
         if (newValue.length < 13) {
-            setPhoneError('전화번호가 불완전합니다.');
+            setPhoneError('전화번호가 형식에 맞지 않습니다.');
         } else {
             setPhoneError('');
         }
     };
+    const handleCheckEmail = async () => {
+        const fullEmail = `${emailId}@${isCustomDomain ? customDomain : emailDomain}`.trim();
+        console.log(fullEmail);
+        if (!fullEmail.includes('@')) {
+            setEmailCheckMessage('이메일 형식을 확인해주세요.');
+            setIsEmailAvailable(false);
+            return;
+        }
+
+        try {
+            const res = await fetch(`${config.baseURL}/auth/check-email`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(fullEmail),
+            });
+
+            const isAvailable = await res.json();  // 👉 Boolean 값 그대로 받음
+
+            if (isAvailable) {
+                setIsEmailAvailable(true);
+                setEmailCheckMessage('사용 가능한 이메일입니다.');
+            } else {
+                setIsEmailAvailable(false);
+                setEmailCheckMessage('이미 사용 중인 이메일입니다.');
+            }
+        } catch (err) {
+            console.error(err);
+            setIsEmailAvailable(false);
+            setEmailCheckMessage('이메일 확인 중 오류가 발생했습니다.');
+        }
+    };
+
+
 
     const handleSignUp = async (e) => {
         e.preventDefault();
         setError('');
-
         if (form.password !== form.confirmPassword) {
             setError('비밀번호가 일치하지 않습니다.');
             return;
         }
-
         const email = `${emailId.trim()}@${isCustomDomain ? customDomain.trim() : emailDomain}`;
 
         try {
-            const res = await fetch('/auth/signup', {
+            const res = await fetch(`${config.baseURL}/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -109,9 +148,7 @@ const SignUp = () => {
             setError(err.message);
         }
     };
-
     const domainList = ['gmail.com', 'naver.com', 'daum.net', '직접입력'];
-
     return (
         <div className="page-container">
             <div className="signup-container">
@@ -168,7 +205,20 @@ const SignUp = () => {
                                         required
                                     />
                                 )}
+
+                                <button
+                                    type="button"
+                                    onClick={handleCheckEmail}
+                                    className="check-email-button"
+                                >
+                                    이메일 확인
+                                </button>
                             </div>
+                            {emailCheckMessage && (
+                                <p className={isEmailAvailable ? "success-message" : "error-message"}>
+                                    {emailCheckMessage}
+                                </p>
+                            )}
                         </div>
 
                         <div className="form-group">
