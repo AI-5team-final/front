@@ -35,25 +35,23 @@ const ListApplicant = () => {
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
             
                 <div className="list-applicant">
-                    <div className="card">
-                        {matchResults && matchResults.length > 0 ? (
-                            matchResults.map((result, index) => (
-                                <div 
-                                    key={`${result.title}-${index}`}
-                                    onClick={() => handleViewDetail(result, index)}
-                                    className="card"
-                                >
-                                    <div className="card-header">
-                                        <h3 className="card-company-heading">{result.title}</h3>
-                                        <span className="card-match-rate">AI매칭 {result.total_score}점</span>
-                                    </div>
-                                    <p className="card-summary">{result.summary}</p>
+                    {matchResults && matchResults.length > 0 ? (
+                        matchResults.map((result, index) => (
+                            <div 
+                                key={`${result.title}-${index}`}
+                                onClick={() => handleViewDetail(result, index)}
+                                className="card"
+                            >
+                                <div className="card-header">
+                                    <h3 className="card-company-heading">{result.title}</h3>
+                                    <span className="card-match-rate">AI매칭 {result.total_score}점</span>
                                 </div>
-                            ))
-                        ) : (
-                            <div className="no-results">매칭된 공고가 없습니다.</div>
-                        )}
-                    </div>
+                                <p className="card-summary">{result.summary}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="no-results">매칭된 공고가 없습니다.</div>
+                    )}
                 </div>
             </main>
         </div>
