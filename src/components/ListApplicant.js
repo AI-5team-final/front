@@ -53,7 +53,7 @@ const ListApplicant = () => {
             <main className="container">
                 <h1 className="title">취업 성공 기원, Ai매치</h1>
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
-                <p className="subtitle">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
+                <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
 
                 <div className="list-applicant">
                     {matchResults && matchResults.length > 0 ? (

@@ -27,7 +27,7 @@ const useAuth = () => {
       setToken(accessToken);
       setUserInfo({ name, email, credit, phone }); // Context에 저장하여 전역에서 사용
 
-      alert('로그인 성공!');
+      toast.success('로그인 성공!');
       navigate('/');
     } catch (err) {
       throw err;

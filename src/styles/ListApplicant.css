@@ -16,22 +16,17 @@
   margin-bottom: 40px;
 }
 
-.l-list-applicant .subtitle:last-of-type {
+.l-list-applicant .subtitle-note {
   font-size: 0.9rem;
   color: #666666;
   margin-bottom: 20px;
   margin-top: -30px;
 }
 
-.l-list-applicant .subtitle:last-of-type::before {
+.l-list-applicant .subtitle-note::before {
   content: "P.S. ";
   font-style: italic;
   color: #888888;
-}
-
-.l-list-applicant .list-applicant {
-  border-top: 1px solid #000000;
-  border-bottom: 1px solid #000000;
 }
 
 .l-list-applicant .card {
@@ -49,11 +44,11 @@
           align-items: center;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
-  margin: 0 20px;
+  border-bottom: 1px solid #000000;
 }
 
-.l-list-applicant .card:not(:last-child) {
-  border-bottom: 1px solid #000000;
+.l-list-applicant .card:first-child {
+  border-top: 1px solid #000000;
 }
 
 .l-list-applicant .card:hover {

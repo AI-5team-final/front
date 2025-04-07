@@ -15,24 +15,19 @@
         font-size: 1.2rem;
         color: #000000;
         margin-bottom: 40px;
-
-        &:last-of-type {
-            font-size: 0.9rem;
-            color: #666666;
-            margin-bottom: 20px;
-            margin-top: -30px;
-
-            &::before {
-                content: "P.S. ";
-                font-style: italic;
-                color: #888888;
-            }
-        }
     }
 
-    .list-applicant {
-        border-top: 1px solid #000000;
-        border-bottom: 1px solid #000000;
+    .subtitle-note {
+        font-size: 0.9rem;
+        color: #666666;
+        margin-bottom: 20px;
+        margin-top: -30px;
+    }
+    
+    .subtitle-note::before {
+        content: "P.S. ";
+        font-style: italic;
+        color: #888888;
     }
 
     .card {
@@ -45,10 +40,11 @@
         gap: 20px;
         align-items: center;
         transition: all 0.2s ease;
-        margin: 0 20px;
 
-        &:not(:last-child) {
-            border-bottom: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+
+        &:first-child {
+            border-top: 1px solid #000000;
         }
 
         &:hover {
