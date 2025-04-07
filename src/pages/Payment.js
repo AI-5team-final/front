@@ -52,8 +52,16 @@ const Payment = () => {
             return;
         }
 
+        if (!userInfo?.name || !userInfo?.email || !userInfo?.phone) {
+            alert("사용자 정보가 누락되었습니다. 다시 로그인해주세요.");
+            return;
+        }
+
         const orderId = "credit_" + uuidv4();
 
+        console.log(userInfo.email, userInfo.name, userInfo.phone.replace(/[^0-9]/g, ''));
+
+        
         const paymentOptions = {
             method,
             amount: { value: numericAmount, currency: "KRW" },
@@ -61,9 +69,9 @@ const Payment = () => {
             orderName: "크레딧 충전",
             successUrl: window.location.origin + "/success",
             failUrl: window.location.origin + "/fail",
-            customerEmail: userInfo?.email,
-            customerName: userInfo?.name,
-            customerMobilePhone: userInfo?.phone
+            customerEmail: userInfo.email,
+            customerName: userInfo.name,
+            customerMobilePhone: userInfo.phone.replace(/[^0-9]/g, '')
         };
 
         try {

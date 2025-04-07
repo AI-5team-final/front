@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import useAuth from '../hooks/useAuth';
 import useToken from '../hooks/useToken';
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { RiCopperCoinLine } from 'react-icons/ri'; // 아이콘 변경
 import PaymentModal from '../components/PaymentModal';
 import { useUser } from '../context/UserContext';
@@ -54,7 +54,7 @@ const Header = () => {
                         >
                             {role === 'HR' ? "공고 관리" : "이력서 관리"}
                         </button>
-                        <button 
+                        <button
                             onClick={logout} 
                             aria-label="로그아웃"
                             role="button"
