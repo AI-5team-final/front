@@ -4,8 +4,8 @@
   justify-content: center;
 }
 .payment-container {
-  max-width: 500px;
-  width: 500px;
+  max-width: 400px;
+  margin: 100px auto 40px auto;
   padding: 30px;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -15,12 +15,110 @@
   text-align: center;
 
   h2 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
-  input[type="number"],
+  // 입력창 (밑줄만 있는 스타일)
+  input[type="number"] {
+    width: 100%;
+    padding: 8px 0;
+    margin-bottom: 16px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &::placeholder {
+      color: #aaa;
+      font-weight: normal;
+    }
+
+    &:focus {
+      border-bottom-color: #184998;
+    }
+  }
+
+  // 금액 버튼 그룹
+  .amount-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .first-row {
+      justify-content: space-between;
+      // 상단 4개 버튼은 flex: 1로 동일한 너비
+      .price-btn {
+        flex: 1;
+      }
+    }
+
+    .single-button-row {
+      justify-content: flex-start; // 기타 버튼 왼쪽 정렬
+      // 기타 버튼은 상단 버튼과 같은 너비로 고정
+      .price-btn {
+        flex: 0 0 calc((100% - 30px) / 4); /* 4개 버튼 기준 여백 고려 */
+      }
+    }
+
+    .extra-row {
+      justify-content: space-between;
+    }
+
+    .price-btn {
+      min-width: 80px;
+      padding: 10px 0;
+      font-size: 14px;
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+
+      &.selected {
+        background-color: #184998;
+        color: #fff;
+        font-weight: bold;
+        border-color: #184998;
+      }
+    }
+  }
+
+  // 구분선과 결제 수단 안내 문구
+  .separator {
+    margin: 20px 0 16px;
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin-bottom: 8px;
+    }
+    .payment-label {
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      color: #555;
+      padding-left: 4px;
+    }
+  }
+
+  // 셀렉트 박스 (박스형 유지)
   select {
     width: 100%;
     padding: 12px 16px;
@@ -28,19 +126,23 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    appearance: none;
     background-color: #f9f9f9;
+    appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px 18px;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #184998;
+    }
   }
 
-  select {
-    cursor: pointer;
-  }
-
-  button, .retry-button {
+  // 결제 버튼
+  button,
+  .retry-button {
     display: block;
     width: 100%;
     padding: 12px;
@@ -52,32 +154,39 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s ease;
-    margin-top: 16px;
-    text-decoration: none;
-    text-align: center;
+    margin-top: 10px;
 
     &:hover {
       background-color: #2554a1;
     }
   }
 
-  .error-box, .success-box {
-    border: 1px solid #eee;
-    background-color: #f8f8f8;
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 10px;
-    text-align: left;
-
-    p {
-      margin-bottom: 10px;
-    }
-  }
-
+  // 반응형 처리
   @media (max-width: 480px) {
     padding: 20px;
+
     h2 {
       font-size: 20px;
+    }
+
+    .amount-groups {
+      .row {
+        flex-wrap: wrap;
+
+        .price-btn {
+          flex: 1 1 45%;
+          font-size: 13px;
+          padding: 8px 0;
+        }
+      }
+    }
+
+    input[type="number"] {
+      font-size: 18px;
+    }
+
+    select {
+      font-size: 15px;
     }
   }
 }

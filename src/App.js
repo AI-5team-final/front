@@ -6,6 +6,7 @@ import View from "./pages/View";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import PaymentModal from './components/PaymentModal';
 import PrivateRoute from "./components/PrivateRoute";
 import PanelResume from './components/PanelResume';
 import useAutoRefreshToken from './hooks/useAutoRefreshToken';
@@ -46,14 +47,18 @@ function AppRoutes() {
 }
 
 function App() {
-  return (
-    <BrowserRouter>
+    return (
       <UserProvider>
-        <AppRoutes />
+        <BrowserRouter>
+          {/* 헤더나 원하는 곳에 PaymentModal 버튼 추가 */}
+          <div style={{ padding: '20px' }}>
+            <PaymentModal />
+          </div>
+          <AppRoutes />
+        </BrowserRouter>
+        <ToastContainer position="top-center" autoClose={2000} />
       </UserProvider>
-      <ToastContainer position="top-center" autoClose={2000} />
-    </BrowserRouter>
-  );
-}
-
+    );
+  }
+  
 export default App;
