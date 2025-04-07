@@ -7,7 +7,113 @@
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  z-index: 1;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.background-animation.applicant {
+  background-color: #A8D7FF;
+  -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+          clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+  -webkit-animation: expand-applicant 0.6s ease forwards;
+          animation: expand-applicant 0.6s ease forwards;
+}
+
+.background-animation.hr {
+  background-color: #E1EAFE;
+  -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+          clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+  -webkit-animation: expand-hr 0.6s ease forwards;
+          animation: expand-hr 0.6s ease forwards;
+}
+
+.background-animation.initial {
+  background-color: #ffffff;
+  -webkit-clip-path: none;
+          clip-path: none;
+}
+
+@-webkit-keyframes expand-applicant {
+  0% {
+    -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #A8D7FF;
+  }
+  100% {
+    -webkit-clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #A8D7FF;
+  }
+}
+
+@keyframes expand-applicant {
+  0% {
+    -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #A8D7FF;
+  }
+  100% {
+    -webkit-clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #A8D7FF;
+  }
+}
+
+@-webkit-keyframes expand-hr {
+  0% {
+    -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #E1EAFE;
+  }
+  100% {
+    -webkit-clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #E1EAFE;
+  }
+}
+
+@keyframes expand-hr {
+  0% {
+    -webkit-clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #E1EAFE;
+  }
+  100% {
+    -webkit-clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+            clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: #E1EAFE;
+  }
 }
 
 .login-container {
@@ -24,6 +130,8 @@
       -ms-flex-pack: center;
           justify-content: center;
   padding: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-box {
@@ -34,6 +142,11 @@
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
 }
 
 .tab-container {
@@ -54,8 +167,14 @@
   font-size: 16px;
   cursor: pointer;
   color: #666;
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  position: relative;
+  -webkit-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
 }
 
 .tab-button.active {
@@ -148,4 +267,10 @@
 
 .signup-link:hover {
   text-decoration: underline;
+}
+
+footer {
+  position: relative;
+  z-index: 2;
+  background: transparent;
 }
