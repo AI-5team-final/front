@@ -95,11 +95,7 @@ const ContentApplicant = () => {
             // 매칭 결과와 업로드된 PDF 정보를 함께 전달
             navigate('/list', { 
                 state: { 
-                    results: data,  // 전체 매칭 결과
-                    uploadedPdf: {
-                        fileName: fileState.name,
-                        uploadedAt: new Date().toISOString()
-                    }
+                    results: data  // 전체 매칭 결과만 전달
                 } 
             });
         } catch (error) {
@@ -225,7 +221,7 @@ const ContentApplicant = () => {
                                 onClick={handleLoadModalOpen}
                                 className="button active"
                             >
-                                <FaCloudDownloadAlt className="icon icon-white" />
+                                <FaCloudDownloadAlt className="cloud-icon" />
                                 <span>내 이력서<br/>불러오기</span>
                             </button>
                         
@@ -234,7 +230,7 @@ const ContentApplicant = () => {
                                 onClick={() => setIsMatchingModalOpen(true)}
                                 className="button active"
                             >
-                                <TbHeartHandshake className="icon icon-white" />
+                                <TbHeartHandshake className="cloud-icon" />
                                 <p>
                                     Fit Advisor로 <br/>
                                     1대1 매칭하기

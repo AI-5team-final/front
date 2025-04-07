@@ -151,7 +151,7 @@ const PanelResume = () => {
     }, [token]);
 
     return (
-        <>
+        <div className="l-panel-resume">
             <section className="hero-section">
                 <div className="hero-image-container">
                     <div className="hero-text">
@@ -253,7 +253,7 @@ const PanelResume = () => {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

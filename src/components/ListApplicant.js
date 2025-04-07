@@ -9,13 +9,11 @@ const ListApplicant = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [matchResults, setMatchResults] = useState([]);
-    const [uploadedPdf, setUploadedPdf] = useState(null);
 
     useEffect(() => {
         console.log('Location state:', location.state);
         if (location.state?.results) {
             setMatchResults(location.state.results);
-            setUploadedPdf(location.state.uploadedPdf);
         } else {
             // 매칭 결과가 없으면 홈으로 리다이렉트
             navigate('/');
@@ -25,19 +23,18 @@ const ListApplicant = () => {
     const handleViewDetail = (result, index) => {
         navigate(`/view/${index}`, { 
             state: { 
-                matchResult: result,
-                uploadedPdf: uploadedPdf
+                matchResult: result
             } 
         });
     };
 
     return (
-        <main className="container">
-            <h1 className="title">취업 성공 기원, Ai매치</h1>
-            <p className="subtitle">{userInfo?.name}님의 이력서와 매칭된 공고들입니다!</p>
-        
-            <div className="list-applicant">
-                <div className="card">
+        <div className="l-list-applicant">
+            <main className="container">
+                <h1 className="title">취업 성공 기원, Ai매치</h1>
+                <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
+            
+                <div className="list-applicant">
                     {matchResults && matchResults.length > 0 ? (
                         matchResults.map((result, index) => (
                             <div 
@@ -56,8 +53,8 @@ const ListApplicant = () => {
                         <div className="no-results">매칭된 공고가 없습니다.</div>
                     )}
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 };
 
