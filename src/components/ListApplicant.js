@@ -14,7 +14,6 @@ const ListApplicant = () => {
         console.log('Location state:', location.state);
         if (location.state?.results) {
             setMatchResults(location.state.results);
-            setUploadedPdf(location.state.uploadedPdf);
         } else {
             // 매칭 결과가 없으면 홈으로 리다이렉트
             navigate('/');
