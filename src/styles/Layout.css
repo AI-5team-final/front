@@ -111,12 +111,110 @@ header .inner > div .btn-menu span {
 header .inner > div .btn-menu span:nth-of-type(2) {
   margin: 7px auto;
 }
+@media (max-width: 1023px) {
+  .btn-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1200;
+    background: none;
+    border: none;
+    cursor: pointer;
 
+    .icon-menu,
+    .icon-close {
+      font-size: 28px;
+      color: #000;
+    }
+  }
+
+  .side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 100vh;
+    background: #fff;
+    padding: 24px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1100;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .side-menu.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .dimmed-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1050;
+  }
+  .side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .side-menu-logo {
+      height: 32px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #000;
+    }
+  }
+  .side-menu p,
+  .side-menu button {
+    color: #000;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .side-menu {
+    display: none !important;
+  }
+
+  .dimmed-bg {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  header .inner > div .coin-display,
+  header .inner > div .coin-display + p {
+    display: none !important;
+  }
+}
+@media (max-width: 1023px) {
+  header .inner > div p,
+  header .inner > div button:not(.btn-menu),
+  header .inner > div span {
+    display: none;
+  }
+}
 main {
   padding-top: 68px;
   min-height: calc(100vh - 132px);
 }
-
 footer {
   width: 100%;
   text-align: center;
@@ -133,6 +231,7 @@ footer small {
 footer small strong {
   font-weight: 600;
 }
+
 
 @media (max-width: 1023px) {
   header .inner > div p, header .inner > div button, header .inner > div span {
