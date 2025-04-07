@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import axios from '../utils/axiosInstance.js';
+import axiosClient from '../utils/axiosInstance.js';
 import useToken from './useToken';
 import { useUser } from '../context/UserContext';
 import { jwtDecode } from 'jwt-decode';
@@ -26,7 +26,7 @@ export default function useAutoRefreshToken() {
     // setTimeout으로 백그라운드에서 자동 요청함
     const timeoutId = setTimeout(async () => {
       try {
-        const response = await axios.post('/auth/token/refresh', {}, { withCredentials: true });
+        const response = await axiosClient.post('/auth/token/refresh', {}, { withCredentials: true });
         const { accessToken } = response.data;
         if (accessToken) {
           setToken(accessToken);

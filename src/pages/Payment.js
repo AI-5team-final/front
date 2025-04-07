@@ -59,8 +59,6 @@ const Payment = () => {
 
         const orderId = "credit_" + uuidv4();
 
-        console.log(userInfo.email, userInfo.name, userInfo.phone.replace(/[^0-9]/g, ''));
-
         
         const paymentOptions = {
             method,
