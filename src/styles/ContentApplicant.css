@@ -111,14 +111,17 @@
   background-color: #f1f8ff;
 }
 
-.upload-container .upload-area .icon {
-  font-size: 40px;
-  color: #013A72;
+.upload-container .icon {
+    font-size: 40px;
+    color: #013A72;
 }
 
-.upload-container .upload-area .upload-text {
-  color: #666;
-  font-size: 16px;
+.upload-container .icon-white {
+    color: #ffffff;
+}
+
+.upload-text {
+    color: #666;
 }
 
 .upload-container .upload-area .selected-file {
@@ -359,13 +362,11 @@
 }
 
 @media (max-width: 767px) {
-  .upload-container {
-    -ms-flex-wrap: wrap;
+    .upload-container {
         flex-wrap: wrap;
-  }
-  .upload-container .upload-area {
-    width: 100%;
-    -ms-flex-preferred-size: 100%;
+    }
+    .upload-area {
+        width: 100%;
         flex-basis: 100%;
   }
   .upload-container .button {
