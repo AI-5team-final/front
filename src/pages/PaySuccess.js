@@ -59,24 +59,26 @@ const PaySuccess = () => {
     }, [location, navigate, updateCredit, hasConfirmed]);
 
     return (
-        <div className="payment-container">
-            <h2>✅ 결제 완료</h2>
-            <div className="success-box">
-                <p>{message || "크레딧이 정상적으로 충전되었습니다."}</p>
-
-                {receiptUrl && (
-                    <p>
-                        <a href={receiptUrl} target="_blank" rel="noopener noreferrer">
-                            🧾 결제 영수증 보기
-                        </a>
-                    </p>
-                )}
+        <main className="l-payment">
+            <div className="payment-container">
+                <h2>✅ 결제 완료</h2>
+                <div className="success-box">
+                    <p>{message || "크레딧이 정상적으로 충전되었습니다."}</p>
+            
+                    {receiptUrl && (
+                        <p>
+                            <a href={receiptUrl} target="_blank" rel="noopener noreferrer">
+                                🧾 결제 영수증 보기
+                            </a>
+                        </p>
+                    )}
+                </div>
+            
+                <a className="retry-button" href="/">
+                    홈으로 돌아가기
+                </a>
             </div>
-
-            <a className="retry-button" href="/">
-                홈으로 돌아가기
-            </a>
-        </div>
+        </main>
     );
 };
 

@@ -1,6 +1,11 @@
+.l-payment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .payment-container {
   max-width: 500px;
-  margin: 300px auto 40px auto;
+  width: 500px;
   padding: 30px;
   background-color: #fff;
   border: 1px solid #ddd;

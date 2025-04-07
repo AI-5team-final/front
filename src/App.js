@@ -47,12 +47,12 @@ function AppRoutes() {
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserProvider>
         <AppRoutes />
-      </BrowserRouter>
+      </UserProvider>
       <ToastContainer position="top-center" autoClose={2000} />
-    </UserProvider>
+    </BrowserRouter>
   );
 }
 

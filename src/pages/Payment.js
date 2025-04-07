@@ -82,27 +82,29 @@ const Payment = () => {
     };
 
     return (
-        <div className="payment-container">
-            <h2>크레딧 충전</h2>
-
-            <input
-                type="number"
-                placeholder="충전할 금액 입력 (ex. 5000)"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-            />
-
-            <select onChange={(e) => setMethod(e.target.value)} value={method}>
-                <option value="CARD">카드결제</option>
-                <option value="VIRTUAL_ACCOUNT">가상계좌</option>
-                <option value="MOBILE_PHONE">휴대폰 결제</option>
-                <option value="TRANSFER">계좌이체</option>
-            </select>
-
-            <button onClick={requestPayment} style={{ marginTop: "10px" }}>
-                🔋 충전하기
-            </button>
-        </div>
+        <main className='l-payment'>
+            <div className="payment-container">
+                <h2>크레딧 충전</h2>
+            
+                <input
+                    type="number"
+                    placeholder="충전할 금액 입력 (ex. 5000)"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                />
+            
+                <select onChange={(e) => setMethod(e.target.value)} value={method}>
+                    <option value="CARD">카드결제</option>
+                    <option value="VIRTUAL_ACCOUNT">가상계좌</option>
+                    <option value="MOBILE_PHONE">휴대폰 결제</option>
+                    <option value="TRANSFER">계좌이체</option>
+                </select>
+            
+                <button onClick={requestPayment} style={{ marginTop: "10px" }}>
+                    🔋 충전하기
+                </button>
+            </div>
+        </main>
     );
 };
 
