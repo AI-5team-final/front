@@ -330,13 +330,7 @@
 @media (max-width: 767px) {
   .upload-container {
     -ms-flex-wrap: wrap;
-  .upload-container {
-    -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-  }
-  .upload-container .upload-area {
-    width: 100%;
-    -ms-flex-preferred-size: 100%;
   }
   .upload-container .upload-area {
     width: 100%;
