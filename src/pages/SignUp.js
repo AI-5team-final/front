@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import '../styles/SignUp.scss';
+import config from '../config';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -94,10 +95,8 @@ const SignUp = () => {
         const email = `${emailId.trim()}@${isCustomDomain ? customDomain.trim() : emailDomain}`;
 
         try {
-            const res = await fetch('/auth/signup', {
+            const res = await fetch(`${config.baseURL}/auth/signup`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
                 body: JSON.stringify({ ...form, email, role: activeTab })
             });
 

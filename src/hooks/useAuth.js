@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from '../context/UserContext'; 
 import axiosClient from '../utils/axiosInstance';
-import fetchClient from '../utils/fetchClient';
+import config from '../config';
 
 
 const useAuth = () => {
@@ -14,7 +14,7 @@ const useAuth = () => {
 
   const login = async (username, password, userRole) => {
     try {
-      const res = await fetchClient('/auth/login', {
+      const res = await fetch(`${config.baseURL}/auth/login`, {
         method: 'POST',
         body: JSON.stringify({ username, password, role: userRole }),
       });

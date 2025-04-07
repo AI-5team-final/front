@@ -110,9 +110,11 @@ const ContentApplicant = () => {
 
         try {
             setIsLoading(true);
-            const response = await fetchClient('/pdf/list', {
-                method: 'GET'
-            });
+            const response = await fetchClient('/pdf/list');
+            if (response.status === 401) {
+                handleAuthError();
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('이력서 목록을 불러오는데 실패했습니다.');
@@ -139,8 +141,7 @@ const ContentApplicant = () => {
         const selectedResume = resumes.find(resume => resume.id === selectedId);
         if (selectedResume) {
             try {
-                const token = localStorage.getItem('accessToken');
-                const response = await fetchClient(selectedResume.pdfUri);
+                const response = await fetch(selectedResume.pdfUri);
                 console.log('response', response);
                 if (!response.ok) {
                     throw new Error('이력서를 불러오는데 실패했습니다.');
