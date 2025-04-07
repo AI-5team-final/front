@@ -28,214 +28,216 @@ $white: #ffffff;
   }
 }
 
-// Hero Section
-.hero-section {
-  width: 100%;
-  background-color: $secondary-color;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
-  height: 350px;
-}
-
-.hero-image-container {
-  width: 80%;
-  max-width: 900px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  padding: 0 30px;
-}
-
-.hero-text {
-  flex: 1;
-  padding-right: 20px;
-}
-
-.hero-img {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-}
-
-.title {
-  font-size: 2.5rem;
-  color: $primary-color;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.subtitle {
-  font-size: 1rem;
-  margin-top: 10px;
-  color: $primary-color;
-}
-
-// Main Container
-.container {
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  padding: 40px 20px 20px;
-  background-color: $white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-// Upload Card
-.upload-card {
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  padding: 40px 20px;
-  margin-bottom: 40px;
-  width: 80%;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.upload-area {
-  border: 2px dashed $border-color;
-  border-radius: 12px;
-  padding: 40px 20px;
-  text-align: center;
-  cursor: pointer;
-  background-color: #f8f9fa;
-  @include hover-transition {
-    border-color: $primary-color;
-    background-color: #f1f8ff;
+.l-panel-resume {
+  // Hero Section
+  .hero-section {
+    width: 100%;
+    background-color: $secondary-color;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    height: 350px;
   }
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-}
 
-.upload-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.upload-paragraph {
-  color: #555;
-  font-size: 0.95rem;
-}
-
-.upload-note {
-  font-size: 0.75rem;
-  color: #999;
-}
-
-.icon {
-  font-size: 40px;
-  color: $primary-color;
-}
-
-// Resume List
-.resume-list {
-  border-top: 1px solid $border-color;
-  border-bottom: 1px solid $border-color;
-  padding: 0;
-  width: 80%;
-  max-width: 900px;
-}
-
-.resume-item {
-  @include flex-between;
-  padding: 20px 0;
-  border-bottom: 1px solid $border-color;
-  align-items: center;
-}
-
-.resume-info {
-  @include flex-center;
-  gap: 24px;
-}
-
-.resume-name {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: $text-color;
-}
-
-.resume-date {
-  font-size: 0.8rem;
-  color: $light-gray;
-}
-
-.resume-link {
-  color: $primary-color;
-  text-decoration: none;
-  cursor: pointer;
-  @include hover-transition {
-    text-decoration: underline;
+  .hero-image-container {
+    width: 80%;
+    max-width: 900px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 0 30px;
   }
-}
 
-// Buttons
-.delete-button {
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  padding: 5px 10px;
-  cursor: pointer;
-  background-color: $white;
-  @include hover-transition {
-    background-color: #f0f0f0;
+  .hero-text {
+    flex: 1;
+    padding-right: 20px;
   }
-}
 
-// Modal
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  @include flex-center;
-  z-index: 1000;
-}
+  .hero-img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
 
-.modal {
-  background-color: $white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  min-width: 300px;
-}
+  .title {
+    font-size: 2.5rem;
+    color: $primary-color;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
 
-.modal-file-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: $primary-color;
-  margin: 15px 0;
-  word-break: break-word;
-}
+  .subtitle {
+    font-size: 1rem;
+    margin-top: 10px;
+    color: $primary-color;
+  }
 
-.modal-buttons {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
+  // Main Container
+  .container {
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    padding: 40px 20px 20px;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-// Loading State
-.loading {
-  text-align: center;
-  padding: 20px;
-  color: $gray-color;
-}
+  // Upload Card
+  .upload-card {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin-bottom: 40px;
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
 
-// Empty State
-.empty-state {
-  text-align: center;
-  padding: 20px;
-  color: $gray-color;
+  .upload-area {
+    border: 2px dashed $border-color;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    @include hover-transition {
+      border-color: $primary-color;
+      background-color: #f1f8ff;
+    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .upload-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .upload-paragraph {
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .upload-note {
+    font-size: 0.75rem;
+    color: #999;
+  }
+
+  .icon {
+    font-size: 40px;
+    color: $primary-color;
+  }
+
+  // Resume List
+  .resume-list {
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    padding: 0;
+    width: 80%;
+    max-width: 900px;
+  }
+
+  .resume-item {
+    @include flex-between;
+    padding: 20px 0;
+    border-bottom: 1px solid $border-color;
+    align-items: center;
+  }
+
+  .resume-info {
+    @include flex-center;
+    gap: 24px;
+  }
+
+  .resume-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: $text-color;
+  }
+
+  .resume-date {
+    font-size: 0.8rem;
+    color: $light-gray;
+  }
+
+  .resume-link {
+    color: $primary-color;
+    text-decoration: none;
+    cursor: pointer;
+    @include hover-transition {
+      text-decoration: underline;
+    }
+  }
+
+  // Buttons
+  .delete-button {
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: $white;
+    @include hover-transition {
+      background-color: #f0f0f0;
+    }
+  }
+
+  // Modal
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    @include flex-center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background-color: $white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 300px;
+  }
+
+  .modal-file-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $primary-color;
+    margin: 15px 0;
+    word-break: break-word;
+  }
+
+  .modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  // Loading State
+  .loading {
+    text-align: center;
+    padding: 20px;
+    color: $gray-color;
+  }
+
+  // Empty State
+  .empty-state {
+    text-align: center;
+    padding: 20px;
+    color: $gray-color;
+  }
 } 
