@@ -15,107 +15,141 @@
         font-size: 1.2rem;
         color: #000000;
         margin-bottom: 40px;
+
+        &:last-of-type {
+            font-size: 0.9rem;
+            color: #666666;
+            margin-bottom: 20px;
+            margin-top: -30px;
+
+            &::before {
+                content: "P.S. ";
+                font-style: italic;
+                color: #888888;
+            }
+        }
     }
 
-    .top-cards {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-bottom: 40px;
+    .list-applicant {
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
     }
 
     .card {
-        flex: 1 1 200px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
         padding: 20px;
-        background-color: #f9f9f9;
+        background-color: #ffffff;
         cursor: pointer;
+        position: relative;
+        display: grid;
+        grid-template-columns: 150px 150px 1fr;
+        gap: 20px;
+        align-items: center;
         transition: all 0.2s ease;
+        margin: 0 20px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #000000;
+        }
 
         &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #A8D7FF;
         }
     }
 
     .card-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        justify-content: flex-start;
     }
 
     .card-company-heading {
         margin: 0;
         font-weight: bold;
+        text-align: center;
         font-size: 1.2rem;
+        color: #000000;
+        width: 100%;
+    }
+
+    .card-score {
+        text-align: center;
     }
 
     .card-match-rate {
-        color: #013A72;
-        background-color: #ffffff;
         font-weight: 600;
         display: inline-block;
-        padding: 4px 8px;
+        padding: 6px 12px;
         border-radius: 6px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
 
-    .list-container {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-    }
+        // 90점 이상 - 청록색 계열 (산뜻한 파랑)
+        &.score-excellent {
+            color: #ffffff;
+            background-color: #06B6D4;
+        }
 
-    .list-item {
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        padding: 15px 0;
-        margin-bottom: -1px;
-    }
+        // 80-89점 - 그린 계열
+        &.score-good {
+            color: #ffffff;
+            background-color: #10B981;
+        }
 
-    .button {
-        margin-left: 10px;
-        padding: 5px 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        background-color: #013A72;
-        color: white;
-        border: none;
-    }
+        // 70-79점 - 노랑 계열
+        &.score-fair {
+            color: #000000;
+            background-color: #FBBF24;
+        }
 
-    .pagination-container {
-        margin-top: 40px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .pagination-button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #013A72;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-
-        &:disabled {
-            background-color: #ccc;
-            cursor: default;
+        // 70점 미만 - 빨강 계열
+        &.score-poor {
+            color: #ffffff;
+            background-color: #EF4444;
         }
     }
 
-    // 반응형
+    .card-summary {
+        .summary-section {
+            margin-bottom: 16px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .summary-title {
+            display: flex;
+            align-items: center;
+            color: #000000;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+
+            .title-icon {
+                margin-right: 8px;
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .summary-content {
+            color: #666;
+            font-size: 0.95rem;
+            display: block;
+            padding-left: 28px;  // 아이콘 너비 + 여백만큼 들여쓰기
+            
+            .content-line {
+                margin-bottom: 4px;
+                line-height: 1.5;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
     @media (max-width: 1023px) {
-        .top-cards {
-            flex-direction: column;
-        }
-
         .card {
             width: 100%;
         }
