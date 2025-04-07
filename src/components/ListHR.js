@@ -81,7 +81,6 @@ const ListHR = () => {
                                 cursor: 'pointer',
                                 backgroundColor: '#013A72',
                                 color: 'white',
-                                border: 'none'
                             }}
                         >
                             더보기
