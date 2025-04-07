@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../styles/fonts.css';
+import '../styles/ListHR.scss';
 
 const ListHR = () => {
     // 지원자 더미 데이터 22명 생성
@@ -35,24 +37,12 @@ const ListHR = () => {
     return (
         <div className="list-hr">
             <h2>추천 지원자</h2>
-            <div className="top-cards" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+            <div className="top-cards">
                 {topFour.map((user) => (
                     <div 
                         key={user.id} 
                         onClick={() => setSelectedApplicant(user)}
-                        style={{
-                            flex: '1 1 200px',
-                            border: '1px solid #ccc',
-                            borderRadius: '12px',
-                            padding: '20px',
-                            backgroundColor: '#f9f9f9',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            '&:hover': {
-                                transform: 'translateY(-2px)',
-                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-                            }
-                        }}
+                        className="card"
                     >
                         <h3>{user.name}</h3>
                         <p>{user.position}</p>
@@ -64,24 +54,16 @@ const ListHR = () => {
             </div>
 
             <h2>전체 지원자</h2>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+            <ul className="list-container">
                 {pagedApplicants.map((user) => (
-                    <li key={user.id} style={{
-                        borderBottom: '1px solid #ddd',
-                        padding: '15px 0'
-                    }}>
-                        <strong>{user.name}</strong> - {user.position} - {user.date} - 매칭률: {user.matchRate}%
+                    <li key={user.id} className="list-item">
+                        <div>
+                            <strong>{user.name}</strong> - {user.position} - {user.date} - 매칭률: {user.matchRate}%
+                        </div>
                         <button 
                             onClick={() => setSelectedApplicant(user)} 
-                            style={{ 
-                                marginLeft: '10px', 
-                                padding: '5px 10px', 
-                                border: '1px solid #ccc', 
-                                borderRadius: '6px', 
-                                cursor: 'pointer',
-                                backgroundColor: '#013A72',
-                                color: 'white',
-                            }}
+                            className="button"
+
                         >
                             더보기
                         </button>
@@ -89,19 +71,11 @@ const ListHR = () => {
                 ))}
             </ul>
 
-            <div style={{ marginTop: '40px', textAlign: 'center', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+            <div className="pagination-container">
                 <button
                     onClick={handlePrev}
                     disabled={page === 0}
-                    style={{
-                        padding: '10px 20px',
-                        fontSize: '16px',
-                        backgroundColor: page === 0 ? '#ccc' : '#013A72',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: page === 0 ? 'default' : 'pointer'
-                    }}
+                    className="pagination-button"
                 >
                     ◀ 이전
                 </button>
@@ -109,15 +83,7 @@ const ListHR = () => {
                 <button
                     onClick={handleNext}
                     disabled={page === maxPage}
-                    style={{
-                        padding: '10px 20px',
-                        fontSize: '16px',
-                        backgroundColor: page === maxPage ? '#ccc' : '#013A72',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: page === maxPage ? 'default' : 'pointer'
-                    }}
+                    className="pagination-button"
                 >
                     다음 ▶
                 </button>
@@ -126,48 +92,21 @@ const ListHR = () => {
             {/* 상세 정보 모달 */}
             {selectedApplicant && (
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 1000
-                    }}
+                    className="modal-overlay"
                     onClick={() => setSelectedApplicant(null)}
                 >
                     <div
+                        className="modal-content"
                         onClick={(e) => e.stopPropagation()}
-                        style={{
-                            background: 'white',
-                            padding: '30px',
-                            borderRadius: '12px',
-                            width: '400px',
-                            maxWidth: '90%',
-                            textAlign: 'left'
-                        }}
                     >
-                        <h3 style={{ color: '#013A72', fontSize: '1.5rem', marginBottom: '15px' }}>{selectedApplicant.name}</h3>
-                        <p style={{ fontSize: '1.2rem', fontWeight: '500', marginBottom: '10px' }}>{selectedApplicant.position}</p>
-                        <p style={{ color: '#666', marginBottom: '15px' }}>{selectedApplicant.description}</p>
-                        <p style={{ color: '#444' }}>지원일: {selectedApplicant.date}</p>
-                        <p style={{ color: '#013A72', fontWeight: '600' }}>AI 매칭률: {selectedApplicant.matchRate}%</p>
+                        <h3>{selectedApplicant.name}</h3>
+                        <p>{selectedApplicant.position}</p>
+                        <p>{selectedApplicant.description}</p>
+                        <p>지원일: {selectedApplicant.date}</p>
+                        <p className="highlight">AI 매칭률: {selectedApplicant.matchRate}%</p>
                         <button
                             onClick={() => setSelectedApplicant(null)}
-                            style={{
-                                marginTop: '20px',
-                                padding: '8px 16px',
-                                border: 'none',
-                                background: '#013A72',
-                                color: 'white',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                width: '100%'
-                            }}
+                            className="close-button"
                         >
                             닫기
                         </button>

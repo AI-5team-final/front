@@ -4,17 +4,20 @@ import { getAccessToken } from '../utils/tokenUtils';
 const fetchClient = async (endpoint, options = {}) => {
   const token = getAccessToken();
 
-  const defaultHeaders = {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
+  // FormData인 경우 토큰만 포함
+  const headers = options.body instanceof FormData
+    ? { ...(token && { Authorization: `Bearer ${token}` }) }
+    : {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      };
 
   const fetchOptions = {
     method: 'GET',
     credentials: 'include',
     ...options,
     headers: {
-      ...defaultHeaders,
+      ...headers,
       ...(options.headers || {}),
     },
   };

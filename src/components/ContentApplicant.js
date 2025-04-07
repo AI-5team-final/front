@@ -4,6 +4,8 @@ import { TbHeartHandshake } from 'react-icons/tb';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { RiRobot2Line } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/ContentApplicant.css';
 import fetchClient from '../utils/fetchClient';
 
@@ -22,19 +24,18 @@ const ContentApplicant = () => {
     const validateFile = (file) => {
         if (!file) return false;
         if (file.type !== 'application/pdf') {
-            alert('PDF 파일만 업로드 가능합니다.');
+            toast.error('PDF 파일만 업로드 가능합니다.');
             return false;
         }
         return true;
     };
 
     const handleError = (error) => {
-        console.error('업로드 에러:', error);
-        alert('파일 업로드 중 오류가 발생했습니다.');
+        toast.error('파일 업로드 중 오류가 발생했습니다.');
     };
 
     const handleAuthError = () => {
-        alert('로그인이 필요합니다.');
+        toast.error('로그인이 필요한 서비스입니다.');
         localStorage.removeItem('accessToken');
         navigate('/login');
     };
@@ -58,7 +59,7 @@ const ContentApplicant = () => {
 
     const handleSubmit = async () => {
         if (!fileState.file) {
-            alert('PDF 파일을 선택해주세요.');
+            toast.error('PDF 파일을 선택해주세요.');
             return;
         }
 
@@ -77,18 +78,13 @@ const ContentApplicant = () => {
                 body: formData
             });
 
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
-
             if (!response.ok) {
                 throw new Error('업로드 실패');
             }
 
-            const result = await response.json();
-            console.log('업로드 성공:', result);
-            alert('파일이 성공적으로 업로드되었습니다.');
+            const data = await response.json();
+            console.log('PDF 업로드 응답:', data);
+            toast.success('파일이 성공적으로 업로드되었습니다.');
 
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
@@ -96,6 +92,11 @@ const ContentApplicant = () => {
             }
             setIsUploadModalOpen(false);
         } catch (error) {
+            console.error('PDF 업로드 에러:', error);
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            }
             handleError(error);
         }
     };
@@ -122,6 +123,10 @@ const ContentApplicant = () => {
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            }
             handleError(error);
         } finally {
             setIsLoading(false);
@@ -130,7 +135,7 @@ const ContentApplicant = () => {
 
     const handleLoadConfirm = async () => {
         if (!selectedId) {
-            alert('이력서를 선택해주세요.');
+            toast.error('이력서를 선택해주세요.');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
@@ -150,8 +155,7 @@ const ContentApplicant = () => {
                 setIsLoadModalOpen(false);
                 setIsUploadModalOpen(true);
             } catch (error) {
-                console.error('이력서 불러오기 에러:', error);
-                alert('저장소에서 이력서를 불러오는데 실패했습니다.');
+                toast.error('저장소에서 이력서를 불러오는데 실패했습니다.');
             }
         }
     };
@@ -196,9 +200,6 @@ const ContentApplicant = () => {
                             >
                                 <FaPlusCircle className="icon" />
                                 <span className="upload-text">PDF로 이력서 매칭하기</span>
-                                {fileState.name && (
-                                    <p className="selected-file">{fileState.name}</p>
-                                )}
                                 <input
                                     type="file"
                                     accept="application/pdf"
@@ -350,10 +351,10 @@ const ContentApplicant = () => {
                                 className="modal-button"
                                 onClick={() => {
                                     if (!matchingFiles.resume || !matchingFiles.jobPost) {
-                                        alert('이력서와 공고 파일 모두 등록해주세요.');
+                                        toast.error('이력서와 공고 파일 모두 등록해주세요.');
                                         return;
                                     }
-                                    alert('매칭 요청 완료!');
+                                    toast.success('매칭 요청 완료!');
                                     setMatchingFiles({ resume: null, jobPost: null });
                                     setIsMatchingModalOpen(false);
                                 }}
