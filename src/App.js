@@ -46,14 +46,14 @@ function AppRoutes() {
 }
 
 function App() {
-  return (
-    <BrowserRouter>
+    return (
       <UserProvider>
-        <AppRoutes />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+        <ToastContainer position="top-center" autoClose={2000} />
       </UserProvider>
-      <ToastContainer position="top-center" autoClose={2000} />
-    </BrowserRouter>
-  );
-}
-
+    );
+  }
+  
 export default App;

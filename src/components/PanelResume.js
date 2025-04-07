@@ -7,6 +7,7 @@ import '../styles/fonts.css';
 import '../styles/PanelResume.css';
 import useToken from '../hooks/useToken';
 import { useNavigate } from 'react-router-dom';
+import fetchClient from '../utils/fetchClient';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
@@ -67,12 +68,9 @@ const PanelResume = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/pdf/upload', {
+            const response = await fetchClient('/pdf/upload', {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
             });
 
             if (response.status === 401) {
@@ -132,12 +130,8 @@ const PanelResume = () => {
         }
 
         try {
-            const response = await fetch('/pdf/delete', {
+            const response = await fetchClient('/pdf/delete', {
                 method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
                 body: JSON.stringify({ pdfId: deleteTarget.id }) 
             });
 
@@ -165,11 +159,7 @@ const PanelResume = () => {
 
         try {
             setIsLoading(true);
-            const res = await fetch('/pdf/list', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await fetchClient('/pdf/list');
 
             if (res.status === 401) {
                 handleAuthError();

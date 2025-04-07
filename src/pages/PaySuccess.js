@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useUser } from "../context/UserContext";
 import '../styles/Payment.scss';
+import axiosClient from '../utils/axiosInstance'
 
 const PaySuccess = () => {
     const location = useLocation();
@@ -23,14 +23,10 @@ const PaySuccess = () => {
             const amount = searchParams.get("amount");
 
             try {
-                const res = await axios.post("http://localhost:8080/payments/confirm", {
+                const res = await axiosClient.post("/payments/confirm", {
                     paymentKey,
                     orderId,
                     amount: parseInt(amount),
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    }
                 });
 
                 // 받은 데이터 반영

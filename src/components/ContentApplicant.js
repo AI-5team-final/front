@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/ContentApplicant.css';
+import fetchClient from '../utils/fetchClient';
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -72,24 +73,17 @@ const ContentApplicant = () => {
         formData.append('file', fileState.file);
 
         try {
-            const response = await fetch('/pdf/EtoC', {
+            const response = await fetchClient('/pdf/EtoC', {
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
                 body: formData
             });
-
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
 
             if (!response.ok) {
                 throw new Error('업로드 실패');
             }
 
-            // 업로드 성공 토스트 메시지 -> 이후 성공시 LIST로 넘어감
+            const data = await response.json();
+            console.log('PDF 업로드 응답:', data);
             toast.success('파일이 성공적으로 업로드되었습니다.');
 
             setFileState({ name: '', file: null });
@@ -98,6 +92,11 @@ const ContentApplicant = () => {
             }
             setIsUploadModalOpen(false);
         } catch (error) {
+            console.error('PDF 업로드 에러:', error);
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            }
             handleError(error);
         }
     };
@@ -111,16 +110,9 @@ const ContentApplicant = () => {
 
         try {
             setIsLoading(true);
-            const response = await fetch('/pdf/list', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            const response = await fetchClient('/pdf/list', {
+                method: 'GET'
             });
-
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
 
             if (!response.ok) {
                 throw new Error('이력서 목록을 불러오는데 실패했습니다.');
@@ -129,6 +121,10 @@ const ContentApplicant = () => {
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            }
             handleError(error);
         } finally {
             setIsLoading(false);
@@ -144,7 +140,8 @@ const ContentApplicant = () => {
         if (selectedResume) {
             try {
                 const token = localStorage.getItem('accessToken');
-                const response = await fetch(selectedResume.pdfUri);
+                const response = await fetchClient(selectedResume.pdfUri);
+                console.log('response', response);
                 if (!response.ok) {
                     throw new Error('이력서를 불러오는데 실패했습니다.');
                 }
