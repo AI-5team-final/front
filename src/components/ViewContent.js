@@ -33,6 +33,7 @@ const ViewContent = ({ role }) => {
 
   const handleAnalyzeWithAgent = async () => {
     try {
+      console.log("에이전트 요청")
       setLoading(true);
       const res = await fetchClient("/pdf/agent", {
         method: "POST",

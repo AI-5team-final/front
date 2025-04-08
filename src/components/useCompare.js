@@ -12,11 +12,11 @@ export default function useAgentAnalyzer() {
   const compareResumeAndPosting = async (resumeFile, postingFile) => {
     const formData = new FormData();
     formData.append("resume", resumeFile);
-    formData.append("job_posting", postingFile);
+    formData.append("posting", postingFile);
 
     try {
       setLoading(true);
-      const res = await fetchClient("/api/agent/compare", {
+      const res = await fetchClient("/pdf/reEpo", {
         method: "POST",
         body: formData,
       });
@@ -24,9 +24,12 @@ export default function useAgentAnalyzer() {
       if (!res.ok) throw new Error("GPT 평가 실패");
 
       const data = await res.json();
-      setSummary(data.summary);
-      setGptAnswer(data.gpt_answer);
-      setTotalScore(data.total_score);
+      const result = Array.isArray(data) ? data[0] : data;
+
+      setSummary(result.summary);
+      setGptAnswer(result.gpt_answer);
+      setTotalScore(result.total_score);
+
       toast.success("GPT 평가 완료!");
     } catch (err) {
       console.error(err);
@@ -41,7 +44,7 @@ export default function useAgentAnalyzer() {
 
     try {
       setLoading(true);
-      const res = await fetchClient("/api/agent/analyze", {
+      const res = await fetchClient("/pdf/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ gpt_answer: gptAnswer }),
