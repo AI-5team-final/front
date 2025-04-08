@@ -123,17 +123,17 @@ footer {
 @media (max-width: $tablet) {
     header {
         .inner {
-            >div {
+            >div:not(.side-menu) {
                 p, button, span {
-                    display: none;   
-                }
-                .btn-menu {
-                    display: block;
-                
+                    display: none;
                 }
             }
+
+            .btn-menu {
+                display: block;
+            }
         }
-    }   
+    }
 }
 
 @media (max-width: $mobile){
