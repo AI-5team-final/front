@@ -3,206 +3,165 @@
         font-family: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif';
         padding: 40px 20px;
     }
-}
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
+    .title {
+        font-size: 2.5rem;
+        color: #000000;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
 
-.card-company-heading {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
+    .subtitle {
+        font-size: 1.2rem;
+        color: #000000;
+        margin-bottom: 40px;
+    }
 
-.card-match-rate {
-    color: #013A72;
-    background-color: #ffffff;
-    font-weight: 600;
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
+    .subtitle-note {
+        font-size: 0.9rem;
+        color: #666666;
+        margin-bottom: 20px;
+        margin-top: -30px;
+    }
 
-.list-container {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-}
+    .subtitle-note::before {
+        content: "P.S. ";
+        font-style: italic;
+        color: #888888;
+    }
 
-.list-item {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
-    margin-bottom: -1px;
-}
+    .card {
+        padding: 20px;
+        background-color: #ffffff;
+        cursor: pointer;
+        position: relative;
+        display: grid;
+        grid-template-columns: 150px 150px 1fr;
+        gap: 20px;
+        align-items: center;
+        transition: all 0.2s ease;
 
-.button {
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #013A72;
-    color: white;
-    border: none;
-}
+        border-bottom: 1px solid #000000;
 
-.pagination-container {
-    margin-top: 40px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
+        &:first-child {
+            border-top: 1px solid #000000;
+        }
 
-.pagination-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #013A72;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+        &:hover {
+            background-color: #A8D7FF;
+        }
+    }
 
-    &:disabled {
-        background-color: #ccc;
-        cursor: default;
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
 
-        .title {
-            font-size: 2.5rem;
+    .card-company-heading {
+        margin: 0;
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.2rem;
+        color: #000000;
+        width: 100%;
+    }
+
+    .card-score {
+        text-align: center;
+    }
+
+    .card-match-rate {
+        font-weight: 600;
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+        // 90점 이상 - 청록색 계열 (산뜻한 파랑)
+        &.score-excellent {
+            color: #ffffff;
+            background-color: #06B6D4;
+        }
+
+        // 80-89점 - 그린 계열
+        &.score-good {
+            color: #ffffff;
+            background-color: #10B981;
+        }
+
+        // 70-79점 - 노랑 계열
+        &.score-fair {
             color: #000000;
-            margin-bottom: 15px;
-            font-weight: bold;
+            background-color: #FBBF24;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: #000000;
-            margin-bottom: 40px;
-
+        // 70점 미만 - 빨강 계열
+        &.score-poor {
+            color: #ffffff;
+            background-color: #EF4444;
         }
+    }
 
-        .top-cards {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
+    .card-summary {
+        .summary-section {
+            margin-bottom: 16px;
 
-        .card {
-            flex: 1 1 200px;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: all 0.2s ease;
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            &:last-child {
+                margin-bottom: 0;
             }
         }
 
-        .card-header {
+        .summary-title {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .card-company-heading {
-            margin: 0;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .card-match-rate {
-            color: #013A72;
-            background-color: #ffffff;
+            color: #000000;
             font-weight: 600;
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+            font-size: 1rem;
+            margin-bottom: 8px;
 
-        .list-container {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .list-item {
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-            margin-bottom: -1px;
-        }
-
-        .button {
-            margin-left: 10px;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            background-color: #013A72;
-            color: white;
-            border: none;
-        }
-
-        .pagination-container {
-            margin-top: 40px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .pagination-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #013A72;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-
-            &:disabled {
-                background-color: #ccc;
-                cursor: default;
+            .title-icon {
+                margin-right: 8px;
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
             }
         }
 
-        // 반응형
-        @media (max-width: 1023px) {
-            .top-cards {
-                flex-direction: column;
-            }
+        .summary-content {
+            color: #666;
+            font-size: 0.95rem;
+            display: block;
+            padding-left: 28px;  // 아이콘 너비 + 여백만큼 들여쓰기
 
-            .card {
-                width: 100%;
-            }
-        }
+            .content-line {
+                margin-bottom: 4px;
+                line-height: 1.5;
 
-        @media (max-width: 767px) {
-            .container {
-                padding: 20px 10px;
-            }
-
-            .title {
-                font-size: 2rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
     }
-}
+
+    @media (max-width: 1023px) {
+        .card {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .container {
+            padding: 20px 10px;
+        }
+
+        .title {
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+        }
+    }
+} 

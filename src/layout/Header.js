@@ -67,7 +67,7 @@ const Header = () => {
                             <RiCopperCoinLine /> {userInfo?.credit ?? 0}
                         </p>
                         <span></span>
-                        <button className="button" onClick={handlePageRedirect}>
+                        <button type="button" onClick={handlePageRedirect}>
                             {role === "HR" ? "공고 관리" : "이력서 관리"}
                         </button>
                         <button onClick={logout} className="btn-logout">로그아웃</button>
@@ -82,17 +82,18 @@ const Header = () => {
 
             {/* 사이드 메뉴 (항상 렌더링) */}
             <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
-                <div className="side-menu-header">
-                    <img src="/images/logo.svg" alt="Rezoom Logo" className="side-menu-logo" />
-                    <button className="close-btn" onClick={toggleMenu}>
-                        <IoClose size={24} />
-                    </button>
+                
+                <button className="close-btn" onClick={toggleMenu}>
+                    <IoClose />
+                </button>
+                
+                <div className="side-menu-cont">
+                    <p>안녕하세요 <strong>{userInfo?.name}</strong>님</p>
+                    <p className="coin-display" onClick={openPaymentModal}>
+                        <RiCopperCoinLine /> {userInfo?.credit ?? 0}
+                    </p>
+                    <button onClick={handlePageRedirect}>이력서 관리</button>
                 </div>
-                <p>안녕하세요 <strong>{userInfo?.name}</strong>님</p>
-                <p className="coin-display" onClick={openPaymentModal}>
-                    <RiCopperCoinLine /> {userInfo?.credit ?? 0}
-                </p>
-                <button onClick={handlePageRedirect}>이력서 관리</button>
                 <button onClick={logout} className="btn-logout">로그아웃</button>
             </div>
 
