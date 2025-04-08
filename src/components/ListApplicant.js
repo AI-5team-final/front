@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { useMatch } from '../context/MatchContext';
+import '../styles/fonts.css';
 import '../styles/ListApplicant.scss';
-
 
 const getScoreClass = (score) => {
     if (score >= 90) return 'score-excellent';
@@ -26,26 +27,11 @@ const getIcon = (title) => {
 
 const ListApplicant = () => {
     const { userInfo } = useUser();
-    const location = useLocation();
+    const { matchResults } = useMatch();
     const navigate = useNavigate();
-    const [matchResults, setMatchResults] = useState([]);
 
-    useEffect(() => {
-        console.log('Location state:', location.state);
-        if (location.state?.results) {
-            setMatchResults(location.state.results);
-        } else {
-            // 매칭 결과가 없으면 홈으로 리다이렉트
-            navigate('/');
-        }
-    }, [location.state, navigate]);
-
-    const handleViewDetail = (result, index) => {
-        navigate(`/view/${index}`, { 
-            state: { 
-                matchResult: result
-            } 
-        });
+    const handleViewDetail = (index) => {
+        navigate(`/view/${index}`);
     };
 
     return (
@@ -61,7 +47,7 @@ const ListApplicant = () => {
                             <div 
                                 key={`${result.title}-${index}`}
                                 className="card"
-                                onClick={() => handleViewDetail(result, index)}
+                                onClick={() => handleViewDetail(index)}
                             >
                                 <div className="card-header">
                                     <h3 className="card-company-heading">{result.title}</h3>
