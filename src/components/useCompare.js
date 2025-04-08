@@ -16,7 +16,7 @@ export default function useAgentAnalyzer() {
 
     try {
       setLoading(true);
-      const res = await fetchClient("/api/agent/compare", {
+      const res = await fetchClient("/pdf/reEpo", {
         method: "POST",
         body: formData,
       });
@@ -41,7 +41,7 @@ export default function useAgentAnalyzer() {
 
     try {
       setLoading(true);
-      const res = await fetchClient("/api/agent/analyze", {
+      const res = await fetchClient("/pdf/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ gpt_answer: gptAnswer }),
