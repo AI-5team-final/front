@@ -12,7 +12,7 @@ const PaymentModal = ({ isOpen, onRequestClose }) => {
       onRequestClose={onRequestClose}
       contentLabel="Payment Modal"
       style={{
-        overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+        overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 11000, },
         content: {
           top: '50%',
           left: '50%',
@@ -22,7 +22,8 @@ const PaymentModal = ({ isOpen, onRequestClose }) => {
           maxWidth: '500px',
           width: '90%',
           padding: '20px',
-          borderRadius: '12px'
+          borderRadius: '12px',
+          zIndex: 11000,
         }
       }}
     >

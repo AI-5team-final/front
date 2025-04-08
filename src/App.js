@@ -16,8 +16,9 @@ import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
 import "the-new-css-reset/css/reset.css";
+import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
-import './styles/Style.css';
+import './styles/Style.scss';
 
 function AppRoutes() {
   useAutoRefreshToken();

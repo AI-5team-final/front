@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import '../styles/SignUp.scss';
-
 import config from "../config";
-
+import '../styles/SignUp.scss';
 
 const SignUp = () => {
     const navigate = useNavigate();

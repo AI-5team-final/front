@@ -6,6 +6,7 @@ import '../styles/ViewContent.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { RiCopperCoinLine } from 'react-icons/ri';
 import DonutChart from './DonutChart';
+import '../styles/ViewContent.scss';
 
 const ViewContent = ({role}) => {
     const { userInfo, setUserInfo } = useUser();
