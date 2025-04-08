@@ -5,6 +5,7 @@ import useToken from '../hooks/useToken';
 import { useLocation } from 'react-router-dom';
 import fetchClient from '../utils/fetchClient';
 import { useMatch } from '../context/MatchContext';
+import '../styles/List.scss';
 
 const List = () => {
     const { role } = useToken();
@@ -56,7 +57,10 @@ const List = () => {
         <main className="l-list">
             <div className='inner'>
                 {loading ? (
-                    <div>처리 중...</div>
+                    <div className="loading-container">
+                        <div className="loading-spinner"></div>
+                        <p>이력서를 분석 중입니다.<br/>잠시만 기다려주세요...</p>
+                    </div>
                 ) : (
                     <>
                         {role === 'HR' && <ListHR />}
