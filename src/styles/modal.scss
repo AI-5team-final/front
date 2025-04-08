@@ -1,0 +1,142 @@
+// X button
+.btn-modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal {
+    width: 400px;
+    padding: 10px;
+
+    // 모달 전체 공통
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #013A72;
+        margin-bottom: 20px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-filename {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #013A72;
+        margin: 15px 0;
+        word-break: break-word;
+    }
+
+    .modal-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+
+        .modal-button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            // font-size: 14px;
+            font-weight: 500;
+            background-color: #013A72;
+            color: #ffffff;
+            transition: all 0.2s ease;
+    
+            &.cancel-button {
+                background-color: #6B7280;
+            }
+        }
+    }
+
+
+        
+    // 1대1매칭, 불러오기 공통
+    &-match,
+    &-load {
+        .resume-list-header {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+    
+        
+        .divider {
+            border-bottom: 1px solid #e5e7eb;
+            margin: 16px 0;
+        }
+    
+    }
+
+    // 이력서 매칭 모달
+    &-match {
+        width: 650px;
+        .modal-subtitle {
+            font-size: 1.1rem;
+            color: #455A64;
+            margin-bottom: 30px;
+            text-align: left;
+            line-height: 1.6;
+            background-color: #F5F9FF;
+            padding: 15px 20px;
+            border-radius: 8px;
+        }
+        .upload-section {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        
+                .load-button {
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    border: 1px solid #013A72;
+                    background-color: #ffffff;
+                    color: #013A72;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+            }
+    }
+
+    // 이력서 불러오기 모달
+    &-load {
+        .resume-list-item {
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+    
+            &.selected-resume-item {
+                background-color: #f1f8ff;
+                border: 1px solid #013A72;
+            }
+            svg {
+                flex-shrink: 0;
+            }
+            span {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }    
+            
+    }
+
+}

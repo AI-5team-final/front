@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/ViewContent.css";
+import "../styles/ViewContent.scss";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiCopperCoinLine } from "react-icons/ri";
 import DonutChart from "./DonutChart";
@@ -96,6 +96,7 @@ const ViewContent = ({ role }) => {
             <p className="gpt-answer">{matchResult.gpt_answer}</p>
           </div>
 
+
           <div className="cont">
             <h4>기본평가</h4>
             <div className="box">
@@ -107,6 +108,7 @@ const ViewContent = ({ role }) => {
                   if (!comment) setComment(value.trim());
                   return null;
                 }
+
 
                 return (
                   <div key={index}>

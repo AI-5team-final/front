@@ -1,4 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from './context/UserContext';
+import { ToastContainer } from 'react-toastify';
+import { MatchProvider } from './context/MatchContext';
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
 import List from "./pages/List";
@@ -6,17 +9,19 @@ import View from "./pages/View";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import PanelResume from './pages/PanelResume';
 import PrivateRoute from "./components/PrivateRoute";
-import PanelResume from "./components/PanelResume";
-import useAutoRefreshToken from "./hooks/useAutoRefreshToken";
-import { UserProvider } from "./context/UserContext";
-import { ToastContainer } from "react-toastify";
-import Payment from "./pages/Payment";
+import useAutoRefreshToken from './hooks/useAutoRefreshToken';
+import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
-import Agent from "./pages/Agent";
+import CreditDashboard from "./pages/CreditDashboard";
 import "the-new-css-reset/css/reset.css";
-import "./styles/Style.css";
+import 'react-toastify/dist/ReactToastify.css';
+import './styles/fonts.css';
+import './styles/Style.scss';
+import './styles/modal.scss';
+
 
 function AppRoutes() {
   useAutoRefreshToken();
@@ -39,8 +44,8 @@ function AppRoutes() {
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
-        <Route path="agent" element={<Agent />} />
-      </Route>
+        <Route path="mypage/credits" element={<CreditDashboard />} />
+    </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}
       <Route path="/login" element={<Login />} />
@@ -51,14 +56,17 @@ function AppRoutes() {
 }
 
 function App() {
-  return (
-    <UserProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-      <ToastContainer position="top-center" autoClose={2000} />
-    </UserProvider>
-  );
-}
+    return (
+      <UserProvider>
+        <MatchProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </MatchProvider>
+        <ToastContainer position="top-center" autoClose={2000} />
+      </UserProvider>
+    );
+  }
+
 
 export default App;
