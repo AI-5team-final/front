@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import '../styles/Payment.scss';
 import axiosClient from '../utils/axiosInstance'
+import '../styles/Payment.scss';
+
 
 const PaySuccess = () => {
     const location = useLocation();

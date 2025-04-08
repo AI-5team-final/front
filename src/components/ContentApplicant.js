@@ -86,8 +86,6 @@ const ContentApplicant = () => {
       }
 
       const data = await response.json();
-      console.log("PDF 업로드 응답:", data);
-      toast.success("파일이 성공적으로 업로드되었습니다.");
 
       setFileState({ name: "", file: null });
       if (fileInputRef.current) {
@@ -98,11 +96,7 @@ const ContentApplicant = () => {
       // 매칭 결과와 업로드된 PDF 정보를 함께 전달
       navigate("/list", {
         state: {
-          results: data, // 전체 매칭 결과
-          uploadedPdf: {
-            fileName: fileState.name,
-            uploadedAt: new Date().toISOString(),
-          },
+          results: data, // 전체 매칭 결과만 전달
         },
       });
     } catch (error) {
@@ -230,7 +224,7 @@ const ContentApplicant = () => {
                 onClick={handleLoadModalOpen}
                 className="button active"
               >
-                <FaCloudDownloadAlt className="icon icon-white" />
+                <FaCloudDownloadAlt className="cloud-icon" />
                 <span>
                   내 이력서
                   <br />
@@ -243,7 +237,7 @@ const ContentApplicant = () => {
                 onClick={() => setIsMatchingModalOpen(true)}
                 className="button active"
               >
-                <TbHeartHandshake className="icon icon-white" />
+                <TbHeartHandshake className="cloud-icon" />
                 <p>
                   Fit Advisor로 <br />
                   1대1 매칭하기
@@ -383,14 +377,6 @@ const ContentApplicant = () => {
                     toast.error("이력서와 공고 파일 모두 등록해주세요.");
                     return;
                   }
-
-                  navigate("/view/result", {
-                    state: {
-                      resumeFile: matchingFiles.resume,
-                      jobPostFile: matchingFiles.jobPost,
-                    },
-                  });
-
                   toast.success("매칭 요청 완료!");
                   setMatchingFiles({ resume: null, jobPost: null });
                   setIsMatchingModalOpen(false);

@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
+import { ToastContainer } from "react-toastify";
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
 import List from "./pages/List";
@@ -6,15 +8,17 @@ import View from "./pages/View";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import PanelResume from "./pages/PanelResume";
 import PrivateRoute from "./components/PrivateRoute";
-import PanelResume from "./components/PanelResume";
 import useAutoRefreshToken from "./hooks/useAutoRefreshToken";
 import { UserProvider } from "./context/UserContext";
 import { ToastContainer } from "react-toastify";
 import Payment from "./pages/Payment";
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
+import CreditDashboard from "./pages/CreditDashboard";
 import "the-new-css-reset/css/reset.css";
+import "./styles/fonts.css";
 import "./styles/Style.css";
 
 function AppRoutes() {
@@ -39,6 +43,7 @@ function AppRoutes() {
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
+        <Route path="mypage/credits" element={<CreditDashboard />} />
       </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}

@@ -2,6 +2,14 @@
 
 $headerHeight: 68px;
 $footerHeight: 132px;
+
+// 공통
+.coin-display {
+    display: flex;
+    align-items: center;
+    // gap: 5px;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -20,17 +28,16 @@ header {
             align-items: center;
             p {
                 font-size: 20px;
-                font-family: 'Pretendard', sans-serif;
                 line-height: 1.5;
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                // gap: 10px;
                 strong {
                     font-weight: 700;
-                    margin-right: 5px;
+                    // margin-right: 5px;
+                    margin-left: 5px;
                 }
                 a, button {
-                    font-family: 'Pretendard', sans-serif;
                     line-height: 1.5;
                     background: none;
                     border: none;
@@ -45,11 +52,7 @@ header {
                 }
                 
             }
-            .coin-display {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
+
             span {
                 display: block;
                 width: 1px;
@@ -129,19 +132,6 @@ footer {
 }
 
 
-  
-//   @media (min-width: 1024px) {
-//     .side-menu {
-//       display: none !important;
-//     }
-  
-//     .dimmed-bg {
-//       display: none !important;
-//     }
-//   }
-  
-  
-
 @media (max-width: $tablet) {
     header {
         .inner {
@@ -154,29 +144,8 @@ footer {
                         display: none;
                     }
                 }
-                .coin-display {
-                    display: none !important;
-                    +p {
-                        display: none !important;
-                    }
-                }
             }
 
-            /* .btn-menu {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1200;
-      background: none;
-      border: none;
-      cursor: pointer;
-  
-      .icon-menu,
-      .icon-close {
-        font-size: 28px;
-        color: #000;
-      }
-    } */
 
             .btn-menu {
                 display: block;
@@ -205,7 +174,6 @@ footer {
         z-index: 1100;
         border-bottom-left-radius: 12px;
         border-top-left-radius: 12px;
-    
         transform: translateX(100%);
         opacity: 0;
         pointer-events: none;
@@ -217,8 +185,9 @@ footer {
             pointer-events: auto;
         }
 
-        svg {
-            vertical-align: middle;
+        
+        button {
+            cursor: pointer;
         }
 
         .close-btn {
@@ -228,14 +197,32 @@ footer {
             font-size: 28px;
             cursor: pointer;
         }
+
         &-cont {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            // gap: 20px;
 
             p {
+                margin-bottom: 20px;
                 strong {
                     font-weight: 700;
+                }
+            }
+            .coin-display {
+                padding: 20px;
+                background: #f5f5f5;
+    
+            }
+
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: 500;
+                padding: 10px 20px;
+                svg {
+                    font-size: 24px;
                 }
             }
         }
@@ -258,6 +245,20 @@ footer {
 
 }
 
+@media (min-width: $mobile) and (max-width: $tablet) {
+    .side-menu {
+        p {
+            font-size: 1.25rem;
+            
+        }
+        &-cont {
+            button {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
+
 @media (max-width: $mobile){
     $headerHeight: 58px;
     $footerHeight: 92px;
@@ -273,7 +274,14 @@ footer {
         }
     }
 
-
+    .side-menu {
+        &-cont {
+            button {
+                padding: 10px;
+              
+            }
+        }
+    }
 
     main {
         padding-top: $headerHeight;

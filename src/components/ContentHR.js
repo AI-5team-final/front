@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
-import '../styles/ContentHR.scss';
 import fetchClient from '../utils/fetchClient';
+import '../styles/ContentHR.scss';
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({

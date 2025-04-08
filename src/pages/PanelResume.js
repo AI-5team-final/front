@@ -1,18 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../styles/fonts.css';
-import '../styles/PanelResume.css';
 import useToken from '../hooks/useToken';
-import { useNavigate } from 'react-router-dom';
 import fetchClient from '../utils/fetchClient';
+import '../styles/PanelResume.scss';
+import UploadCheckModal from '../modal/UploadCheckModal';
+import DeleteModal from '../modal/DeleteModal';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { token, removeToken } = useToken();
@@ -92,6 +93,7 @@ const PanelResume = () => {
 
     const handleDeleteRequest = (resume) => {
         setDeleteTarget(resume);
+        // setIsDeleteModalOpen(prev=>!prev);
     };
 
     const handleConfirmDelete = async () => {
@@ -150,12 +152,15 @@ const PanelResume = () => {
         }
     }, [token]);
 
+    const closeUploadModal = () => setIsModalOpen(prev=>!prev);
+    const closeDeleteModal = () => setDeleteTarget(null);
+
     return (
-        <div className="l-panel-resume">
+        <main className="l-panel-resume">
             <section className="hero-section">
-                <div className="hero-image-container">
+                <div className="inner">
                     <div className="hero-text">
-                        <h1 className="title">이력서 관리</h1>
+                        <h2 className="title">이력서 관리</h2>
                         <p className="subtitle">나의 이력서를 한눈에 관리하고, 더 나은 기회를 준비하세요.</p>
                     </div>
                     <img
@@ -166,94 +171,77 @@ const PanelResume = () => {
                 </div>
             </section>
 
-            <div className="container">
-                <div className="upload-card">
-                    <div
-                        className="upload-area"
-                        onClick={() => fileInputRef.current.click()}
-                    >
-                        <FaCloudArrowUp className="icon" />
-                        <h2 className="upload-title">이력서 등록하기</h2>
-                        <p className="upload-paragraph">PDF 형식의 이력서를 등록할 수 있습니다.</p>
-                        <p className="upload-paragraph">원하지 않는 이력서는 언제든 삭제할 수 있어요.</p>
-                        <p className="upload-note">*이미지는 인식되지 않을 수 있습니다.</p>
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            ref={fileInputRef}
-                            onChange={handleFileSelect}
-                            style={{ display: 'none' }}
-                        />
+            <section className="container">
+                <div className="inner">
+                    <div className="upload-card">
+                        <div
+                            className="upload-area"
+                            onClick={() => fileInputRef.current.click()}
+                        >
+                            <FaCloudArrowUp className="icon" />
+                            <h2 className="upload-title">이력서 등록하기</h2>
+                            <p className="upload-paragraph">PDF 형식의 이력서를 등록할 수 있습니다.</p>
+                            <p className="upload-paragraph">원하지 않는 이력서는 언제든 삭제할 수 있어요.</p>
+                            <p className="upload-note">*이미지는 인식되지 않을 수 있습니다.</p>
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                ref={fileInputRef}
+                                onChange={handleFileSelect}
+                                style={{ display: 'none' }}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="resume-list">
-                    {isLoading ? (
-                        <div className="loading">
-                            이력서 목록을 불러오는 중...
-                        </div>
-                    ) : !Array.isArray(resumes) || resumes.length === 0 ? (
-                        <div className="empty-state">
-                            등록된 이력서가 없습니다.
-                        </div>
-                    ) : (
-                        resumes.map((resume) => (
-                            <div key={resume.id} className="resume-item">
-                                <div className="resume-info">
-                                    <GrDocumentPdf size={40} color="#6B7280" />
-                                    <div style={{ marginLeft: '10px' }}>
-                                        <a
-                                            className="resume-link"
-                                            href={resume.pdfUri}
-                                            download
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {resume.pdfFileName}
-                                        </a>
-                                        <p className="resume-date">
-                                            등록일: {new Date(resume.uploadedAt).toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => handleDeleteRequest(resume)}
-                                >
-                                    삭제하기
-                                </button>
+                    <div className="resume-list">
+                        {isLoading ? (
+                            <div className="loading">
+                                이력서 목록을 불러오는 중...
                             </div>
-                        ))
-                    )}
-                </div>
-            </div>
-
-            {isModalOpen && (
-                <div className="modal-backdrop">
-                    <div className="modal">
-                        <p>이 이력서를 업로드하시겠습니까?</p>
-                        <p className="modal-file-name">{fileState.name}</p>
-                        <div className="modal-buttons">
-                            <button onClick={handleConfirmUpload}>확인</button>
-                            <button onClick={() => setIsModalOpen(false)}>취소</button>
-                        </div>
+                        ) : !Array.isArray(resumes) || resumes.length === 0 ? (
+                            <div className="empty-state">
+                                등록된 이력서가 없습니다.
+                            </div>
+                        ) : (
+                            resumes.map((resume) => (
+                                <div key={resume.id} className="resume-item">
+                                    <div className="resume-info">
+                                        <GrDocumentPdf size={40} color="#6B7280" />
+                                        <div>
+                                            <a
+                                                className="resume-link"
+                                                href={resume.pdfUri}
+                                                download
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {resume.pdfFileName}
+                                            </a>
+                                            <p className="resume-date">
+                                                등록일: {new Date(resume.uploadedAt).toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDeleteRequest(resume)}
+                                    >
+                                        삭제하기
+                                    </button>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
-            )}
+            </section>
+            
 
-            {deleteTarget && (
-                <div className="modal-backdrop">
-                    <div className="modal">
-                        <p>정말 이 이력서를 삭제하시겠습니까?</p>
-                        <p className="modal-file-name">{deleteTarget.pdfFileName}</p>
-                        <div className="modal-buttons">
-                            <button onClick={handleConfirmDelete}>삭제</button>
-                            <button onClick={() => setDeleteTarget(null)}>취소</button>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
+            {/* 이력서 업로드 확인 모달 */}
+            <UploadCheckModal isOpen={isModalOpen} onRequestClose={closeUploadModal} fileState={fileState} handleSubmit={handleConfirmUpload}/>
+
+            {/* 삭제 모달 */}
+            <DeleteModal isOpen={deleteTarget} onRequestClose={closeDeleteModal} deleteTarget={deleteTarget} handleConfirmDelete={handleConfirmDelete} />
+        </main>
     );
 };
 
