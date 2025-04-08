@@ -69,41 +69,12 @@ const ContentApplicant = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('file', fileState.file);
-
-        try {
-            const response = await fetchClient('/pdf/EtoC', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('업로드 실패');
-            }
-
-            const data = await response.json();
-
-            setFileState({ name: '', file: null });
-            if (fileInputRef.current) {
-                fileInputRef.current.value = '';
-            }
-            setIsUploadModalOpen(false);
-            
-            // 매칭 결과와 업로드된 PDF 정보를 함께 전달
-            navigate('/list', { 
-                state: { 
-                    results: data  // 전체 매칭 결과만 전달
-                } 
-            });
-        } catch (error) {
-            console.error('PDF 업로드 에러:', error);
-            if (error.response?.status === 401) {
-                handleAuthError();
-                return;
-            }
-            handleError(error);
-        }
+        // List 페이지로 이동하면서 파일 전달
+        navigate('/list', { 
+            state: { 
+                resumeFile: fileState.file
+            } 
+        });
     };
 
     const fetchResumes = async () => {
@@ -147,7 +118,6 @@ const ContentApplicant = () => {
         if (selectedResume) {
             try {
                 const response = await fetch(selectedResume.pdfUri);
-                console.log('response', response);
                 if (!response.ok) {
                     throw new Error('이력서를 불러오는데 실패했습니다.');
                 }
