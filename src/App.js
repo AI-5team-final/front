@@ -63,7 +63,7 @@ function App() {
             <AppRoutes />
           </BrowserRouter>
         </MatchProvider>
-        <ToastContainer position="top-center" autoClose={2000} />
+        <ToastContainer position="top-center" autoClose={1000} style={{ zIndex: 11002 }}/>
       </UserProvider>
     );
   }
