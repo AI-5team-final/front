@@ -5,7 +5,7 @@ import { RiCopperCoinLine } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useUser } from "../context/UserContext";
-import PaymentModal from "../components/PaymentModal";
+import PaymentModal from "../modal/PaymentModal";
 import useAuth from "../hooks/useAuth";
 import useToken from "../hooks/useToken";
 import { MdKeyboardArrowRight } from "react-icons/md";
