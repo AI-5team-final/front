@@ -11,7 +11,6 @@
   margin-top: 60px;
   height: 350px;
 }
-
 .l-panel-resume .hero-image-container {
   width: 80%;
   max-width: 900px;
@@ -28,34 +27,29 @@
   overflow: hidden;
   padding: 0 30px;
 }
-
 .l-panel-resume .hero-text {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   padding-right: 20px;
 }
-
 .l-panel-resume .hero-img {
   height: 100%;
   width: auto;
   -o-object-fit: contain;
      object-fit: contain;
 }
-
 .l-panel-resume .title {
   font-size: 2.5rem;
   color: #013a72;
   margin-bottom: 15px;
   font-weight: bold;
 }
-
 .l-panel-resume .subtitle {
   font-size: 1rem;
   margin-top: 10px;
   color: #013a72;
 }
-
 .l-panel-resume .container {
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   padding: 40px 20px 20px;
@@ -71,7 +65,6 @@
       -ms-flex-align: center;
           align-items: center;
 }
-
 .l-panel-resume .upload-card {
   background-color: #f9f9f9;
   border-radius: 12px;
@@ -91,7 +84,6 @@
           align-items: center;
   gap: 15px;
 }
-
 .l-panel-resume .upload-area {
   border: 2px dashed #ddd;
   border-radius: 12px;
@@ -114,33 +106,27 @@
   gap: 15px;
   width: 100%;
 }
-
 .l-panel-resume .upload-area:hover {
   border-color: #013a72;
   background-color: #f1f8ff;
 }
-
 .l-panel-resume .upload-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
-
 .l-panel-resume .upload-paragraph {
   color: #555;
   font-size: 0.95rem;
 }
-
 .l-panel-resume .upload-note {
   font-size: 0.75rem;
   color: #999;
 }
-
 .l-panel-resume .icon {
   font-size: 40px;
   color: #013a72;
 }
-
 .l-panel-resume .resume-list {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -148,7 +134,6 @@
   width: 80%;
   max-width: 900px;
 }
-
 .l-panel-resume .resume-item {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -163,7 +148,6 @@
   border-bottom: 1px solid #ddd;
   align-items: center;
 }
-
 .l-panel-resume .resume-info {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -176,18 +160,15 @@
           justify-content: center;
   gap: 24px;
 }
-
 .l-panel-resume .resume-name {
   font-weight: 600;
   font-size: 0.95rem;
   color: #111827;
 }
-
 .l-panel-resume .resume-date {
   font-size: 0.8rem;
   color: #9ca3af;
 }
-
 .l-panel-resume .resume-link {
   color: #013a72;
   text-decoration: none;
@@ -195,11 +176,9 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .l-panel-resume .resume-link:hover {
   text-decoration: underline;
 }
-
 .l-panel-resume .delete-button {
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -209,11 +188,9 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .l-panel-resume .delete-button:hover {
   background-color: #f0f0f0;
 }
-
 .l-panel-resume .modal-backdrop {
   position: fixed;
   top: 0;
@@ -232,7 +209,6 @@
           justify-content: center;
   z-index: 1000;
 }
-
 .l-panel-resume .modal {
   background-color: #ffffff;
   padding: 30px;
@@ -242,7 +218,6 @@
   text-align: center;
   min-width: 300px;
 }
-
 .l-panel-resume .modal-file-name {
   font-size: 1.2rem;
   font-weight: 600;
@@ -250,7 +225,6 @@
   margin: 15px 0;
   word-break: break-word;
 }
-
 .l-panel-resume .modal-buttons {
   margin-top: 20px;
   display: -webkit-box;
@@ -261,13 +235,11 @@
       -ms-flex-pack: center;
           justify-content: center;
 }
-
 .l-panel-resume .loading {
   text-align: center;
   padding: 20px;
   color: #6B7280;
 }
-
 .l-panel-resume .empty-state {
   text-align: center;
   padding: 20px;

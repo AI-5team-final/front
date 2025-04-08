@@ -7,7 +7,6 @@ header {
   background: #fff;
   z-index: 1000;
 }
-
 header .inner {
   height: 68px;
   display: -webkit-box;
@@ -20,7 +19,6 @@ header .inner {
       -ms-flex-align: center;
           align-items: center;
 }
-
 header .inner > div {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -29,10 +27,9 @@ header .inner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-
 header .inner > div p {
   font-size: 20px;
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   line-height: 1.5;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -42,14 +39,12 @@ header .inner > div p {
           align-items: center;
   gap: 10px;
 }
-
 header .inner > div p strong {
   font-weight: 700;
   margin-right: 5px;
 }
-
 header .inner > div p a, header .inner > div p button {
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   line-height: 1.5;
   background: none;
   border: none;
@@ -58,12 +53,10 @@ header .inner > div p a, header .inner > div p button {
   font-size: 20px;
   margin: 0 5px;
 }
-
 header .inner > div p svg {
   vertical-align: middle;
   margin: 0 5px;
 }
-
 header .inner > div .coin-display {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -73,7 +66,6 @@ header .inner > div .coin-display {
           align-items: center;
   gap: 5px;
 }
-
 header .inner > div span {
   display: block;
   width: 1px;
@@ -81,15 +73,12 @@ header .inner > div span {
   background: #000;
   margin: 0 20px;
 }
-
 header .inner > div a {
   font-size: 14px;
 }
-
 header .inner > div button {
   cursor: pointer;
 }
-
 header .inner > div .btn-logout {
   font-size: 14px;
   border-radius: 999px;
@@ -98,7 +87,6 @@ header .inner > div .btn-logout {
   padding: 6px 12px;
   margin-left: 20px;
 }
-
 header .inner > div .btn-menu {
   display: none;
   width: 30px;
@@ -112,7 +100,6 @@ header .inner > div .btn-menu {
           justify-content: space-between;
   cursor: pointer;
 }
-
 header .inner > div .btn-menu span {
   display: block;
   margin: 0;
@@ -121,35 +108,130 @@ header .inner > div .btn-menu span {
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-
 header .inner > div .btn-menu span:nth-of-type(2) {
   margin: 7px auto;
 }
+@media (max-width: 1023px) {
+  .btn-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1200;
+    background: none;
+    border: none;
+    cursor: pointer;
 
-main {
-  padding-top: 68px;
-  min-height: calc(100vh - $footerHeight);
+    .icon-menu,
+    .icon-close {
+      font-size: 28px;
+      color: #000;
+    }
+  }
+
+  .side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 100vh;
+    background: #fff;
+    padding: 24px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1100;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .side-menu.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .dimmed-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1050;
+  }
+  .side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .side-menu-logo {
+      height: 32px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #000;
+    }
+  }
+  .side-menu p,
+  .side-menu button {
+    color: #000;
+    font-size: 16px;
+  }
 }
 
+@media (min-width: 1024px) {
+  .side-menu {
+    display: none !important;
+  }
+
+  .dimmed-bg {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  header .inner > div .coin-display,
+  header .inner > div .coin-display + p {
+    display: none !important;
+  }
+}
+@media (max-width: 1023px) {
+  header .inner > div p,
+  header .inner > div button:not(.btn-menu),
+  header .inner > div span {
+    display: none;
+  }
+}
+main {
+  padding-top: 68px;
+  min-height: calc(100vh - 132px);
+}
 footer {
   width: 100%;
   text-align: center;
   padding: 40px 0;
   font-size: 24px;
 }
-
 footer a + a {
   margin-left: 15px;
 }
-
 footer small {
   display: block;
   font-size: 12px;
 }
-
 footer small strong {
   font-weight: 600;
 }
+
 
 @media (max-width: 1023px) {
   header .inner > div p, header .inner > div button, header .inner > div span {
@@ -159,7 +241,6 @@ footer small strong {
     display: block;
   }
 }
-
 @media (max-width: 767px) {
   header .inner {
     height: 58px;
@@ -176,7 +257,7 @@ footer small strong {
   }
   main {
     padding-top: 58px;
-    min-height: calc(100vh - $footerHeight);
+    min-height: calc(100vh - 92px);
   }
   footer {
     padding: 20px 0;

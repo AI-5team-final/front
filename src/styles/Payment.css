@@ -20,17 +20,15 @@
   border-radius: 12px;
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   text-align: center;
 }
-
 .payment-container h2 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 16px;
 }
-
-.payment-container input[type="number"] {
+.payment-container input[type=number] {
   width: 100%;
   padding: 8px 0;
   margin-bottom: 16px;
@@ -44,31 +42,29 @@
   -webkit-transition: border-color 0.2s ease;
   transition: border-color 0.2s ease;
 }
-
-.payment-container input[type="number"]::-webkit-input-placeholder {
+.payment-container input[type=number]::-webkit-input-placeholder {
   color: #aaa;
   font-weight: normal;
 }
-
-.payment-container input[type="number"]:-ms-input-placeholder {
+.payment-container input[type=number]::-moz-placeholder {
   color: #aaa;
   font-weight: normal;
 }
-
-.payment-container input[type="number"]::-ms-input-placeholder {
+.payment-container input[type=number]:-ms-input-placeholder {
   color: #aaa;
   font-weight: normal;
 }
-
-.payment-container input[type="number"]::placeholder {
+.payment-container input[type=number]::-ms-input-placeholder {
   color: #aaa;
   font-weight: normal;
 }
-
-.payment-container input[type="number"]:focus {
+.payment-container input[type=number]::placeholder {
+  color: #aaa;
+  font-weight: normal;
+}
+.payment-container input[type=number]:focus {
   border-bottom-color: #184998;
 }
-
 .payment-container .amount-groups {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -80,45 +76,37 @@
   gap: 12px;
   margin-bottom: 20px;
 }
-
 .payment-container .amount-groups .row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   gap: 10px;
 }
-
 .payment-container .amount-groups .first-row {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
-
 .payment-container .amount-groups .first-row .price-btn {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
 }
-
 .payment-container .amount-groups .single-button-row {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
 }
-
 .payment-container .amount-groups .single-button-row .price-btn {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 calc((100% - 30px) / 4);
-          flex: 0 0 calc((100% - 30px) / 4);
-  /* 4개 버튼 기준 여백 고려 */
+          flex: 0 0 calc((100% - 30px) / 4); /* 4개 버튼 기준 여백 고려 */
 }
-
 .payment-container .amount-groups .extra-row {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
-
 .payment-container .amount-groups .price-btn {
   min-width: 80px;
   padding: 10px 0;
@@ -132,28 +120,23 @@
   transition: all 0.2s ease;
   text-align: center;
 }
-
 .payment-container .amount-groups .price-btn:hover {
   background-color: #e0e0e0;
 }
-
 .payment-container .amount-groups .price-btn.selected {
   background-color: #184998;
   color: #fff;
   font-weight: bold;
   border-color: #184998;
 }
-
 .payment-container .separator {
   margin: 20px 0 16px;
 }
-
 .payment-container .separator hr {
   border: none;
   border-top: 1px solid #ccc;
   margin-bottom: 8px;
 }
-
 .payment-container .separator .payment-label {
   text-align: left;
   font-size: 16px;
@@ -161,7 +144,6 @@
   color: #555;
   padding-left: 4px;
 }
-
 .payment-container select {
   width: 100%;
   padding: 12px 16px;
@@ -181,11 +163,9 @@
   -webkit-transition: border-color 0.2s ease;
   transition: border-color 0.2s ease;
 }
-
 .payment-container select:focus {
   border-color: #184998;
 }
-
 .payment-container button,
 .payment-container .retry-button {
   display: block;
@@ -202,12 +182,10 @@
   transition: background 0.2s ease;
   margin-top: 10px;
 }
-
 .payment-container button:hover,
 .payment-container .retry-button:hover {
   background-color: #2554a1;
 }
-
 @media (max-width: 480px) {
   .payment-container {
     padding: 20px;
@@ -226,7 +204,7 @@
     font-size: 13px;
     padding: 8px 0;
   }
-  .payment-container input[type="number"] {
+  .payment-container input[type=number] {
     font-size: 18px;
   }
   .payment-container select {

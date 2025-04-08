@@ -133,10 +133,7 @@ input.error {
   cursor: pointer;
   -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
-}
-
-.signup-button.active {
-  background-color: green;
+  margin-top: 20px;
 }
 
 .signup-button:disabled {

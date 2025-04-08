@@ -1,76 +1,103 @@
-import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
-import useAuth from '../hooks/useAuth';
-import useToken from '../hooks/useToken';
-import { useRef, useState } from "react";
-import { RiCopperCoinLine } from 'react-icons/ri'; // 아이콘 변경
-import PaymentModal from '../components/PaymentModal';
-import { useUser } from '../context/UserContext';
+
+import { Link, useNavigate } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { RiCopperCoinLine } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
+import { RxHamburgerMenu } from "react-icons/rx";
+
+import PaymentModal from "../components/PaymentModal";
+import { useUser } from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
+import useToken from "../hooks/useToken";
+
 
 const Header = () => {
     const { userInfo } = useUser();
     const { logout } = useAuth();
     const { role } = useToken();
-    const headerRef = useRef(null);
-    const navigate = useNavigate(); // navigate 선언
+    const navigate = useNavigate();
 
-    // Payment 모달 상태 관리
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-    const openPaymentModal = () => setIsPaymentModalOpen(true);
+
+    const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+    const openPaymentModal = () => {
+        setIsMenuOpen(false);
+        setIsPaymentModalOpen(true);
+    };
     const closePaymentModal = () => setIsPaymentModalOpen(false);
-    
 
     const handlePageRedirect = () => {
-        if (role === 'HR') {
-            navigate('/postings'); // HR → 공고 관리
-        } else {
-            navigate('/resume'); // 지원자 → 이력서 관리
-        }
+        setIsMenuOpen(false);
+        navigate(role === "HR" ? "/postings" : "/resume");
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 1023) {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
         <>
-            <PaymentModal />
-            <header ref={headerRef}>
+            {/* 결제 모달 */}
+            <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
+
+            {/* Header */}
+            <header>
                 <div className="inner">
                     <h1 className="logo">
-                        <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>
+                        <Link to="/">
+                            <img src="/images/logo.svg" alt="Rezoom Logo" />
+                        </Link>
                     </h1>
+
                     <div>
                         <p>
-                            {role === 'HR' ? "함께 성장하는" : "취업 성공기원"}, <strong>{userInfo? userInfo.name: ""}</strong>님 
+                            {role === "HR" ? "함께 성장하는" : "취업 성공기원"},{" "}
+                            <strong>{userInfo?.name}</strong>님
                         </p>
                         <span></span>
-                        <p className="coin-display" onClick={openPaymentModal} style={{ cursor: 'pointer' }}>
-                            <RiCopperCoinLine /> 
-                        </p>
-                        <p onClick={openPaymentModal} style={{ cursor: 'pointer' }}>
-                            {userInfo? userInfo.credit : 0}
+                        <p className="coin-display" onClick={openPaymentModal} style={{ cursor: "pointer" }}>
+                            <RiCopperCoinLine /> {userInfo?.credit ?? 0}
                         </p>
                         <span></span>
-                        <button 
-                            className="button" 
-                            onClick={handlePageRedirect} 
-                            aria-label={role === 'HR' ? "공고 관리" : "이력서 관리"}
-                        >
-                            {role === 'HR' ? "공고 관리" : "이력서 관리"}
+                        <button className="button" onClick={handlePageRedirect}>
+                            {role === "HR" ? "공고 관리" : "이력서 관리"}
                         </button>
-                        <button
-                            onClick={logout} 
-                            aria-label="로그아웃"
-                            role="button"
-                            tabIndex={0}
-                            className="btn-logout"
-                        >
-                            로그아웃
-                        </button>
-                        <button type="button" className="btn-menu">
-                            <span></span><span></span><span></span>
-                        </button>
+                        <button onClick={logout} className="btn-logout">로그아웃</button>
+                        {!isMenuOpen && (
+                            <button type="button" className="btn-menu" onClick={toggleMenu}>
+                                <RxHamburgerMenu className="icon-menu" />
+                            </button>
+                        )}
                     </div>
                 </div>
-                {/* PaymentModal 컴포넌트를 조건부로 렌더링 */}
-                <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
             </header>
+
+            {/* 사이드 메뉴 (항상 렌더링) */}
+            <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
+                <div className="side-menu-header">
+                    <img src="/images/logo.svg" alt="Rezoom Logo" className="side-menu-logo" />
+                    <button className="close-btn" onClick={toggleMenu}>
+                        <IoClose size={24} />
+                    </button>
+                </div>
+                <p>안녕하세요 <strong>{userInfo?.name}</strong>님</p>
+                <p className="coin-display" onClick={openPaymentModal}>
+                    <RiCopperCoinLine /> {userInfo?.credit ?? 0}
+                </p>
+                <button onClick={handlePageRedirect}>이력서 관리</button>
+                <button onClick={logout} className="btn-logout">로그아웃</button>
+            </div>
+
+            {/* 딤드 백그라운드 */}
+            {isMenuOpen && <div className="dimmed-bg" onClick={() => setIsMenuOpen(false)} />}
         </>
     );
 };

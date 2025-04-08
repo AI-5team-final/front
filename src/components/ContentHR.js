@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
-import '../styles/fonts.css';
 import '../styles/ContentHR.scss';
 import fetchClient from '../utils/fetchClient';
 
