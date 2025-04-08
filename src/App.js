@@ -15,6 +15,7 @@ import useAutoRefreshToken from './hooks/useAutoRefreshToken';
 import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
+import CreditDashboard from "./pages/CreditDashboard";
 import "the-new-css-reset/css/reset.css";
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
+        <Route path="mypage/credits" element={<CreditDashboard />} />
       </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}
