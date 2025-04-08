@@ -19,6 +19,7 @@ import "the-new-css-reset/css/reset.css";
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
 import './styles/Style.scss';
+import './styles/modal.scss';
 
 function AppRoutes() {
   useAutoRefreshToken();
