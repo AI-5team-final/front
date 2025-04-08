@@ -14,7 +14,6 @@ import { ToastContainer } from "react-toastify";
 import Payment from "./pages/Payment";
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
-import Agent from "./pages/Agent";
 import "the-new-css-reset/css/reset.css";
 import "./styles/Style.css";
 
@@ -35,11 +34,11 @@ function AppRoutes() {
         <Route index element={<Main />} />
         <Route path="list" element={<List />} />
         <Route path="view/:id" element={<View />} />
+        <Route path="view/result" element={<View />} />
         <Route path="resume" element={<PanelResume />} />
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
-        <Route path="agent" element={<Agent />} />
       </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}

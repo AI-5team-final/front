@@ -30,6 +30,7 @@ export default function useAgentAnalyzer() {
       setGptAnswer(result.gpt_answer);
       setTotalScore(result.total_score);
 
+      console.log(" GPT 평가 응답:", result);
       toast.success("GPT 평가 완료!");
     } catch (err) {
       console.error(err);
@@ -52,11 +53,12 @@ export default function useAgentAnalyzer() {
 
       if (!res.ok) throw new Error("Agent 분석 실패");
 
-      const data = await res.json();
-      setAgentFeedback(data.agent_feedback);
+      const feedback = await res.text();
+
+      setAgentFeedback(feedback);
       toast.success("Agent 분석 완료!");
     } catch (err) {
-      console.error(err);
+      console.error(" Agent 호출 오류:", err);
       toast.error("Agent 분석 중 오류 발생");
     } finally {
       setLoading(false);

@@ -384,7 +384,7 @@ const ContentApplicant = () => {
                     return;
                   }
 
-                  navigate("/agent", {
+                  navigate("/view/result", {
                     state: {
                       resumeFile: matchingFiles.resume,
                       jobPostFile: matchingFiles.jobPost,

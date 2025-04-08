@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../styles/ViewContent.css";
+import "../styles/ListApplicant.scss";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiCopperCoinLine } from "react-icons/ri";
 import DonutChart from "./DonutChart";
@@ -14,36 +15,68 @@ const ViewContent = ({ role }) => {
   const [comment, setComment] = useState("");
   const [agentFeedback, setAgentFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const [matchData, setMatchData] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { matchResult } = location.state || {};
+  const { id } = useParams();
 
-  if (!matchResult) {
-    navigate("/");
-    return null;
-  }
+  const matchResult = location.state?.matchResult || null;
+  const resumeFile = location.state?.resumeFile || null;
+  const jobPostFile = location.state?.jobPostFile || null;
 
-  const summaryItems = matchResult.summary
-    .split("/")
-    .map((item) => item.trim())
-    .sort((a, b) =>
-      a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0
-    );
+  useEffect(() => {
+    const fetchMatching = async () => {
+      const formData = new FormData();
+      formData.append("resume", resumeFile);
+      formData.append("posting", jobPostFile);
+      try {
+        setLoading(true);
+        const res = await fetchClient("/pdf/reEpo", {
+          method: "POST",
+          body: formData,
+        });
+        if (!res.ok) throw new Error("GPT 평가 실패");
+        const data = await res.json();
+        const result = Array.isArray(data) ? data[0] : data;
+        setMatchData(result);
+        toast.success("1:1 매칭 GPT 평가 완료!");
+      } catch (err) {
+        console.error("1:1 GPT 분석 오류:", err);
+        toast.error("GPT 분석 중 오류 발생");
+        navigate("/");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (resumeFile && jobPostFile) {
+      fetchMatching();
+    } else if (matchResult) {
+      setMatchData(matchResult);
+    } else {
+      toast.error("데이터가 없습니다.");
+      navigate("/");
+    }
+  }, [resumeFile, jobPostFile, matchResult, navigate]);
 
   const handleAnalyzeWithAgent = async () => {
+    if (!matchData?.gpt_answer) {
+      toast.error("GPT 분석 결과가 없습니다.");
+      return;
+    }
+
     try {
-      console.log("에이전트 요청")
       setLoading(true);
       const res = await fetchClient("/pdf/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gpt_answer: matchResult.gpt_answer }),
+        body: JSON.stringify({ gpt_answer: matchData.gpt_answer }),
       });
 
       if (!res.ok) throw new Error("Agent 분석 실패");
-      const feedback = await res.text();
 
+      const feedback = await res.text();
       setAgentFeedback(feedback);
       toast.success("Fit Advisor 분석 완료!");
     } catch (err) {
@@ -53,6 +86,15 @@ const ViewContent = ({ role }) => {
       setLoading(false);
     }
   };
+
+  if (!matchData) return null;
+
+  const summaryItems = matchData.summary
+    ?.split("/")
+    .map((item) => item.trim())
+    .sort((a, b) =>
+      a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0
+    );
 
   return (
     <main className="l-view">
@@ -86,28 +128,27 @@ const ViewContent = ({ role }) => {
           <small>
             *등록하신 이력서를 분석한 결과로, 실제 결과와 다를 수 있습니다.
           </small>
+
           <div className="cont">
             <h4>총평</h4>
-            <DonutChart matchResult={matchResult} />
+            <DonutChart matchResult={matchData} />
             <p className="comment">
               <span>종합의견&nbsp;&nbsp;|&nbsp;&nbsp;</span>
               <strong>{comment}</strong>
             </p>
-            <p className="gpt-answer">{matchResult.gpt_answer}</p>
+            <p className="gpt-answer">{matchData.gpt_answer}</p>
           </div>
 
           <div className="cont">
             <h4>기본평가</h4>
             <div className="box">
-              {summaryItems.map((item, index) => {
+              {summaryItems?.map((item, index) => {
                 const [key, value] = item.split(":");
                 if (!key || !value) return null;
-
                 if (key.trim() === "종합 의견") {
                   if (!comment) setComment(value.trim());
                   return null;
                 }
-
                 return (
                   <div key={index}>
                     <p className="key">{key.trim()}</p>
@@ -118,6 +159,7 @@ const ViewContent = ({ role }) => {
             </div>
           </div>
         </div>
+
         <div className="bg">
           <div className="inner">
             <button
