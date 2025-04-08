@@ -22,17 +22,21 @@ import './styles/fonts.css';
 import './styles/Style.scss';
 import './styles/modal.scss';
 
+
 function AppRoutes() {
   useAutoRefreshToken();
 
   return (
     <Routes>
       {/* 로그인 안하면 전체 막히는 구간 */}
-      <Route path="/" element={
-        <PrivateRoute>
-          <Layout />
-        </PrivateRoute>
-      }>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Layout />
+          </PrivateRoute>
+        }
+      >
         <Route index element={<Main />} />
         <Route path="list" element={<List />} />
         <Route path="view/:id" element={<View />} />
@@ -41,7 +45,7 @@ function AppRoutes() {
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
         <Route path="mypage/credits" element={<CreditDashboard />} />
-      </Route>
+    </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}
       <Route path="/login" element={<Login />} />
@@ -63,5 +67,6 @@ function App() {
       </UserProvider>
     );
   }
+
 
 export default App;
