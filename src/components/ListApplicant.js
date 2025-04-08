@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../styles/fonts.css';
-import '../styles/ListApplicant.scss';
 import { useUser } from '../context/UserContext';
+import '../styles/ListApplicant.scss';
+
 
 const ListApplicant = () => {
     const { userInfo } = useUser();

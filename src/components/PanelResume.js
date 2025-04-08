@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../styles/fonts.css';
-import '../styles/PanelResume.css';
 import useToken from '../hooks/useToken';
-import { useNavigate } from 'react-router-dom';
 import fetchClient from '../utils/fetchClient';
+import '../styles/PanelResume.scss';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
