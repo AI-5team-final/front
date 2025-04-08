@@ -9,99 +9,105 @@ import UploadCheckModal from '../modal/UploadCheckModal';
 import LoadModal from '../modal/LoadModal';
 import MatchingModal from '../modal/MatchingModal';
 
-
 const ContentApplicant = () => {
-  const [fileState, setFileState] = useState({ name: "", file: null });
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
-  const [isMatchingModalOpen, setIsMatchingModalOpen] = useState(false);
-  const [matchingFiles, setMatchingFiles] = useState({
-    resume: null,
-    jobPost: null,
-  });
-  const [selectedId, setSelectedId] = useState(null);
-  const [resumes, setResumes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef();
-  const navigate = useNavigate();
+    const [fileState, setFileState] = useState({ name: '', file: null });
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
+    const [isMatchingModalOpen, setIsMatchingModalOpen] = useState(false);
+    const [matchingFiles, setMatchingFiles] = useState({ resume: null, jobPost: null });
+    const [selectedId, setSelectedId] = useState(null);
+    const [resumes, setResumes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef();
+    const navigate = useNavigate();
 
-  const validateFile = (file) => {
-    if (!file) return false;
-    if (file.type !== "application/pdf") {
-      toast.error("PDF 파일만 업로드 가능합니다.");
-      return false;
-    }
-    return true;
-  };
+    const validateFile = (file) => {
+        if (!file) return false;
+        if (file.type !== 'application/pdf') {
+            toast.error('PDF 파일만 업로드 가능합니다.');
+            return false;
+        }
+        return true;
+    };
 
-  const handleError = (error) => {
-    toast.error("파일 업로드 중 오류가 발생했습니다.");
-  };
+    const handleError = (error) => {
+        toast.error('파일 업로드 중 오류가 발생했습니다.');
+    };
 
-  const handleAuthError = () => {
-    toast.error("로그인이 필요한 서비스입니다.");
-    localStorage.removeItem("accessToken");
-    navigate("/login");
-  };
+    const handleAuthError = () => {
+        toast.error('로그인이 필요한 서비스입니다.');
+        localStorage.removeItem('accessToken');
+        navigate('/login');
+    };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (validateFile(file)) {
-      setFileState({ name: file.name, file });
-      setIsUploadModalOpen(true);
-    }
-  };
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (validateFile(file)) {
+            setFileState({ name: file.name, file });
+            setIsUploadModalOpen(true);
+        }
+    };
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (validateFile(file)) {
-      setFileState({ name: file.name, file });
-      setIsUploadModalOpen(true);
-    }
-  };
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+        if (validateFile(file)) {
+            setFileState({ name: file.name, file });
+            setIsUploadModalOpen(true);
+        }
+    };
 
-  const handleSubmit = async () => {
-    if (!fileState.file) {
-      toast.error("PDF 파일을 선택해주세요.");
-      return;
-    }
+    const handleSubmit = async () => {
+        if (!fileState.file) {
+            toast.error('PDF 파일을 선택해주세요.');
+            return;
+        }
 
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      handleAuthError();
-      return;
-    }
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError();
+            return;
+        }
 
-      // List 페이지로 이동하면서 파일 전달
-      navigate('/list', { 
-          state: { 
-              resumeFile: fileState.file
-          } 
-      });
-  };
+        // List 페이지로 이동하면서 파일 전달
+        navigate('/list', { 
+            state: { 
+                resumeFile: fileState.file
+            } 
+        });
+    };
 
+    const fetchResumes = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError();
+            return;
+        }
 
+        try {
+            setIsLoading(true);
+            const response = await fetchClient('/pdf/list');
+            if (response.status === 401) {
+                handleAuthError();
+                return;
+            }
 
-  const fetchResumes = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      handleAuthError();
-      return;
-    }
+            if (!response.ok) {
+                throw new Error('이력서 목록을 불러오는데 실패했습니다.');
+            }
 
-    try {
-      setIsLoading(true);
-      const response = await fetchClient("/pdf/list");
-      if (response.status === 401) {
-        handleAuthError();
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error("이력서 목록을 불러오는데 실패했습니다.");
-      }
-
+            const data = await response.json();
+            setResumes(data.pdfs || []);
+        } catch (error) {
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            }
+            handleError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleLoadConfirm = async () => {
         if (!selectedId) {
@@ -126,14 +132,13 @@ const ContentApplicant = () => {
             } catch (error) {
                 toast.error('저장소에서 이력서를 불러오는데 실패했습니다.');
             }
-      }
-  };
+        }
+    };
 
-  const handleLoadModalOpen = () => {
-    setIsLoadModalOpen(true);
-    fetchResumes();
-  };
-
+    const handleLoadModalOpen = () => {
+        setIsLoadModalOpen(true);
+        fetchResumes();
+    };
 
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
     const closeMatchingModal = () => {
