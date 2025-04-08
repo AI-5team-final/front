@@ -6,6 +6,8 @@ $gray-color: #666;
 $border-color: #ddd;
 $error-color: #dc3545;
 $white: #ffffff;
+$applicant-bg: #A8D7FF;
+$hr-bg: #E1EAFE;
 
 // Mixins
 @mixin flex-center {
@@ -24,7 +26,69 @@ $white: #ffffff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: $white;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  
+  &.applicant {
+    background-color: $applicant-bg;
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    animation: expand-applicant 0.6s ease forwards;
+  }
+  
+  &.hr {
+    background-color: $hr-bg;
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    animation: expand-hr 0.6s ease forwards;
+  }
+
+  &.initial {
+    background-color: $white;
+    clip-path: none;
+  }
+}
+
+@keyframes expand-applicant {
+  0% {
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $applicant-bg;
+  }
+  100% {
+    clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $applicant-bg;
+  }
+}
+
+@keyframes expand-hr {
+  0% {
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $hr-bg;
+  }
+  100% {
+    clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $hr-bg;
+  }
 }
 
 // Login Container
@@ -32,6 +96,8 @@ $white: #ffffff;
   flex: 1;
   @include flex-center;
   padding: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 // Login Box
@@ -42,6 +108,9 @@ $white: #ffffff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 // Tab Container
@@ -59,7 +128,11 @@ $white: #ffffff;
   font-size: 16px;
   cursor: pointer;
   color: $gray-color;
-  transition: all 0.3s ease;
+  position: relative;
+  transition: color 0.3s ease;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 
   &.active {
     color: $primary-color;
@@ -143,4 +216,11 @@ $white: #ffffff;
   &:hover {
     text-decoration: underline;
   }
+}
+
+// Footer 스타일 추가
+footer {
+  position: relative;
+  z-index: 2;
+  background: transparent;
 } 

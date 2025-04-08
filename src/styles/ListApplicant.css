@@ -1,129 +1,168 @@
 .l-list-applicant .container {
-  font-family: "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif";
+  font-family: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif';
   padding: 40px 20px;
 }
+
 .l-list-applicant .title {
   font-size: 2.5rem;
   color: #000000;
   margin-bottom: 15px;
   font-weight: bold;
 }
+
 .l-list-applicant .subtitle {
   font-size: 1.2rem;
   color: #000000;
   margin-bottom: 40px;
 }
-.l-list-applicant .top-cards {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  gap: 20px;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  margin-bottom: 40px;
+
+.l-list-applicant .subtitle-note {
+  font-size: 0.9rem;
+  color: #666666;
+  margin-bottom: 20px;
+  margin-top: -30px;
 }
+
+.l-list-applicant .subtitle-note::before {
+  content: "P.S. ";
+  font-style: italic;
+  color: #888888;
+}
+
 .l-list-applicant .card {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 200px;
-          flex: 1 1 200px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   cursor: pointer;
+  position: relative;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 150px 150px 1fr;
+      grid-template-columns: 150px 150px 1fr;
+  gap: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
+  border-bottom: 1px solid #000000;
 }
+
+.l-list-applicant .card:first-child {
+  border-top: 1px solid #000000;
+}
+
 .l-list-applicant .card:hover {
-  -webkit-transform: translateY(-2px);
-          transform: translateY(-2px);
-  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #A8D7FF;
 }
+
 .l-list-applicant .card-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 8px;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
+
 .l-list-applicant .card-company-heading {
   margin: 0;
   font-weight: bold;
+  text-align: center;
   font-size: 1.2rem;
+  color: #000000;
+  width: 100%;
 }
+
+.l-list-applicant .card-score {
+  text-align: center;
+}
+
 .l-list-applicant .card-match-rate {
-  color: #013A72;
-  background-color: #ffffff;
   font-weight: 600;
   display: inline-block;
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 6px;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-.l-list-applicant .list-container {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+
+.l-list-applicant .card-match-rate.score-excellent {
+  color: #ffffff;
+  background-color: #06B6D4;
 }
-.l-list-applicant .list-item {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 15px 0;
-  margin-bottom: -1px;
+
+.l-list-applicant .card-match-rate.score-good {
+  color: #ffffff;
+  background-color: #10B981;
 }
-.l-list-applicant .button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #013A72;
-  color: white;
-  border: none;
+
+.l-list-applicant .card-match-rate.score-fair {
+  color: #000000;
+  background-color: #FBBF24;
 }
-.l-list-applicant .pagination-container {
-  margin-top: 40px;
-  text-align: center;
+
+.l-list-applicant .card-match-rate.score-poor {
+  color: #ffffff;
+  background-color: #EF4444;
+}
+
+.l-list-applicant .card-summary .summary-section {
+  margin-bottom: 16px;
+}
+
+.l-list-applicant .card-summary .summary-section:last-child {
+  margin-bottom: 0;
+}
+
+.l-list-applicant .card-summary .summary-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #000000;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
-.l-list-applicant .pagination-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #013A72;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+
+.l-list-applicant .card-summary .summary-title .title-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
-.l-list-applicant .pagination-button:disabled {
-  background-color: #ccc;
-  cursor: default;
+
+.l-list-applicant .card-summary .summary-content {
+  color: #666;
+  font-size: 0.95rem;
+  display: block;
+  padding-left: 28px;
 }
+
+.l-list-applicant .card-summary .summary-content .content-line {
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.l-list-applicant .card-summary .summary-content .content-line:last-child {
+  margin-bottom: 0;
+}
+
 @media (max-width: 1023px) {
-  .l-list-applicant .top-cards {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-  }
   .l-list-applicant .card {
     width: 100%;
   }
 }
+
 @media (max-width: 767px) {
   .l-list-applicant .container {
     padding: 20px 10px;

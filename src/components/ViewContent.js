@@ -16,12 +16,6 @@ const ViewContent = ({role, id}) => {
     const navigate = useNavigate();
     
     const { matchResult } = location.state || {};
-    // const matchResult = {
-    //     "title": "블록체인글로벌 백엔드",
-    //     "summary": "핵심 강점: JAVA 및 Kotlin 경험, AWS 및 Docker 사용 경험 / 보완점: 금융 IT 경험 부족 / 종합 의견: 추천",
-    //     "total_score": 85.0,
-    //     "gpt_answer": "각 항목별 점수는 다음과 같습니다: 필수 자격요건 충족도 30점, 기술 스택 일치도 20점, 업무 경험 연관성 15점, 직무 적합성 10점, 기업 문화 및 가치관 적합성 10점으로 총 85점을 부여했습니다.",
-    // }
 
 
     if (!matchResult) {
@@ -70,7 +64,6 @@ const ViewContent = ({role, id}) => {
                                 if (!key || !value) return null;
 
                                 if (key.trim() === "종합 의견") {
-                                    // 종합 의견은 별도로 comment로 저장하고 렌더링 안 함
                                     if (!comment) setComment(value.trim());
                                     return null;
                                 }
