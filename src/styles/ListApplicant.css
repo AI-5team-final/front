@@ -1,0 +1,137 @@
+.l-list-applicant .container {
+  font-family: "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif";
+  padding: 40px 20px;
+}
+.l-list-applicant .title {
+  font-size: 2.5rem;
+  color: #000000;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.l-list-applicant .subtitle {
+  font-size: 1.2rem;
+  color: #000000;
+  margin-bottom: 40px;
+}
+.l-list-applicant .top-cards {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.l-list-applicant .card {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 200px;
+          flex: 1 1 200px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.l-list-applicant .card:hover {
+  -webkit-transform: translateY(-2px);
+          transform: translateY(-2px);
+  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.l-list-applicant .card-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 8px;
+}
+.l-list-applicant .card-company-heading {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.l-list-applicant .card-match-rate {
+  color: #013A72;
+  background-color: #ffffff;
+  font-weight: 600;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.l-list-applicant .list-container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.l-list-applicant .list-item {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+  margin-bottom: -1px;
+}
+.l-list-applicant .button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #013A72;
+  color: white;
+  border: none;
+}
+.l-list-applicant .pagination-container {
+  margin-top: 40px;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+}
+.l-list-applicant .pagination-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #013A72;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.l-list-applicant .pagination-button:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+@media (max-width: 1023px) {
+  .l-list-applicant .top-cards {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .l-list-applicant .card {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .l-list-applicant .container {
+    padding: 20px 10px;
+  }
+  .l-list-applicant .title {
+    font-size: 2rem;
+  }
+  .l-list-applicant .subtitle {
+    font-size: 1rem;
+  }
+}

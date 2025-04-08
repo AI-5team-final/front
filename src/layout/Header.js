@@ -1,3 +1,4 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { RiCopperCoinLine } from "react-icons/ri";
@@ -8,6 +9,7 @@ import PaymentModal from "../components/PaymentModal";
 import { useUser } from "../context/UserContext";
 import useAuth from "../hooks/useAuth";
 import useToken from "../hooks/useToken";
+
 
 const Header = () => {
     const { userInfo } = useUser();
