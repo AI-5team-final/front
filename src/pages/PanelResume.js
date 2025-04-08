@@ -6,11 +6,14 @@ import { toast } from 'react-toastify';
 import useToken from '../hooks/useToken';
 import fetchClient from '../utils/fetchClient';
 import '../styles/PanelResume.scss';
+import UploadCheckModal from '../modal/UploadCheckModal';
+import DeleteModal from '../modal/DeleteModal';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { token, removeToken } = useToken();
@@ -90,6 +93,7 @@ const PanelResume = () => {
 
     const handleDeleteRequest = (resume) => {
         setDeleteTarget(resume);
+        // setIsDeleteModalOpen(prev=>!prev);
     };
 
     const handleConfirmDelete = async () => {
@@ -147,6 +151,9 @@ const PanelResume = () => {
             fetchResumes();
         }
     }, [token]);
+
+    const closeUploadModal = () => setIsModalOpen(prev=>!prev);
+    const closeDeleteModal = () => setDeleteTarget(null);
 
     return (
         <main className="l-panel-resume">
@@ -227,32 +234,13 @@ const PanelResume = () => {
                     </div>
                 </div>
             </section>
+            
 
-            {isModalOpen && (
-                <div className="modal-backdrop">
-                    <div className="modal">
-                        <p>이 이력서를 업로드하시겠습니까?</p>
-                        <p className="modal-file-name">{fileState.name}</p>
-                        <div className="modal-buttons">
-                            <button onClick={handleConfirmUpload}>확인</button>
-                            <button onClick={() => setIsModalOpen(false)}>취소</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* 이력서 업로드 확인 모달 */}
+            <UploadCheckModal isOpen={isModalOpen} onRequestClose={closeUploadModal} fileState={fileState} handleSubmit={handleConfirmUpload}/>
 
-            {deleteTarget && (
-                <div className="modal-backdrop">
-                    <div className="modal">
-                        <p>정말 이 이력서를 삭제하시겠습니까?</p>
-                        <p className="modal-file-name">{deleteTarget.pdfFileName}</p>
-                        <div className="modal-buttons">
-                            <button onClick={handleConfirmDelete}>삭제</button>
-                            <button onClick={() => setDeleteTarget(null)}>취소</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* 삭제 모달 */}
+            <DeleteModal isOpen={deleteTarget} onRequestClose={closeDeleteModal} deleteTarget={deleteTarget} handleConfirmDelete={handleConfirmDelete} />
         </main>
     );
 };
