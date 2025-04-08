@@ -1,23 +1,32 @@
 import { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/ViewContent.scss";
+import { useMatch } from "../context/MatchContext";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiCopperCoinLine } from "react-icons/ri";
-import DonutChart from "./DonutChart";
 import { toast } from "react-toastify";
 import fetchClient from "../utils/fetchClient";
+import DonutChart from "./DonutChart";
+import "../styles/ViewContent.scss";
+
 
 const ViewContent = ({ role }) => {
   const { userInfo } = useUser();
+  const { matchResults } = useMatch();
   const [name] = useState(userInfo?.name || "");
   const [comment, setComment] = useState("");
   const [agentFeedback, setAgentFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const { id } = useParams();
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { matchResult } = location.state || {};
+  const matchResult = matchResults[parseInt(id)];
+
+  if (!matchResult) {
+      navigate('/list');
+      return null;
+  }
 
   if (!matchResult) {
     navigate("/");
