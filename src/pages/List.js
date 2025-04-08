@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
 import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
-import useToken from '../hooks/useToken';
-import { useLocation } from 'react-router-dom';
 import fetchClient from '../utils/fetchClient';
-import { useMatch } from '../context/MatchContext';
+import useToken from '../hooks/useToken';
+import '../styles/List.scss';
+import '../styles/SliderTransition.scss';
+import '../styles/LoadingSpinner.scss';
 
 const List = () => {
-    const { role } = useToken();
     const location = useLocation();
+    const { role } = useToken();
     const { matchResults, setMatchResults } = useMatch();
     const [loading, setLoading] = useState(false);
+    const [showContent, setShowContent] = useState(false);
 
     useEffect(() => {
         const processEtoC = async () => {
@@ -42,6 +46,7 @@ const List = () => {
 
                 const data = await response.json();
                 setMatchResults(data);
+                setTimeout(() => setShowContent(true), 100);
             } catch (error) {
                 console.error('EtoC 처리 중 오류:', error);
             } finally {
@@ -52,20 +57,33 @@ const List = () => {
         processEtoC();
     }, [location.state, matchResults.length, setMatchResults]);
 
-    return (
-        <main className="l-list">
-            <div className='inner'>
-                {loading ? (
-                    <div>처리 중...</div>
-                ) : (
-                    <>
-                        {role === 'HR' && <ListHR />}
-                        {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
-                    </>
-                )}
+    if (loading) {
+        return (
+            <div className="l-list">
+                <div className="slider-transition">
+                    <div className="loading-spinner">
+                        <div className="loading-spinner__spinner">
+                            <div className="loading-spinner__dot"></div>
+                            <div className="loading-spinner__dot"></div>
+                            <div className="loading-spinner__dot"></div>
+                        </div>
+                        <p className="loading-spinner__text">이력서를 분석하고 있습니다.<br />잠시만 기다려주세요...</p>
+                    </div>
+                </div>
             </div>
-        </main>
+        );
+    }
+
+    return (
+        <div className="l-list">
+            <div className="slider-transition">
+                <div className={`content-container ${showContent ? 'show' : ''}`}>
+                    {role === 'HR' && <ListHR />}
+                    {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
+                </div>
+            </div>
+        </div>
     );
-}
+};
 
 export default List;
