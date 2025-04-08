@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../styles/fonts.css';
 import '../styles/ListHR.scss';
 
 const ListHR = () => {

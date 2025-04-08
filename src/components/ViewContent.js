@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useUser } from '../context/UserContext'; 
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../styles/ViewContent.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { RiCopperCoinLine } from 'react-icons/ri';
 import DonutChart from './DonutChart';
+import '../styles/ViewContent.scss';
 
 const ViewContent = ({role, id}) => {
 

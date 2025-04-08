@@ -1,15 +1,14 @@
 
 import { Link, useNavigate } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-
-import PaymentModal from "../components/PaymentModal";
 import { useUser } from "../context/UserContext";
+import PaymentModal from "../components/PaymentModal";
 import useAuth from "../hooks/useAuth";
 import useToken from "../hooks/useToken";
-
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Header = () => {
     const { userInfo } = useUser();
@@ -89,10 +88,12 @@ const Header = () => {
                 
                 <div className="side-menu-cont">
                     <p>안녕하세요 <strong>{userInfo?.name}</strong>님</p>
-                    <p className="coin-display" onClick={openPaymentModal}>
+                    <p className="coin-display" onClick={openPaymentModal} style={{ cursor: "pointer" }}>
                         <RiCopperCoinLine /> {userInfo?.credit ?? 0}
                     </p>
-                    <button onClick={handlePageRedirect}>이력서 관리</button>
+                    <button onClick={handlePageRedirect}>
+                        이력서 관리<MdKeyboardArrowRight className='icon-arrow' />
+                    </button>
                 </div>
                 <button onClick={logout} className="btn-logout">로그아웃</button>
             </div>

@@ -5,9 +5,8 @@ import { GrDocumentPdf } from 'react-icons/gr';
 import { RiRobot2Line } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../styles/ContentApplicant.css';
 import fetchClient from '../utils/fetchClient';
+import '../styles/ContentApplicant.scss';
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
