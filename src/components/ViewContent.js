@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useUser } from '../context/UserContext';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
-import '../styles/ViewContent.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { RiCopperCoinLine } from 'react-icons/ri';
 import DonutChart from './DonutChart';
