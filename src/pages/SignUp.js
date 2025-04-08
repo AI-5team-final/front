@@ -206,19 +206,24 @@ const SignUp = () => {
                                     />
                                 )}
 
-                                <button
-                                    type="button"
-                                    onClick={handleCheckEmail}
-                                    className="check-email-button"
-                                >
-                                    이메일 확인
-                                </button>
+                                <div className="check-email-row">
+                                    {/* 왼쪽 메시지 */}
+                                    {emailCheckMessage && (
+                                        <p className={isEmailAvailable ? "success-message" : "error-message"}>
+                                            {emailCheckMessage}
+                                        </p>
+                                    )}
+
+                                    {/* 오른쪽 버튼 */}
+                                    <button
+                                        type="button"
+                                        onClick={handleCheckEmail}
+                                        className="check-email-button"
+                                    >
+                                        이메일 확인
+                                    </button>
+                                </div>
                             </div>
-                            {emailCheckMessage && (
-                                <p className={isEmailAvailable ? "success-message" : "error-message"}>
-                                    {emailCheckMessage}
-                                </p>
-                            )}
                         </div>
 
                         <div className="form-group">

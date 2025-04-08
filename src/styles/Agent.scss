@@ -1,0 +1,59 @@
+.agent-page {
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .analyzer-result {
+    max-width: 800px;
+    width: 100%;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f1f1f1;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@
         font-family: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif';
         padding: 40px 20px;
     }
-    
+
     .title {
         font-size: 2.5rem;
         color: #000000;
@@ -23,7 +23,7 @@
         margin-bottom: 20px;
         margin-top: -30px;
     }
-    
+
     .subtitle-note::before {
         content: "P.S. ";
         font-style: italic;
@@ -133,7 +133,7 @@
             font-size: 0.95rem;
             display: block;
             padding-left: 28px;  // 아이콘 너비 + 여백만큼 들여쓰기
-            
+
             .content-line {
                 margin-bottom: 4px;
                 line-height: 1.5;

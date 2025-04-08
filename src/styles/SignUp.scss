@@ -135,7 +135,9 @@ input.error {
     cursor: not-allowed;  // 비활성화 시 커서 변경
   }
 }
-
+.email-input-group input[type="text"] {
+  width: 47%;
+}
 .back-to-login-button {
   background-color: $secondary-color;
   color: $white;
@@ -158,7 +160,7 @@ input.error {
   border-radius: 5px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-  width: 45%;
+  width: 47%;
   &:focus {
     @include input-focus;
   }
@@ -180,4 +182,40 @@ input.mismatch {
   color: $error-color;
   text-align: center;
   margin-top: 15px;
-} 
+}
+
+.check-email-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // 혹은 gap + margin-auto 활용
+  margin-top: 8px;
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .check-email-button {
+    margin-left: auto; // 버튼을 오른쪽 끝으로
+    padding: 10px 16px;
+    background-color: $primary-color;
+    color: $white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $primary-hover;
+    }
+  }
+}
+
+.success-message {
+  color: green;
+}
+.error-message {
+  color: $error-color;
+}
+
