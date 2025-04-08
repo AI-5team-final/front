@@ -1,25 +1,24 @@
 import { useState } from 'react';
-import { useUser } from '../context/UserContext'; 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { RiCopperCoinLine } from 'react-icons/ri';
 import DonutChart from './DonutChart';
 import '../styles/ViewContent.scss';
 
-const ViewContent = ({role, id}) => {
-
+const ViewContent = ({role}) => {
     const { userInfo, setUserInfo } = useUser();
+    const { matchResults } = useMatch();
     const [name, setName] = useState(userInfo? userInfo.name : '');
     const [comment, setComment] = useState("");
-
-    const location = useLocation();
     const navigate = useNavigate();
+    const { id } = useParams();
     
-    const { matchResult } = location.state || {};
-
+    const matchResult = matchResults[parseInt(id)];
 
     if (!matchResult) {
-        navigate('/');
+        navigate('/list');
         return null;
     }
 
@@ -27,7 +26,6 @@ const ViewContent = ({role, id}) => {
     summaryItems.sort((a, b) => {
         return a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0;
     });
-
 
     return (
         <main className="l-view">

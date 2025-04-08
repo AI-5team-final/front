@@ -1,4 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from './context/UserContext';
+import { ToastContainer } from 'react-toastify';
+import { MatchProvider } from './context/MatchContext';
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
 import List from "./pages/List";
@@ -9,8 +12,6 @@ import SignUp from "./pages/SignUp";
 import PanelResume from './pages/PanelResume';
 import PrivateRoute from "./components/PrivateRoute";
 import useAutoRefreshToken from './hooks/useAutoRefreshToken';
-import { UserProvider } from './context/UserContext';
-import { ToastContainer } from 'react-toastify';
 import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
@@ -50,9 +51,11 @@ function AppRoutes() {
 function App() {
     return (
       <UserProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <MatchProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </MatchProvider>
         <ToastContainer position="top-center" autoClose={2000} />
       </UserProvider>
     );
