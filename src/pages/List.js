@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
 import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
+import LoadingSpinner from '../components/LoadingSpinner';
 import fetchClient from '../utils/fetchClient';
 import useToken from '../hooks/useToken';
 import '../styles/List.scss';
@@ -59,30 +60,28 @@ const List = () => {
 
     if (loading) {
         return (
-            <div className="l-list">
+            <main className="l-list loading">
                 <div className="slider-transition">
                     <div className="loading-spinner">
-                        <div className="loading-spinner__spinner">
-                            <div className="loading-spinner__dot"></div>
-                            <div className="loading-spinner__dot"></div>
-                            <div className="loading-spinner__dot"></div>
-                        </div>
-                        <p className="loading-spinner__text">이력서를 분석하고 있습니다.<br />잠시만 기다려주세요...</p>
+                        <LoadingSpinner />
+                        <p className="loading-spinner__text">
+                            이력서를 분석하고 있습니다.<br />잠시만 기다려주세요...
+                        </p>
                     </div>
                 </div>
-            </div>
+            </main>
         );
     }
 
     return (
-        <div className="l-list">
-            <div className="slider-transition">
+        <main className="l-list">
+            <div className="inner">
                 <div className={`content-container ${showContent ? 'show' : ''}`}>
                     {role === 'HR' && <ListHR />}
                     {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 
