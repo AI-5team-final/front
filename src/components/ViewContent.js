@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useUser } from "../context/UserContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/ViewContent.css";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { RiCopperCoinLine } from "react-icons/ri";
-import DonutChart from "./DonutChart";
-import { toast } from "react-toastify";
+import { useState } from 'react';
+import { useUser } from '../context/UserContext';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
+import { MdKeyboardArrowRight } from 'react-icons/md';
+import { RiCopperCoinLine } from 'react-icons/ri';
+import DonutChart from './DonutChart';
+import '../styles/ViewContent.scss';
 import fetchClient from "../utils/fetchClient";
+import {toast} from "react-toastify";
 
 const ViewContent = ({ role }) => {
   const { userInfo } = useUser();
@@ -40,11 +41,7 @@ const ViewContent = ({ role }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ gpt_answer: matchResult.gpt_answer }),
       });
-
-      if (!res.ok) throw new Error("Agent 분석 실패");
-      const feedback = await res.text();
-
-      setAgentFeedback(feedback);
+      setAgentFeedback(res);
       toast.success("Fit Advisor 분석 완료!");
     } catch (err) {
       console.error("Agent 호출 오류:", err);

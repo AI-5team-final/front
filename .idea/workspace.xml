@@ -5,7 +5,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee8e5890-7615-46f2-a1ca-a09dd73741bc" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/AgentUsageButton.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SliderTransition.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/context/MatchContext.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modal/DeleteModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modal/LoadModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modal/MatchingModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modal/PaymentModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modal/UploadCheckModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/CreditDashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/AgentUsageButton.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/CreditDashboard.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/List.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/LoadingSpinner.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/SliderTransition.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/modal.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ContentApplicant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ContentApplicant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ContentHR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ContentHR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ErrorBondary.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ErrorBondary.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListApplicant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListApplicant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListHR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListHR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelResume.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PanelResume.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PaymentModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ViewContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ViewContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layout/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/Layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/List.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PaySuccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PaySuccess.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SignUp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ContentApplicant.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ContentApplicant.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ContentApplicant.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ContentHR.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Layout.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Layout.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ListApplicant.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/ListApplicant.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ListApplicant.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ListHR.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/PanelResume.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/PanelResume.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/PanelResume.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Payment.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Payment.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Payment.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/SignUp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ViewContent.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/reportError.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/reportError.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +90,8 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "son",
-    "last_opened_file_path": "C:/250308-son/final_front",
+    "git-widget-placeholder": "son 병합 중",
+    "last_opened_file_path": "C:/250308-son/final_front/front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -128,6 +175,7 @@
       <workItem from="1744082390288" duration="63000" />
       <workItem from="1744082467504" duration="809000" />
       <workItem from="1744083289959" duration="18000" />
+      <workItem from="1744178013678" duration="1092000" />
     </task>
     <servers />
   </component>
