@@ -1,7 +1,7 @@
 @import '_Common';
 
 $headerHeight: 68px;
-$footerHeight: 132px;
+$footerHeight: 124px;
 
 // 공통
 .coin-display {
@@ -146,7 +146,6 @@ footer {
                 }
             }
 
-
             .btn-menu {
                 display: block;
                 
@@ -261,7 +260,7 @@ footer {
 
 @media (max-width: $mobile){
     $headerHeight: 58px;
-    $footerHeight: 92px;
+    $footerHeight: 84px;
     header {
         .inner {
             height: $headerHeight;
