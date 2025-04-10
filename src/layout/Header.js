@@ -63,7 +63,7 @@ const Header = () => {
                         </p>
                         <span></span>
                         <p className="coin-display" onClick={openPaymentModal} style={{ cursor: "pointer" }}>
-                            <RiCopperCoinLine /> {userInfo?.credit ?? 0}
+                            <RiCopperCoinLine /> {userInfo?.credit ? new Intl.NumberFormat().format(userInfo.credit) : 0}
                         </p>
                         <span></span>
                         <button type="button" onClick={handlePageRedirect}>
