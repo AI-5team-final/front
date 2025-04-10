@@ -13,14 +13,14 @@ import MarkdownResult from "./MarkdownResult";
 
 
 const ViewContent = ({ role }) => {
-
-    const { userInfo } = useUser();
-    const { matchResults } = useMatch();
-    const [name] = useState(userInfo?.name || "");
-    const [comment, setComment] = useState("");
-    const [agentFeedback, setAgentFeedback] = useState("");
-    const [loading, setLoading] = useState(false);
-    const { id } = useParams();
+  const { userInfo } = useUser();
+  const { matchResults } = useMatch();
+  const [name] = useState(userInfo?.name || "");
+  const [comment, setComment] = useState("");
+  const [agentFeedback, setAgentFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const { updateCredit } = useUser();
 
     //   const location = useLocation();
     const navigate = useNavigate();
@@ -43,28 +43,54 @@ const ViewContent = ({ role }) => {
         a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0
         );
 
-    const handleAnalyzeWithAgent = async () => {
-        try {
-        console.log("에이전트 요청")
-        setLoading(true);
-        const res = await fetchClient("/pdf/agent", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ gpt_answer: matchResult.gpt_answer }),
-        });
+  const handleAnalyzeWithAgent = async () => {
+    
+    try {
+      // 1. 크레딧 차감 요청 (500원 차감)
+      const res1 = await fetchClient('/payments/credit', {
+        method: 'POST',
+      });
+
+      if (!res1.ok) {
+        throw new Error('크레딧 차감 실패');
+      }
+      const data = await res1.json();
+      toast.success("크레딧 차감 후 분석을 시작합니다.");
+      updateCredit(data.balance);
+
+      // 2. 에이전트 분석 요청
+      console.log("에이전트 요청")
+      setLoading(true);
+      const res = await fetchClient("/pdf/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gpt_answer: matchResult.gpt_answer }),
+      });
 
         if (!res.ok) throw new Error("Agent 분석 실패");
         const feedback = await res.text();
 
-        setAgentFeedback(feedback);
-        toast.success("Fit Advisor 분석 완료!");
-        } catch (err) {
-        console.error("Agent 호출 오류:", err);
-        toast.error("Agent 분석 중 오류 발생");
-        } finally {
-        setLoading(false);
-        }
-    };
+      setAgentFeedback(feedback);
+      toast.success("Fit Advisor 분석 완료! 크레딧이 차감되었습니다.");
+    } catch (err) {
+      console.error("Agent 호출 오류:", err);
+      toast.error("Agent 분석 중 오류가 발생했습니다. 크레딧 차감을 취소합니다.");
+      // 오류 발생 시 크레딧 차감 롤백
+      const rollbackRes = await fetchClient('/payments/rollback', {
+        method: 'POST',
+      });
+
+      if (rollbackRes.ok) {
+        toast.success('크레딧 차감을 취소하였습니다.');
+        const data = await rollbackRes.json();
+        updateCredit(data.balance);
+      } else {
+        toast.error('크레딧 차감 취소를 실패했습니다.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
     return (
         <main className="l-view">
@@ -122,59 +148,38 @@ const ViewContent = ({ role }) => {
                     }
 
 
-                    return (
-                    <div key={index}>
-                        <p className="key">{key.trim()}</p>
-                        <p className="value">{value.trim()}</p>
-                    </div>
-                    );
-                })}
-                </div>
+                return (
+                  <div key={index}>
+                    <p className="key">{key.trim()}</p>
+                    <p className="value">{value.trim()}</p>
+                  </div>
+                );
+              })}
             </div>
-            </div>
-            <div className="bg">
-                <div className="inner">
-                    
-                {loading ? (
-                    <div className="loading-spinner">
-                        <LoadingSpinner/>
-                        <p className="loading-spinner__text">
-                            결과를 분석중입니다.<br />잠시만 기다려주세요...
-                        </p>
-                    </div>
-                    ) : !agentFeedback ? (
-                    // 버튼 + 안내
-                    <>
-                        <button
-                        type="button"
-                        className="btn-advisor"
-                        onClick={handleAnalyzeWithAgent}
-                        disabled={loading || agentFeedback}
-                        >
-                        <div>
-                            <strong>Fit Advisor - AI 맞춤 로드맵 받기</strong>
-                            <span>
-                            지금은 첫 1회 무료 제공 중! ✨ 회당 <RiCopperCoinLine /> 500
-                            </span>
-                        </div>
-                        <MdKeyboardArrowRight className="icon-arrow" />
-                        </button>
-                        <small>
-                        *Fit Advisor는 AI가 매칭 결과를 분석해, 앞으로의 성장 방향을 제안해주는 프리미엄 기능입니다.
-                        </small>
-                    </>
-                    ) : (
-                    // 분석 결과
-                    <div style={{ marginTop: "2rem" }}>
-                        <h3>Fit Advisor의 분석 결과</h3>
-                        <div className="advisor-feedback">{agentFeedback}</div>
-                        <MarkdownResult markdownText={agentFeedback}/>
-                    </div>
-                )}
-
-
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div className="bg">
+          <div className="inner">
+            <button
+              type="button"
+              className="btn-advisor"
+              onClick={handleAnalyzeWithAgent}
+              disabled={loading || agentFeedback}
+            >
+              <div>
+                <strong>Fit Advisor - AI 맞춤 로드맵 받기</strong>
+                <span>
+                  첫 2회 무료 제공 중! ✨ 회당 <RiCopperCoinLine /> 500
+                </span>
+              </div>
+              <MdKeyboardArrowRight className="icon-arrow" />
+            </button>
+            <small>
+              *Fit Advisor는 AI가 매칭 결과를 분석해, 앞으로의 성장 방향을
+              제안해주는 프리미엄 기능입니다.
+            </small>
+          </div>
+        </div>
 
             </section>
         </main>
