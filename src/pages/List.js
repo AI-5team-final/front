@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
 import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
@@ -16,18 +16,16 @@ const List = () => {
     const { matchResults, setMatchResults } = useMatch();
     const [loading, setLoading] = useState(false);
     const [showContent, setShowContent] = useState(false);
+    const navigate = useNavigate();
+    
 
     useEffect(() => {
         const processEtoC = async () => {
             const { resumeFile } = location.state || {};
-            
-            // 이미 결과가 있고 새로운 파일이 없는 경우 재연산 방지
-            if (!resumeFile && matchResults.length > 0) {
-                return;
-            }
 
             if (!resumeFile) {
-                console.log('이력서 파일이 없습니다.');
+                console.warn("resumeFile이 없음 → /로 이동");
+                navigate("/");
                 return;
             }
 
@@ -58,6 +56,8 @@ const List = () => {
         processEtoC();
     }, [location.state, matchResults.length, setMatchResults]);
 
+
+
     if (loading) {
         return (
             <main className="l-list loading">
@@ -75,11 +75,9 @@ const List = () => {
 
     return (
         <main className="l-list">
-            <div className="inner">
-                <div className={`content-container ${showContent ? 'show' : ''}`}>
-                    {role === 'HR' && <ListHR />}
-                    {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
-                </div>
+            <div className={`content-container ${showContent ? 'show' : ''}`}>
+                {role === 'HR' && <ListHR />}
+                {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
             </div>
         </main>
     );

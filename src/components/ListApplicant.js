@@ -36,11 +36,11 @@ const ListApplicant = () => {
 
     return (
         <div className="l-list-applicant">
-            <main className="container">
+            <div className='inner'>
                 <h1 className="title">취업 성공 기원, Ai매치</h1>
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
                 <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
-
+                
                 <div className="list-applicant">
                     {matchResults && matchResults.length > 0 ? (
                         matchResults.map((result, index) => (
@@ -79,7 +79,7 @@ const ListApplicant = () => {
                                                 </div>
                                             );
                                         }
-
+                
                                         // 나머지는 상세 내용을 줄바꿈하여 표시
                                         return (
                                             <div key={idx} className="summary-section">
@@ -104,7 +104,7 @@ const ListApplicant = () => {
                         <div className="no-results">매칭된 공고가 없습니다.</div>
                     )}
                 </div>
-            </main>
+            </div>
         </div>
     );
 };
