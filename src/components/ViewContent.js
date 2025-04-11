@@ -1,24 +1,32 @@
-import { useState } from 'react';
-import { useUser } from '../context/UserContext';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useMatch } from '../context/MatchContext';
-import { MdKeyboardArrowRight } from 'react-icons/md';
-import { RiCopperCoinLine } from 'react-icons/ri';
-import DonutChart from './DonutChart';
-import '../styles/ViewContent.scss';
+import { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { useMatch } from "../context/MatchContext";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { RiCopperCoinLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 import fetchClient from "../utils/fetchClient";
-import {toast} from "react-toastify";
+import DonutChart from "./DonutChart";
+import "../styles/ViewContent.scss";
+
 
 const ViewContent = ({ role }) => {
   const { userInfo } = useUser();
+  const { matchResults } = useMatch();
   const [name] = useState(userInfo?.name || "");
   const [comment, setComment] = useState("");
   const [agentFeedback, setAgentFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const { id } = useParams();
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { matchResult } = location.state || {};
+  const matchResult = matchResults[parseInt(id)];
+
+  if (!matchResult) {
+      navigate('/list');
+      return null;
+  }
 
   if (!matchResult) {
     navigate("/");
@@ -41,7 +49,11 @@ const ViewContent = ({ role }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ gpt_answer: matchResult.gpt_answer }),
       });
-      setAgentFeedback(res);
+
+      if (!res.ok) throw new Error("Agent 분석 실패");
+      const feedback = await res.text();
+
+      setAgentFeedback(feedback);
       toast.success("Fit Advisor 분석 완료!");
     } catch (err) {
       console.error("Agent 호출 오류:", err);
@@ -93,6 +105,7 @@ const ViewContent = ({ role }) => {
             <p className="gpt-answer">{matchResult.gpt_answer}</p>
           </div>
 
+
           <div className="cont">
             <h4>기본평가</h4>
             <div className="box">
@@ -104,6 +117,7 @@ const ViewContent = ({ role }) => {
                   if (!comment) setComment(value.trim());
                   return null;
                 }
+
 
                 return (
                   <div key={index}>

@@ -4,55 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee8e5890-7615-46f2-a1ca-a09dd73741bc" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/AgentUsageButton.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/SliderTransition.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/MatchContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modal/DeleteModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modal/LoadModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modal/MatchingModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modal/PaymentModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modal/UploadCheckModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/CreditDashboard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/AgentUsageButton.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/CreditDashboard.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/List.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/LoadingSpinner.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/SliderTransition.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/modal.scss" afterDir="false" />
+    <list default="true" id="16103b7e-39f0-48cf-8416-6e5d8539c0b6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ContentApplicant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ContentApplicant.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ContentHR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ContentHR.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ErrorBondary.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ErrorBondary.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListApplicant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListApplicant.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListHR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListHR.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PanelResume.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PanelResume.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PaymentModal.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ViewContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ViewContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layout/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/Layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/List.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/List.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PaySuccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PaySuccess.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SignUp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ContentApplicant.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ContentApplicant.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ContentApplicant.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ContentHR.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Layout.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Layout.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ListApplicant.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ListApplicant.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ListApplicant.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ListHR.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Main.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/PanelResume.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/PanelResume.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/PanelResume.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Payment.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Payment.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Payment.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/SignUp.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ViewContent.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/reportError.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/reportError.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,26 +19,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <favorite-branches>
-      <branch-storage>
-        <map>
-          <entry type="LOCAL">
-            <value>
-              <list>
-                <branch-info repo="$PROJECT_DIR$" source="dev" />
-              </list>
-            </value>
-          </entry>
-        </map>
-      </branch-storage>
-    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="2vFVRJyW1uU32sr7x6DGa5V5Tyy" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2vZM9jsYxqPIvE5G2VZOf2ySBIg" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="flattenPackages" value="true" />
@@ -91,68 +37,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "son 병합 중",
-    "last_opened_file_path": "C:/250308-son/final_front/front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
+    "last_opened_file_path": "C:/250308-son/final_front",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.tabs",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.3.5\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="front" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.FlaskServer">
-      <module name="front" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="front" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -164,18 +53,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
-      <changelist id="ee8e5890-7615-46f2-a1ca-a09dd73741bc" name="변경" comment="" />
-      <created>1743740800977</created>
+      <changelist id="16103b7e-39f0-48cf-8416-6e5d8539c0b6" name="변경" comment="" />
+      <created>1744347994406</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1743740800977</updated>
-      <workItem from="1743740802295" duration="13985000" />
-      <workItem from="1743984425665" duration="24472000" />
-      <workItem from="1744082015495" duration="357000" />
-      <workItem from="1744082390288" duration="63000" />
-      <workItem from="1744082467504" duration="809000" />
-      <workItem from="1744083289959" duration="18000" />
-      <workItem from="1744178013678" duration="1092000" />
+      <updated>1744347994406</updated>
+      <workItem from="1744347997687" duration="107000" />
     </task>
     <servers />
   </component>

@@ -44,7 +44,7 @@ function AppRoutes() {
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
         <Route path="mypage/credits" element={<CreditDashboard />} />
-      </Route>
+    </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}
       <Route path="/login" element={<Login />} />
@@ -66,5 +66,6 @@ function App() {
       </UserProvider>
     );
   }
+
 
 export default App;
