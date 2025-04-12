@@ -8,6 +8,7 @@ import '../styles/ContentApplicant.scss';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import LoadModal from '../modal/LoadModal';
 import MatchingModal from '../modal/MatchingModal';
+import TutorialGuide from './TutorialGuide';
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -149,6 +150,7 @@ const ContentApplicant = () => {
 
     return (
         <main>
+            <TutorialGuide page="applicant" />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
