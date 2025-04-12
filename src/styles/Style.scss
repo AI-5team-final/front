@@ -2,9 +2,8 @@
 
 body {
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    color: $black;
 }
-
-
 
 .inner {
     width: 1400px;
@@ -26,9 +25,13 @@ body {
 
 
 @media (max-width: $tablet) {
-    
+    .sub-tit {
+        font-size: 2.5rem;
+    }
 }
 
 @media (max-width: $mobile) {
-    
+    .sub-tit {
+        font-size: 2rem;
+    }
 }

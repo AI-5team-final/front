@@ -1,6 +1,5 @@
-// components/ErrorBoundary.js
 import React from "react";
-import { reportError } from "../utils/reportError"; // 경로는 프로젝트에 맞게 조정
+import { reportError } from "../utils/reportError"; 
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("❌ ErrorBoundary caught an error:", error);
+    console.error("ErrorBoundary caught an error:", error);
 
     reportError({
       error,
@@ -29,15 +28,15 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div style={{ padding: "2rem", textAlign: "center" }}>
-          <h2>문제가 발생했습니다. 잠시 후 다시 시도해주세요 🙏</h2>
+          <h2>문제가 발생했습니다. 잠시 후 다시 시도해주세요</h2>
           <p style={{ color: "gray", fontSize: "0.9rem", marginTop: "1rem" }}>
             {this.state.error?.message || "알 수 없는 오류입니다."}
           </p>
           <div style={{ marginTop: "1.5rem" }}>
-            <button onClick={this.handleReload} style={{ marginRight: "1rem" }}>
-              🔄 다시 시도
+            <button onClick={this.handleReload} style={{ marginRight: "1rem", cursor: "pointer" }}>
+              다시 시도
             </button>
-            <button onClick={this.handleGoHome}>🏠 홈으로 이동</button>
+            <button onClick={this.handleGoHome} style={{ cursor: "pointer" }}>홈으로 이동</button>
           </div>
         </div>
       );

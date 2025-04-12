@@ -1,3 +1,5 @@
+@import '_Common';
+
 // X button
 .btn-modal-close {
     position: absolute;
@@ -15,7 +17,7 @@
     .modal-title {
         font-size: 1.5rem;
         font-weight: 600;
-        color: #013A72;
+        color: $pointColor;
         margin-bottom: 20px;
         text-align: left;
         display: flex;
@@ -26,7 +28,7 @@
     .modal-filename {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #013A72;
+        color: $pointColor;
         margin: 15px 0;
         word-break: break-word;
     }
@@ -42,14 +44,19 @@
             border-radius: 6px;
             border: none;
             cursor: pointer;
-            // font-size: 14px;
             font-weight: 500;
-            background-color: #013A72;
+            background-color: $pointColor;
             color: #ffffff;
             transition: all 0.2s ease;
     
             &.cancel-button {
-                background-color: #6B7280;
+                background-color: $gray;
+                &:hover {
+                    background: #888;
+                }
+            }
+            &:hover {
+                background: $pointHover;
             }
         }
     }
@@ -61,14 +68,14 @@
     &-load {
         .resume-list-header {
             font-size: 1rem;
-            color: #666;
+            color: $gray;
             margin-bottom: 16px;
             text-align: left;
         }
     
         
         .divider {
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid $borderColor;
             margin: 16px 0;
         }
     
@@ -79,11 +86,11 @@
         width: 650px;
         .modal-subtitle {
             font-size: 1.1rem;
-            color: #455A64;
+            color: $gray;
             margin-bottom: 30px;
             text-align: left;
             line-height: 1.6;
-            background-color: #F5F9FF;
+            background-color: $bgColor;
             padding: 15px 20px;
             border-radius: 8px;
         }
@@ -96,15 +103,20 @@
                 .load-button {
                     padding: 8px 16px;
                     border-radius: 6px;
-                    border: 1px solid #013A72;
+                    border: 1px solid $pointColor;
                     background-color: #ffffff;
-                    color: #013A72;
+                    color: $pointColor;
                     cursor: pointer;
                     font-size: 14px;
                     font-weight: 500;
                     display: flex;
                     align-items: center;
                     gap: 6px;
+                    transition: 0.2s;
+                    &:hover {
+                        background: $pointColor;
+                        color: #fff;
+                    }
                 }
             }
     }
@@ -125,7 +137,7 @@
     
             &.selected-resume-item {
                 background-color: #f1f8ff;
-                border: 1px solid #013A72;
+                border: 1px solid $pointColor;
             }
             svg {
                 flex-shrink: 0;
@@ -138,5 +150,40 @@
         }    
             
     }
+    
+}
 
+@media (max-width: $mobile2){
+    .ReactModal__Content {
+        width: calc(100% - 40px);
+    }
+    .modal {
+        width: 100%;
+        padding: 0;
+        .modal-title {
+            font-size: 1.25rem;
+        }
+        .modal-buttons {
+            .modal-button {
+                font-size: 0.875rem;
+                padding: 8px 15px;
+            }
+        }
+
+        &-match {
+            .modal-subtitle {
+                font-size: 1rem;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .upload-section {
+                flex-direction: column;
+                align-items: flex-start;
+                input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
 }
