@@ -48,7 +48,8 @@ $white: #ffffff;
   h2 {
     text-align: center;
     color: $text-color;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    font-size: 25px;
   }
 }
 
@@ -125,6 +126,7 @@ input.error {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center;
 
   &.active {
     background-color: green;  // isValid가 true일 때 초록색 배경
@@ -149,6 +151,7 @@ input.error {
   transition: background-color 0.3s ease;
   margin-top: 10px;
   width: 100%;
+  text-align: center;
 
   &:hover {
     background-color: $secondary-hover;
