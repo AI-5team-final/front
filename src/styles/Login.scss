@@ -1,9 +1,6 @@
+@import '_Common';
+
 // Variables
-$primary-color: #007bff;
-$primary-hover: #0056b3;
-$text-color: #333;
-$gray-color: #666;
-$border-color: #ddd;
 $error-color: #dc3545;
 $white: #ffffff;
 $applicant-bg: #A8D7FF;
@@ -17,7 +14,7 @@ $hr-bg: #E1EAFE;
 }
 
 @mixin input-focus {
-  border-color: $primary-color;
+  borderColor: $pointColor;
   outline: none;
 }
 
@@ -117,7 +114,7 @@ $hr-bg: #E1EAFE;
 .tab-container {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 2px solid $border-color;
+  border-bottom: 2px solid $borderColor;
 }
 
 .tab-button {
@@ -127,7 +124,7 @@ $hr-bg: #E1EAFE;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: $gray-color;
+  color: $gray;
   position: relative;
   transition: color 0.3s ease;
   transform: translateZ(0);
@@ -135,8 +132,8 @@ $hr-bg: #E1EAFE;
   backface-visibility: hidden;
 
   &.active {
-    color: $primary-color;
-    border-bottom: 2px solid $primary-color;
+    color: $pointColor;
+    border-bottom: 2px solid $pointColor;
     margin-bottom: -2px;
   }
 }
@@ -160,10 +157,10 @@ $hr-bg: #E1EAFE;
 
   input {
     padding: 12px;
-    border: 1px solid $border-color;
+    border: 1px solid $borderColor;
     border-radius: 5px;
     font-size: 16px;
-    transition: border-color 0.3s ease;
+    transition: borderColor 0.3s ease;
 
     &:focus {
       @include input-focus;
@@ -173,7 +170,7 @@ $hr-bg: #E1EAFE;
 
 // Buttons
 .login-button {
-  background-color: $primary-color;
+  background-color: $pointColor;
   color: $white;
   padding: 12px;
   border: none;
@@ -184,7 +181,7 @@ $hr-bg: #E1EAFE;
   text-align: center;
 
   &:hover {
-    background-color: $primary-hover;
+    background-color: $pointHover;
   }
 }
 
@@ -200,17 +197,17 @@ $hr-bg: #E1EAFE;
   text-align: center;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid $borderColor;
 
   p {
-    color: $gray-color;
+    color: $gray;
     margin-bottom: 15px;
   }
 }
 
 .signup-link {
   display: inline-block;
-  color: $primary-color;
+  color: $pointColor;
   text-decoration: none;
   font-weight: 500;
 

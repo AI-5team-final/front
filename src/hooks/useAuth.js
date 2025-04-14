@@ -5,12 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from '../context/UserContext'; 
 import axiosClient from '../utils/axiosInstance';
 import config from '../config';
-
+import { useMatch } from '../context/MatchContext';
 
 const useAuth = () => {
   const navigate = useNavigate();
   const { setToken, removeToken, role } = useToken();
   const { setUserInfo, userInfo } = useUser();
+  const { setMatchResults } = useMatch();
 
   const login = async (username, password, userRole) => {
     try {
@@ -38,6 +39,7 @@ const useAuth = () => {
   const logout = async () => {
     try {
       await axiosClient.post('/auth/token/logout'); 
+      setMatchResults([]);
       toast.success('로그아웃 되었습니다!');
     } catch (err) {
       toast.error('서버와의 연결에 실패했습니다.');

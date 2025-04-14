@@ -1,11 +1,8 @@
+@import '_Common';
+
 // Variables
-$primary-color: #007bff;
-$primary-hover: #0056b3;
 $secondary-color: #6c757d;
 $secondary-hover: #5a6268;
-$text-color: #333;
-$gray-color: #666;
-$border-color: #ddd;
 $error-color: #dc3545;
 $white: #ffffff;
 
@@ -17,7 +14,7 @@ $white: #ffffff;
 }
 
 @mixin input-focus {
-  border-color: $primary-color;
+  border-color: $pointColor;
   outline: none;
 }
 
@@ -26,7 +23,7 @@ $white: #ffffff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: $bgColor;
 }
 
 // Signup Container
@@ -47,9 +44,8 @@ $white: #ffffff;
 
   h2 {
     text-align: center;
-    color: $text-color;
-    margin-bottom: 20px;
-    font-size: 25px;
+    ;
+    margin-bottom: 30px;
   }
 }
 
@@ -57,7 +53,7 @@ $white: #ffffff;
 .tab-container {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 2px solid $border-color;
+  border-bottom: 2px solid $borderColor;
 }
 
 .tab-button {
@@ -67,12 +63,12 @@ $white: #ffffff;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: $gray-color;
+  color: $gray;
   transition: all 0.3s ease;
 
   &.active {
-    color: $primary-color;
-    border-bottom: 2px solid $primary-color;
+    color: $pointColor;
+    border-bottom: 2px solid $pointColor;
     margin-bottom: -2px;
   }
 }
@@ -90,13 +86,13 @@ $white: #ffffff;
   gap: 8px;
 
   label {
-    color: #555;
+    color: $gray;
     font-weight: 500;
   }
 
   input {
     padding: 12px;
-    border: 1px solid $border-color;
+    border: 1px solid $borderColor;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
@@ -105,15 +101,15 @@ $white: #ffffff;
       @include input-focus;
     }
     &:not(:focus):not(:placeholder-shown) {
-      border-color: green;
+      border-color: $pointColor;
     }
   }
 }
 input:not(:focus):not(:placeholder-shown) {
-  border-color: green;
+  border-color: $pointColor;
 }
 input.error {
-  border-color: red;  // phoneError가 있으면 빨간 테두리
+  border-color: $error-color;  // phoneError가 있으면 빨간 테두리
 }
 
 // Buttons
@@ -129,16 +125,26 @@ input.error {
   text-align: center;
 
   &.active {
-    background-color: green;  // isValid가 true일 때 초록색 배경
+    background-color: $pointColor;  
+    &:hover {
+      background-color: $pointHover;
+    }
   }
 
   &:disabled {
-    background-color: $gray-color;  // 비활성화 상태
+    background-color: $gray;  // 비활성화 상태
     cursor: not-allowed;  // 비활성화 시 커서 변경
   }
 }
+.email-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+  flex-wrap: wrap;
+}
 .email-input-group input[type="text"] {
-  width: 47%;
+  width: 25%;
 }
 .back-to-login-button {
   background-color: $secondary-color;
@@ -149,7 +155,7 @@ input.error {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  // margin-top: 10px;
   width: 100%;
   text-align: center;
 
@@ -159,25 +165,25 @@ input.error {
 }
 .domain-select {
   padding: 12px;
-  border: 1px solid $border-color;
+  border: 1px solid $borderColor;
   border-radius: 5px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-  width: 47%;
+  width: 40%;
   &:focus {
     @include input-focus;
   }
 
   &.has-value {
-    border-color: green;
+    border-color: $pointColor;
   }
 }
 input.match {
-  border: 1px solid green;
+  border: 1px solid $pointColor;
 }
 
 input.mismatch {
-  border: 1px solid red;
+  border: 1px solid $error-color;
 }
 
 // Error Message
@@ -188,35 +194,37 @@ input.mismatch {
 }
 
 .check-email-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; // 혹은 gap + margin-auto 활용
-  margin-top: 8px;
-
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between; // 혹은 gap + margin-auto 활용
+  // margin-top: 8px;
+  height: 100%;
   p {
     font-size: 14px;
     margin: 0;
   }
 
   .check-email-button {
-    margin-left: auto; // 버튼을 오른쪽 끝으로
+    // margin-left: auto; // 버튼을 오른쪽 끝으로
     padding: 10px 16px;
-    background-color: $primary-color;
+    background-color: $pointColor;
     color: $white;
-    font-size: 14px;
+    height: 100%;
+    // font-size: 14px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: $primary-hover;
+      background-color: $pointHover;
     }
   }
 }
 
 .success-message {
-  color: green;
+  color: $pointColor;
+  margin: 10px 0;
 }
 .error-message {
   color: $error-color;

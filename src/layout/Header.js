@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -14,6 +14,7 @@ const Header = () => {
     const { logout } = useAuth();
     const { role } = useToken();
     const navigate = useNavigate();
+    const headerRef = useRef(null);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -37,13 +38,30 @@ const Header = () => {
     };
 
     useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > headerRef.current.style.height) {
+                headerRef.current.classList.add("active");
+            }else {
+                headerRef.current.classList.remove("active");
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
         const handleResize = () => {
             if (window.innerWidth > 1023) {
                 setIsMenuOpen(false);
             }
         };
         window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("scroll", handleScroll);
+        };
+
+       
+
     }, []);
 
     return (
@@ -52,7 +70,7 @@ const Header = () => {
             <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
 
             {/* Header */}
-            <header>
+            <header ref={headerRef}>
                 <div className="inner">
                     <h1 className="logo">
                         <Link to="/">
@@ -62,7 +80,7 @@ const Header = () => {
 
                     <div>
                         <p>
-                            {role === "HR" ? "함께 성장하는" : "취업 성공기원"},{" "}
+                            <span>{role === "HR" ? "함께 성장하는" : "취업 성공기원"},{" "}</span>
                             <strong>{userInfo?.name}</strong>님
                         </p>
                         <span></span>
