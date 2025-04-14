@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { useMatch } from "../context/MatchContext";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -30,30 +30,12 @@ const ViewContent = ({ role }) => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
-	
-
-	// list 뒤로 가기
-	useEffect(() => {
-
-		window.history.pushState(null, '', '');
-		
-		const handlePopState = () => {
-			console.log("실행2");
-			navigate('/list', { state: { fromView: true }});
-		};
-	
-		window.addEventListener('popstate', handlePopState);
-	
-		return () => {
-			window.removeEventListener('popstate', handlePopState);
-		};
-	}, [navigate]);
 
 	
 	if(!matchResult){
 		console.warn("매칭 결과가 없습니다.")
-		navigate("/");
-		return;
+		
+		return <Navigate to="/"/>;
 	}
 
 	const summaryItems = matchResult?.summary.split("/").map((item) => item.trim()).sort((a, b) =>

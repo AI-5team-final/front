@@ -69,6 +69,8 @@ const ContentApplicant = () => {
             return;
         }
 
+        localStorage.setItem("resumeFileLocal", fileState.file);
+
         // List 페이지로 이동하면서 파일 전달
         navigate('/list', { 
             state: { 
