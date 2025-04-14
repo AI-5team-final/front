@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 // Variables
 $secondary-color: #9fd3fd;
@@ -31,7 +31,7 @@ $white: #ffffff;
 	.hero-section {
 		height: 380px;
 		background-color: $secondary-color;
-		padding: $headerHeight 0 20px;
+		padding: Common.$headerHeight 0 20px;
 		.inner {
 			display: flex;
 			align-items: center;
@@ -50,7 +50,7 @@ $white: #ffffff;
 			
 				.title {
 				font-size: 2.5rem;
-				color: $pointColor;
+				color: Common.$pointColor;
 				margin-bottom: 15px;
 				font-weight: bold;
 				}
@@ -58,7 +58,7 @@ $white: #ffffff;
 				.subtitle {
 				font-size: 1rem;
 				margin-top: 10px;
-				color: $pointColor;
+				color: Common.$pointColor;
 				}
 		}
 	}
@@ -75,7 +75,7 @@ $white: #ffffff;
 
 	// Upload Card
 	.upload-card {
-		background-color: $bgColor;
+		background-color: Common.$bgColor;
 		border-radius: 12px;
 		padding: 20px;
 		margin-bottom: 40px;
@@ -89,14 +89,14 @@ $white: #ffffff;
 	}
 
 	.upload-area {
-		border: 2px dashed $borderColor;
+		border: 2px dashed Common.$borderColor;
 		border-radius: 12px;
 		padding: 40px 20px;
 		text-align: center;
 		cursor: pointer;
-		background-color: $bgColor;
+		background-color: Common.$bgColor;
 		@include hover-transition {
-			border-color: $pointColor;
+			border-color: Common.$pointColor;
 			background-color: #f1f8ff;
 		}
 		display: flex;
@@ -124,13 +124,13 @@ $white: #ffffff;
 
 	.icon {
 		font-size: 40px;
-		color: $pointColor;
+		color: Common.$pointColor;
 	}
 
 	// Resume List
 	.resume-list {
-		border-top: 1px solid $borderColor;
-		border-bottom: 1px solid $borderColor;
+		border-top: 1px solid Common.$borderColor;
+		border-bottom: 1px solid Common.$borderColor;
 		padding: 0;
 		width: 80%;
 		// max-width: 900px;
@@ -141,7 +141,7 @@ $white: #ffffff;
 	.resume-item {
 		@include flex-between;
 		padding: 25px 20px;
-		border-bottom: 1px solid $borderColor;
+		border-bottom: 1px solid Common.$borderColor;
 		align-items: center;
 	}
 
@@ -161,7 +161,7 @@ $white: #ffffff;
 	}
 
 	.resume-link {
-		color: $pointColor;
+		color: Common.$pointColor;
 		text-decoration: none;
 		font-weight: 600;
 		cursor: pointer;
@@ -172,7 +172,7 @@ $white: #ffffff;
 
 	// Buttons
 	.delete-button {
-		border: 1px solid $borderColor;
+		border: 1px solid Common.$borderColor;
 		border-radius: 6px;
 		padding: 5px 10px;
 		cursor: pointer;
@@ -188,18 +188,18 @@ $white: #ffffff;
 	.loading {
 		text-align: center;
 		padding: 20px;
-		color: $gray;
+		color: Common.$gray;
 	}
 
 	// Empty State
 	.empty-state {
 		text-align: center;
 		padding: 20px;
-		color: $gray;
+		color: Common.$gray;
 	}
 } 
 
-@media (max-width: $tablet){
+@media (max-width: Common.$tablet){
 	.l-panel-resume {
 		.hero-section {
 			padding: 80px 0 50px;

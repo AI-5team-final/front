@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 // Variables
 $secondary-color: #6c757d;
@@ -14,7 +14,7 @@ $white: #ffffff;
 }
 
 @mixin input-focus {
-  border-color: $pointColor;
+  border-color: Common.$pointColor;
   outline: none;
 }
 
@@ -23,7 +23,7 @@ $white: #ffffff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: $bgColor;
+  background-color: Common.$bgColor;
 }
 
 // Signup Container
@@ -44,7 +44,8 @@ $white: #ffffff;
 
   h2 {
     text-align: center;
-    ;
+    font-size: 1.25rem;
+    font-weight: 600;
     margin-bottom: 30px;
   }
 }
@@ -53,7 +54,7 @@ $white: #ffffff;
 .tab-container {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 2px solid $borderColor;
+  border-bottom: 2px solid Common.$borderColor;
 }
 
 .tab-button {
@@ -63,12 +64,12 @@ $white: #ffffff;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: $gray;
+  color: Common.$gray;
   transition: all 0.3s ease;
 
   &.active {
-    color: $pointColor;
-    border-bottom: 2px solid $pointColor;
+    color: Common.$pointColor;
+    border-bottom: 2px solid Common.$pointColor;
     margin-bottom: -2px;
   }
 }
@@ -86,13 +87,13 @@ $white: #ffffff;
   gap: 8px;
 
   label {
-    color: $gray;
+    color: Common.$gray;
     font-weight: 500;
   }
 
   input {
     padding: 12px;
-    border: 1px solid $borderColor;
+    border: 1px solid Common.$borderColor;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
@@ -101,12 +102,12 @@ $white: #ffffff;
       @include input-focus;
     }
     &:not(:focus):not(:placeholder-shown) {
-      border-color: $pointColor;
+      border-color: Common.$pointColor;
     }
   }
 }
 input:not(:focus):not(:placeholder-shown) {
-  border-color: $pointColor;
+  border-color: Common.$pointColor;
 }
 input.error {
   border-color: $error-color;  // phoneError가 있으면 빨간 테두리
@@ -125,14 +126,14 @@ input.error {
   text-align: center;
 
   &.active {
-    background-color: $pointColor;  
+    background-color: Common.$pointColor;  
     &:hover {
-      background-color: $pointHover;
+      background-color: Common.$pointHover;
     }
   }
 
   &:disabled {
-    background-color: $gray;  // 비활성화 상태
+    background-color: Common.$gray;  // 비활성화 상태
     cursor: not-allowed;  // 비활성화 시 커서 변경
   }
 }
@@ -140,11 +141,20 @@ input.error {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 45px;
+  // height: 45px;
   flex-wrap: wrap;
 }
-.email-input-group input[type="text"] {
-  width: 25%;
+.email-input-group {
+  input[type="text"] {
+    width: 25%;
+  }
+  span {
+    + {
+      input[type=text] {
+        width: 40%;
+      }
+    }
+  }
 }
 .back-to-login-button {
   background-color: $secondary-color;
@@ -163,23 +173,34 @@ input.error {
     background-color: $secondary-hover;
   }
 }
+.select-box {
+  position: relative;
+  width: 40%;
+  svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 .domain-select {
   padding: 12px;
-  border: 1px solid $borderColor;
+  border: 1px solid Common.$borderColor;
   border-radius: 5px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-  width: 40%;
+  width: 100%;
+  cursor: pointer;
   &:focus {
     @include input-focus;
   }
 
   &.has-value {
-    border-color: $pointColor;
+    border-color: Common.$pointColor;
   }
 }
 input.match {
-  border: 1px solid $pointColor;
+  border: 1px solid Common.$pointColor;
 }
 
 input.mismatch {
@@ -207,9 +228,9 @@ input.mismatch {
   .check-email-button {
     // margin-left: auto; // 버튼을 오른쪽 끝으로
     padding: 10px 16px;
-    background-color: $pointColor;
+    background-color: Common.$pointColor;
     color: $white;
-    height: 100%;
+    height: 45px;
     // font-size: 14px;
     border: none;
     border-radius: 5px;
@@ -217,16 +238,42 @@ input.mismatch {
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: $pointHover;
+      background-color: Common.$pointHover;
     }
   }
 }
 
 .success-message {
-  color: $pointColor;
+  color: Common.$pointColor;
   margin: 10px 0;
 }
 .error-message {
   color: $error-color;
 }
 
+@media screen and (max-width: Common.$mobile2) {
+  .signup-box {
+    padding: 20px;
+  }
+  .email-input-group {
+    input[type=text] {
+      width: 35%;
+    }
+    span {
+      + input[type=text] {
+        width: 55%;
+      }
+    }
+  }
+  .select-box {
+    width: 55%;
+  }
+  .check-email-row {
+    width: 100%;
+    margin-top: 10px;
+    button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

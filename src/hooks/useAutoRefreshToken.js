@@ -12,7 +12,8 @@ export default function useAutoRefreshToken() {
     if (!token) return;
 
     // JWT 디코딩해서 accessToken exp 시점(만료 시간) 가져옴
-    const decoded = JSON.parse(atob(token.split('.')[1]));
+    // const decoded = JSON.parse(atob(token.split('.')[1]));
+    const decoded = jwtDecode(token);
     const exp = decoded?.exp;
 
     if (!exp) return;

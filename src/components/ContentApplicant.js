@@ -2,12 +2,14 @@ import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
 import { toast } from 'react-toastify';
 import fetchClient from '../utils/fetchClient';
-import '../styles/ContentApplicant.scss';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import LoadModal from '../modal/LoadModal';
 import MatchingModal from '../modal/MatchingModal';
+import '../styles/ContentApplicant.scss';
+
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -20,6 +22,7 @@ const ContentApplicant = () => {
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef();
     const navigate = useNavigate();
+    const { setResumeFile } = useMatch();
 
     const validateFile = (file) => {
         if (!file) return false;
@@ -69,14 +72,11 @@ const ContentApplicant = () => {
             return;
         }
 
-        localStorage.setItem("resumeFileLocal", fileState.file);
+        localStorage.setItem('resumeFileUploaded', 'true');
+        setResumeFile(fileState.file);
 
-        // List 페이지로 이동하면서 파일 전달
-        navigate('/list', { 
-            state: { 
-                resumeFile: fileState.file
-            } 
-        });
+        // List 페이지로 이동
+        navigate('/list');
     };
 
     const fetchResumes = async () => {
@@ -150,7 +150,7 @@ const ContentApplicant = () => {
     const closeUploadCheckModal = () => setIsUploadModalOpen(prev=>!prev);
 
     return (
-        <main>
+        <div className='l-content-apply'>
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -183,7 +183,7 @@ const ContentApplicant = () => {
                                 onClick={() => fileInputRef.current.click()}
                             >
                                 <FaPlusCircle className="icon" />
-                                <span className="upload-text">PDF로 이력서 매칭하기</span>
+                                <span className="upload-text">이력서 매칭하기</span>
                                 <input
                                     type="file"
                                     accept="application/pdf"
@@ -222,14 +222,14 @@ const ContentApplicant = () => {
             </section>
 
             {/* 이력서 업로드 확인 모달 */}
-             <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit}/>            
+            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>            
 
             {/* 이력서 불러오기 모달 */}
-            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm}/>
+            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"}/>
             
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles}/>
-        </main>
+        </div>
     );
 };
 

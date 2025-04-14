@@ -1,19 +1,19 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
 import useToken from '../hooks/useToken';
 import fetchClient from '../utils/fetchClient';
-import '../styles/PanelResume.scss';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import DeleteModal from '../modal/DeleteModal';
+import LoadingSpinner from '../components/LoadingSpinner';
+import '../styles/PanelResume.scss';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { token, removeToken } = useToken();
@@ -67,6 +67,8 @@ const PanelResume = () => {
 
         const formData = new FormData();
         formData.append('file', fileState.file);
+        setIsLoading(true);
+        setIsModalOpen(false);
 
         try {
             const response = await fetchClient('/pdf/upload', {
@@ -78,14 +80,14 @@ const PanelResume = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
             }
-
+            
             toast.success('이력서가 성공적으로 업로드되었습니다.');
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            setIsModalOpen(false);
             fetchResumes();
+            setIsLoading(false)
         } catch (error) {
             handleError(error);
         }
@@ -93,7 +95,6 @@ const PanelResume = () => {
 
     const handleDeleteRequest = (resume) => {
         setDeleteTarget(resume);
-        // setIsDeleteModalOpen(prev=>!prev);
     };
 
     const handleConfirmDelete = async () => {
@@ -101,6 +102,8 @@ const PanelResume = () => {
             handleAuthError();
             return;
         }
+
+        setDeleteTarget(null);
 
         try {
             const response = await fetchClient('/pdf/delete', {
@@ -112,10 +115,10 @@ const PanelResume = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || '삭제에 실패했습니다.');
             }
-
-            toast.success('이력서가 삭제되었습니다.');
+            
             setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
-            setDeleteTarget(null);
+            toast.success('이력서가 삭제되었습니다.');
+            
         } catch (error) {
             handleError(error);
         }
@@ -154,6 +157,7 @@ const PanelResume = () => {
 
     const closeUploadModal = () => setIsModalOpen(prev=>!prev);
     const closeDeleteModal = () => setDeleteTarget(null);
+
 
     return (
         <main className="l-panel-resume">
@@ -195,10 +199,13 @@ const PanelResume = () => {
 
                     <div className="resume-list">
                         {isLoading ? (
-                            <div className="loading">
-                                이력서 목록을 불러오는 중...
+                            <div style={{padding: "20px 0"}}>
+                                <LoadingSpinner/>
+                                <div className="loading">
+                                    이력서 목록을 불러오는 중...
+                                </div>
                             </div>
-                        ) : !Array.isArray(resumes) || resumes.length === 0 ? (
+                        ) : !Array.isArray(resumes) || resumes.length === 0 ? ( 
                             <div className="empty-state">
                                 등록된 이력서가 없습니다.
                             </div>

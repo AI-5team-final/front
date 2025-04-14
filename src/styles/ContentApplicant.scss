@@ -1,9 +1,9 @@
-@import '_Common';
+@use '_Common';
 
 .hero {
     background-color: #A8D7FF;
     height: 600px;
-    padding-top: $headerHeight;
+    padding-top: Common.$headerHeight;
   
   .inner {
     display: flex;
@@ -18,7 +18,7 @@
 
   &-title {
     font-size: 2.5rem;
-    color: $pointColor;
+    color: Common.$pointColor;
     line-height: 1.4;
     font-weight: bold;
   }
@@ -26,7 +26,7 @@
   &-subtitle {
     margin-top: 30px;
     font-size: 1.1rem;
-    color: $pointColor;
+    color: Common.$pointColor;
   }
 
   &-image {
@@ -70,7 +70,7 @@
 
   .upload-area {
     flex: 2;
-    border: 2px dashed $borderColor;
+    border: 2px dashed Common.$borderColor;
     border-radius: 12px;
     padding: 40px 20px;
     text-align: center;
@@ -83,17 +83,17 @@
     gap: 15px;
 
     &:hover {
-      border-color: $pointColor;
+      border-color: Common.$pointColor;
       background-color: #f1f8ff;
     }
 
     .icon {
       font-size: 40px;
-      color: $pointColor;
+      color: Common.$pointColor;
     }
 
     .upload-text {
-      color: $gray;
+      color: Common.$gray;
       font-size: 16px;
     }
 
@@ -113,8 +113,12 @@
     transition: all 0.3s ease;
     min-width: 120px;
 
+    span {
+      text-align: center;
+    }
+
     &.active {
-      background-color: $pointColor;
+      background-color: Common.$pointColor;
       color: white;
       cursor: pointer;
     }
@@ -126,13 +130,13 @@
       opacity: 0.5;
     }
     &:hover {
-      background: $pointHover
+      background: Common.$pointHover
     }
   }
 }
 
 .file-note {
-  color: $gray;
+  color: Common.$gray;
   font-size: 14px;
   margin-top: 10px;
 }

@@ -1,6 +1,6 @@
-@import '_Common';
+@use '_Common';
 
-.l-list-applicant {
+.l-list-common {
     padding: 200px 0 0;
 
     .sub-tit {
@@ -14,14 +14,14 @@
 
     .subtitle-note {
         font-size: 0.875rem;
-        color: $gray;
+        color: Common.$gray;
         margin-bottom: 50px;
     }
 
     .subtitle-note::before {
         content: "P.S. ";
         font-style: italic;
-        color: $gray;
+        color: Common.$gray;
     }
 
     .card {
@@ -35,15 +35,15 @@
         align-items: center;
         transition: all 0.2s ease;
 
-        border-bottom: 1px solid $borderColor;
+        border-bottom: 1px solid Common.$borderColor;
 
         &:first-child {
-            border-top: 1px solid $borderColor;
+            border-top: 1px solid Common.$borderColor;
         }
 
         &:hover {
             // background-color: #A8D7FF;
-            background: $bgColor;
+            background: Common.$bgColor;
         }
     }
 
@@ -120,7 +120,7 @@
         }
 
         .summary-content {
-            color: $gray;
+            color: Common.$gray;
             font-size: 0.9375rem;
             display: block;
             padding-left: 28px; 
@@ -136,7 +136,7 @@
         }
     }
 
-    @media (max-width: $desktop) {
+    @media (max-width: Common.$desktop) {
         padding: 150px 0 0;
         .card {
             width: 100%;
@@ -144,7 +144,7 @@
     }
 
 
-    @media (max-width: $tablet) {
+    @media (max-width: Common.$tablet) {
         
         padding: 100px 0 0;
     

@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 
-const UploadCheckModal = ({isOpen, onRequestClose, fileState, handleSubmit}) => {
+const UploadCheckModal = ({isOpen, onRequestClose, fileState, handleSubmit, fileType}) => {
     return (
         <Modal
             isOpen={isOpen}
@@ -20,7 +20,7 @@ const UploadCheckModal = ({isOpen, onRequestClose, fileState, handleSubmit}) => 
             }}
         >
             <div className="modal modal-upload">
-                <p>이 이력서를 업로드하시겠습니까?</p>
+                <p>이 {fileType}를 업로드하시겠습니까?</p>
                 <p className="modal-filename">{fileState.name}</p>
                 <div className="modal-buttons">
                     <button onClick={onRequestClose} className="modal-button cancel-button">취소</button>

@@ -1,7 +1,7 @@
 import { GrDocumentPdf } from 'react-icons/gr';
 import Modal from 'react-modal';
 
-const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setSelectedId, handleLoadConfirm}) => {
+const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setSelectedId, handleLoadConfirm, fileType}) => {
     return (
         <Modal
             isOpen={isOpen}
@@ -21,13 +21,13 @@ const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setS
             }}
         >
             <div className='modal modal-load'>
-                <div className="modal-title">내 이력서 불러오기</div>
-                <p className="resume-list-header">불러올 이력서를 선택해주세요</p>
+                <div className="modal-title">내 {fileType} 불러오기</div>
+                <p className="resume-list-header">불러올 {fileType}를 선택해주세요</p>
                 <div className="divider" />
                 {isLoading ? (
-                    <div className="loading">이력서 목록을 불러오는 중...</div>
+                    <div className="loading">{fileType} 목록을 불러오는 중...</div>
                 ) : resumes.length === 0 ? (
-                    <div className="empty-state">등록된 이력서가 없습니다.</div>
+                    <div className="empty-state">등록된 {fileType}가 없습니다.</div>
                 ) : (
                     resumes.map((resume) => (
                         <div
