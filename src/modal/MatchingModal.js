@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCloudDownloadAlt } from 'react-icons/fa';
 import { RiRobot2Line } from 'react-icons/ri';
 import Modal from 'react-modal';
@@ -6,13 +6,12 @@ import { toast } from 'react-toastify';
 import fetchClient from '../utils/fetchClient';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useMatch } from '../context/MatchContext';
 
 const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingModalOpen,setIsLoadModalOpen, matchingFiles}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const { setMatchResults } = useMatch();
+
 
     const handleOneToOneMatching = async () => {
 
@@ -28,30 +27,25 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             formData.append('resume', matchingFiles.resume);
             formData.append('posting', matchingFiles.jobPost);
 
-            // const res = await fetchClient("/pdf/reEpo", {
-			// 	method: "POST",
-			// 	body: formData,
-			// });
+            const res = await fetchClient("/pdf/reEpo", {
+				method: "POST",
+				body: formData,
+			});
 
-            // if(!res.ok){
-            //     throw new Error("1대1매칭 실패");
-            // }
+            if(!res.ok){
+                throw new Error("1대1매칭 실패");
+            }
 
-            // const data = await res.json();
-            const data = [{
-                "total_score": 85,
-                "summary": "핵심 강점: 8년 경력의 Java/Spring 전문 백엔드 개발자 / 보완점: 특정 결제 시스템 경험 부족 / 종합 의견: 추천",
-                "gpt_answer": "총점은 85점으로, 필수 자격요건 충족도 30점, 기술 스택 일치도 20점, 업무 경험 연관성 15점, 직무 적합성 10점, 기업 문화 및 가치관 적합성 10점으로 평가하였습니다."
-            }];
+            const data = await res.json();
 
             toast.success('매칭 요청 완료!');
             setMatchingFiles({ resume: null, jobPost: null });
             setIsMatchingModalOpen(false);    
 
-            setMatchResults(data);
-            navigate(`/matching`);
+            localStorage.setItem("lastMatchResult", JSON.stringify(data));
+            navigate(`/view/11`, {state: data});
         }catch(e){
-            console.warn(`${e}: 1대1 매칭 중 에러가 발생했습니다.`);
+            console.log(`${e}: 1대1 매칭 중 에러가 발생했습니다.`);
             toast.error(`1대1 매칭 중 에러가 발생했습니다.`);
         }finally {
             setIsLoading(false);

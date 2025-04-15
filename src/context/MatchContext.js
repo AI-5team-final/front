@@ -18,7 +18,6 @@ export const MatchProvider = ({ children }) => {
 
     // 매칭 결과 초기화
     const clearResults = () => {
-        console.log("clear")
         setMatchResults([]);
         localStorage.removeItem('matchResults');
     };

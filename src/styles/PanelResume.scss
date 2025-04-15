@@ -1,8 +1,12 @@
 @import '_Common';
 
 // Variables
+$primary-color: #013a72;
 $secondary-color: #9fd3fd;
+$text-color: #111827;
+$gray-color: #6B7280;
 $light-gray: #9ca3af;
+$border-color: #ddd;
 $white: #ffffff;
 
 // Mixins
@@ -29,9 +33,9 @@ $white: #ffffff;
 .l-panel-resume {
   	// Hero Section
 	.hero-section {
-		height: 380px;
+		height: 350px;
 		background-color: $secondary-color;
-		padding: $headerHeight 0 20px;
+		padding: 20px 0;
 		.inner {
 			display: flex;
 			align-items: center;
@@ -50,7 +54,7 @@ $white: #ffffff;
 			
 				.title {
 				font-size: 2.5rem;
-				color: $pointColor;
+				color: $primary-color;
 				margin-bottom: 15px;
 				font-weight: bold;
 				}
@@ -58,7 +62,7 @@ $white: #ffffff;
 				.subtitle {
 				font-size: 1rem;
 				margin-top: 10px;
-				color: $pointColor;
+				color: $primary-color;
 				}
 		}
 	}
@@ -75,7 +79,7 @@ $white: #ffffff;
 
 	// Upload Card
 	.upload-card {
-		background-color: $bgColor;
+		background-color: #f9f9f9;
 		border-radius: 12px;
 		padding: 20px;
 		margin-bottom: 40px;
@@ -89,14 +93,14 @@ $white: #ffffff;
 	}
 
 	.upload-area {
-		border: 2px dashed $borderColor;
+		border: 2px dashed $border-color;
 		border-radius: 12px;
 		padding: 40px 20px;
 		text-align: center;
 		cursor: pointer;
-		background-color: $bgColor;
+		background-color: #f8f9fa;
 		@include hover-transition {
-			border-color: $pointColor;
+			border-color: $primary-color;
 			background-color: #f1f8ff;
 		}
 		display: flex;
@@ -124,13 +128,13 @@ $white: #ffffff;
 
 	.icon {
 		font-size: 40px;
-		color: $pointColor;
+		color: $primary-color;
 	}
 
 	// Resume List
 	.resume-list {
-		border-top: 1px solid $borderColor;
-		border-bottom: 1px solid $borderColor;
+		border-top: 1px solid $border-color;
+		border-bottom: 1px solid $border-color;
 		padding: 0;
 		width: 80%;
 		// max-width: 900px;
@@ -141,7 +145,7 @@ $white: #ffffff;
 	.resume-item {
 		@include flex-between;
 		padding: 25px 20px;
-		border-bottom: 1px solid $borderColor;
+		border-bottom: 1px solid $border-color;
 		align-items: center;
 	}
 
@@ -153,6 +157,7 @@ $white: #ffffff;
 	.resume-name {
 		font-weight: 600;
 		font-size: 0.95rem;
+		color: $text-color;
 	}
 
 	.resume-date {
@@ -161,7 +166,7 @@ $white: #ffffff;
 	}
 
 	.resume-link {
-		color: $pointColor;
+		color: $primary-color;
 		text-decoration: none;
 		font-weight: 600;
 		cursor: pointer;
@@ -172,12 +177,11 @@ $white: #ffffff;
 
 	// Buttons
 	.delete-button {
-		border: 1px solid $borderColor;
+		border: 1px solid $border-color;
 		border-radius: 6px;
 		padding: 5px 10px;
 		cursor: pointer;
 		background-color: $white;
-		font-size: 0.875rem;
 		@include hover-transition {
 			background-color: #f0f0f0;
 		}
@@ -188,21 +192,21 @@ $white: #ffffff;
 	.loading {
 		text-align: center;
 		padding: 20px;
-		color: $gray;
+		color: $gray-color;
 	}
 
 	// Empty State
 	.empty-state {
 		text-align: center;
 		padding: 20px;
-		color: $gray;
+		color: $gray-color;
 	}
 } 
 
 @media (max-width: $tablet){
 	.l-panel-resume {
 		.hero-section {
-			padding: 80px 0 50px;
+			padding: 50px 0;
 			text-align: center;
 			height: auto;
 			.inner {

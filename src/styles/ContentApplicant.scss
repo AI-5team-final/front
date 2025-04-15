@@ -1,9 +1,6 @@
-@import '_Common';
-
 .hero {
     background-color: #A8D7FF;
     height: 600px;
-    padding-top: $headerHeight;
   
   .inner {
     display: flex;
@@ -18,7 +15,7 @@
 
   &-title {
     font-size: 2.5rem;
-    color: $pointColor;
+    color: #013A72;
     line-height: 1.4;
     font-weight: bold;
   }
@@ -26,12 +23,12 @@
   &-subtitle {
     margin-top: 30px;
     font-size: 1.1rem;
-    color: $pointColor;
+    color: #013A72;
   }
 
   &-image {
     flex: 1;
-    max-width: 450px;
+    max-width: 500px;
 
     .hero-img {
       width: 100%;
@@ -52,12 +49,14 @@
 
   &-title {
     font-size: 1.5rem;
+    color: #000000;
     margin-bottom: 30px;
     font-weight: bold;
   }
 
   &-sub-title {
     font-size: 1.1rem;
+    color: #000000;
     margin-bottom: 20px;
   }
 }
@@ -70,7 +69,7 @@
 
   .upload-area {
     flex: 2;
-    border: 2px dashed $borderColor;
+    border: 2px dashed #ccc;
     border-radius: 12px;
     padding: 40px 20px;
     text-align: center;
@@ -83,20 +82,24 @@
     gap: 15px;
 
     &:hover {
-      border-color: $pointColor;
+      border-color: #013A72;
       background-color: #f1f8ff;
     }
 
     .icon {
       font-size: 40px;
-      color: $pointColor;
+      color: #013A72;
     }
 
     .upload-text {
-      color: $gray;
+      color: #666;
       font-size: 16px;
     }
 
+    .selected-file {
+      color: #28a745;
+      font-weight: 500;
+    }
   }
 
   .button {
@@ -114,7 +117,7 @@
     min-width: 120px;
 
     &.active {
-      background-color: $pointColor;
+      background-color: #013A72;
       color: white;
       cursor: pointer;
     }
@@ -125,14 +128,11 @@
       cursor: not-allowed;
       opacity: 0.5;
     }
-    &:hover {
-      background: $pointHover
-    }
   }
 }
 
 .file-note {
-  color: $gray;
+  color: #666;
   font-size: 14px;
   margin-top: 10px;
 }

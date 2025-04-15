@@ -21,7 +21,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
 import './styles/Style.scss';
 import './styles/modal.scss';
-import Matching from "./pages/Matching";
 
 
 function AppRoutes() {
@@ -41,12 +40,11 @@ function AppRoutes() {
         <Route index element={<Main />} />
         <Route path="list" element={<List />} />
         <Route path="view/:id" element={<View />} />
-        <Route path="matching" element={<Matching/>} />
         <Route path="resume" element={<PanelResume />} />
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />
-        <Route path="dashboard" element={<CreditDashboard />} />
+        <Route path="mypage/credits" element={<CreditDashboard />} />
     </Route>
 
       {/* 로그인 / 회원가입 / 에러 */}

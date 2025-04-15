@@ -1,8 +1,11 @@
-@import '_Common';
-
 // Variables
+$primary-color: #007bff;
+$primary-hover: #0056b3;
 $secondary-color: #6c757d;
 $secondary-hover: #5a6268;
+$text-color: #333;
+$gray-color: #666;
+$border-color: #ddd;
 $error-color: #dc3545;
 $white: #ffffff;
 
@@ -14,7 +17,7 @@ $white: #ffffff;
 }
 
 @mixin input-focus {
-  border-color: $pointColor;
+  border-color: $primary-color;
   outline: none;
 }
 
@@ -23,7 +26,7 @@ $white: #ffffff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: $bgColor;
+  background-color: #f5f5f5;
 }
 
 // Signup Container
@@ -44,7 +47,7 @@ $white: #ffffff;
 
   h2 {
     text-align: center;
-    ;
+    color: $text-color;
     margin-bottom: 30px;
   }
 }
@@ -53,7 +56,7 @@ $white: #ffffff;
 .tab-container {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 2px solid $borderColor;
+  border-bottom: 2px solid $border-color;
 }
 
 .tab-button {
@@ -63,12 +66,12 @@ $white: #ffffff;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: $gray;
+  color: $gray-color;
   transition: all 0.3s ease;
 
   &.active {
-    color: $pointColor;
-    border-bottom: 2px solid $pointColor;
+    color: $primary-color;
+    border-bottom: 2px solid $primary-color;
     margin-bottom: -2px;
   }
 }
@@ -86,13 +89,13 @@ $white: #ffffff;
   gap: 8px;
 
   label {
-    color: $gray;
+    color: #555;
     font-weight: 500;
   }
 
   input {
     padding: 12px;
-    border: 1px solid $borderColor;
+    border: 1px solid $border-color;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
@@ -101,15 +104,15 @@ $white: #ffffff;
       @include input-focus;
     }
     &:not(:focus):not(:placeholder-shown) {
-      border-color: $pointColor;
+      border-color: green;
     }
   }
 }
 input:not(:focus):not(:placeholder-shown) {
-  border-color: $pointColor;
+  border-color: green;
 }
 input.error {
-  border-color: $error-color;  // phoneError가 있으면 빨간 테두리
+  border-color: red;  // phoneError가 있으면 빨간 테두리
 }
 
 // Buttons
@@ -122,29 +125,18 @@ input.error {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  text-align: center;
 
   &.active {
-    background-color: $pointColor;  
-    &:hover {
-      background-color: $pointHover;
-    }
+    background-color: green;  // isValid가 true일 때 초록색 배경
   }
 
   &:disabled {
-    background-color: $gray;  // 비활성화 상태
+    background-color: $gray-color;  // 비활성화 상태
     cursor: not-allowed;  // 비활성화 시 커서 변경
   }
 }
-.email-input-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 45px;
-  flex-wrap: wrap;
-}
 .email-input-group input[type="text"] {
-  width: 25%;
+  width: 47%;
 }
 .back-to-login-button {
   background-color: $secondary-color;
@@ -155,9 +147,8 @@ input.error {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  // margin-top: 10px;
+  margin-top: 10px;
   width: 100%;
-  text-align: center;
 
   &:hover {
     background-color: $secondary-hover;
@@ -165,25 +156,25 @@ input.error {
 }
 .domain-select {
   padding: 12px;
-  border: 1px solid $borderColor;
+  border: 1px solid $border-color;
   border-radius: 5px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-  width: 40%;
+  width: 47%;
   &:focus {
     @include input-focus;
   }
 
   &.has-value {
-    border-color: $pointColor;
+    border-color: green;
   }
 }
 input.match {
-  border: 1px solid $pointColor;
+  border: 1px solid green;
 }
 
 input.mismatch {
-  border: 1px solid $error-color;
+  border: 1px solid red;
 }
 
 // Error Message
@@ -194,37 +185,35 @@ input.mismatch {
 }
 
 .check-email-row {
-  // display: flex;
-  // align-items: center;
-  // justify-content: space-between; // 혹은 gap + margin-auto 활용
-  // margin-top: 8px;
-  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // 혹은 gap + margin-auto 활용
+  margin-top: 8px;
+
   p {
     font-size: 14px;
     margin: 0;
   }
 
   .check-email-button {
-    // margin-left: auto; // 버튼을 오른쪽 끝으로
+    margin-left: auto; // 버튼을 오른쪽 끝으로
     padding: 10px 16px;
-    background-color: $pointColor;
+    background-color: $primary-color;
     color: $white;
-    height: 100%;
-    // font-size: 14px;
+    font-size: 14px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: $pointHover;
+      background-color: $primary-hover;
     }
   }
 }
 
 .success-message {
-  color: $pointColor;
-  margin: 10px 0;
+  color: green;
 }
 .error-message {
   color: $error-color;

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { useMatch } from '../context/MatchContext';
+import '../styles/fonts.css';
 import '../styles/ListApplicant.scss';
 
 const getScoreClass = (score) => {
@@ -36,7 +37,7 @@ const ListApplicant = () => {
     return (
         <div className="l-list-applicant">
             <div className='inner'>
-                <h1 className="sub-tit">취업 성공 기원, Ai매치</h1>
+                <h1 className="title">취업 성공 기원, Ai매치</h1>
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
                 <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
                 
