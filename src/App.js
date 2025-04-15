@@ -22,6 +22,7 @@ import './styles/fonts.css';
 import './styles/Style.scss';
 import './styles/modal.scss';
 import Matching from "./pages/Matching";
+import PanelPosting from "./pages/PanelPosting";
 
 
 function AppRoutes() {
@@ -43,6 +44,7 @@ function AppRoutes() {
         <Route path="view/:id" element={<View />} />
         <Route path="matching" element={<Matching/>} />
         <Route path="resume" element={<PanelResume />} />
+        <Route path="postings" element={<PanelPosting />} />
         <Route path="payment" element={<Payment />} />
         <Route path="success" element={<PaySuccess />} />
         <Route path="fail" element={<PayFail />} />

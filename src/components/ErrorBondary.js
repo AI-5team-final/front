@@ -1,5 +1,6 @@
 import React from "react";
 import { reportError } from "../utils/reportError"; 
+import "../styles/ErrorBoundary.scss";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -27,16 +28,16 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: "2rem", textAlign: "center" }}>
+        <div className="error-boundary">
           <h2>문제가 발생했습니다. 잠시 후 다시 시도해주세요</h2>
-          <p style={{ color: "gray", fontSize: "0.9rem", marginTop: "1rem" }}>
+          <p>
             {this.state.error?.message || "알 수 없는 오류입니다."}
           </p>
-          <div style={{ marginTop: "1.5rem" }}>
-            <button onClick={this.handleReload} style={{ marginRight: "1rem", cursor: "pointer" }}>
+          <div>
+            <button onClick={this.handleReload} style={{ marginRight: "1rem"}}>
               다시 시도
             </button>
-            <button onClick={this.handleGoHome} style={{ cursor: "pointer" }}>홈으로 이동</button>
+            <button onClick={this.handleGoHome}>홈으로 이동</button>
           </div>
         </div>
       );

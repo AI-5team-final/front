@@ -1,116 +1,110 @@
-import React, { useState } from 'react';
-import '../styles/ListHR.scss';
+import { useUser } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
+
 
 const ListHR = () => {
-    // 지원자 더미 데이터 22명 생성
-    const applicantData = Array.from({ length: 22 }, (_, i) => {
-        const id = i + 1;
-        const names = ["김지훈", "박서준", "이수민", "정하늘", "최민석", "윤예린", "장동건", "한소희", "조인성", "서지혜"];
-        const positions = ["프론트엔드 개발자", "백엔드 개발자", "AI 엔지니어", "디자이너", "PM", "데이터 분석가"];
-        return {
-            id,
-            name: names[i % names.length],
-            position: positions[i % positions.length],
-            description: `${names[i % names.length]}님은 ${positions[i % positions.length]} 포지션에 지원했습니다.`,
-            date: `2025-03-${String(28 - i).padStart(2, '0')}`,
-            matchRate: Math.floor(Math.random() * 21) + 80  // 80~100%
-        };
-    });
+    const { userInfo } = useUser();
+    const { matchResults } = useMatch();
+    const navigate = useNavigate();
+    
 
-    const topFour = applicantData.slice(0, 4);
-    const PAGE_SIZE = 6;
-    const [page, setPage] = useState(0);
-    const [selectedApplicant, setSelectedApplicant] = useState(null);
-
-    const pagedApplicants = applicantData.slice(4 + page * PAGE_SIZE, 4 + (page + 1) * PAGE_SIZE);
-    const maxPage = Math.floor((applicantData.length - 4) / PAGE_SIZE);
-
-    const handlePrev = () => {
-        setPage((prev) => Math.max(prev - 1, 0));
+    const getScoreClass = (score) => {
+        if (score >= 90) return 'score-excellent';
+        if (score >= 80) return 'score-good';
+        if (score >= 70) return 'score-fair';
+        return 'score-poor';
+    };
+    
+    const getIcon = (title) => {
+        switch (title) {
+            case '핵심 강점':
+                return '✅';
+            case '보완점':
+                return '⚠️';
+            case '종합 의견':
+                return '💡';
+            default:
+                return '•';
+        }
     };
 
-    const handleNext = () => {
-        setPage((prev) => Math.min(prev + 1, maxPage));
+    const handleViewDetail = (index) => {
+        navigate(`/view/${index}`);
     };
+    
 
     return (
-        <div className="list-hr">
-            <h2>추천 지원자</h2>
-            <div className="top-cards">
-                {topFour.map((user) => (
-                    <div 
-                        key={user.id} 
-                        onClick={() => setSelectedApplicant(user)}
-                        className="card"
-                    >
-                        <h3>{user.name}</h3>
-                        <p>{user.position}</p>
-                        <p>{user.description}</p>
-                        <p>지원일: {user.date}</p>
-                        <p>AI 매칭률: {user.matchRate}%</p>
-                    </div>
-                ))}
-            </div>
-
-            <h2>전체 지원자</h2>
-            <ul className="list-container">
-                {pagedApplicants.map((user) => (
-                    <li key={user.id} className="list-item">
-                        <div>
-                            <strong>{user.name}</strong> - {user.position} - {user.date} - 매칭률: {user.matchRate}%
-                        </div>
-                        <button 
-                            onClick={() => setSelectedApplicant(user)} 
-                            className="button"
-                        >
-                            더보기
-                        </button>
-                    </li>
-                ))}
-            </ul>
-
-            <div className="pagination-container">
-                <button
-                    onClick={handlePrev}
-                    disabled={page === 0}
-                    className="pagination-button"
-                >
-                    ◀ 이전
-                </button>
-
-                <button
-                    onClick={handleNext}
-                    disabled={page === maxPage}
-                    className="pagination-button"
-                >
-                    다음 ▶
-                </button>
-            </div>
-
-            {/* 상세 정보 모달 */}
-            {selectedApplicant && (
-                <div
-                    className="modal-overlay"
-                    onClick={() => setSelectedApplicant(null)}
-                >
-                    <div
-                        className="modal-content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3>{selectedApplicant.name}</h3>
-                        <p>{selectedApplicant.position}</p>
-                        <p>{selectedApplicant.description}</p>
-                        <p>지원일: {selectedApplicant.date}</p>
-                        <p className="highlight">AI 매칭률: {selectedApplicant.matchRate}%</p>
-                        <button
-                            onClick={() => setSelectedApplicant(null)}
-                            className="close-button"
-                        >
-                            닫기
-                        </button>
-                    </div>
+        <div className="l-list-hr l-list-common">
+            <div className='inner'>
+                <h1 className="sub-tit">핵심인재 확보, Ai매치</h1>
+                <p className="subtitle">{userInfo?.name}와 높은 확률로 매칭된 지원자입니다!</p>
+                <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
+                
+                <div className="list-applicant">
+                    {matchResults && matchResults.length > 0 ? (
+                        matchResults.map((result, index) => (
+                            <div 
+                                key={`${result.title}-${index}`}
+                                className="card"
+                                onClick={() => handleViewDetail(index)}
+                            >
+                                <div className="card-header">
+                                    <h3 className="card-company-heading">{result.title}</h3>
+                                </div>
+                                <div className="card-score">
+                                    <span className={`card-match-rate ${getScoreClass(result.total_score)}`}>
+                                        AI매칭 {result.total_score}점
+                                    </span>
+                                </div>
+                                <div className="card-summary">
+                                    {result.summary?.split('/').map((section, idx) => {
+                                        if (!section?.trim()) return null;
+                                        
+                                        const splitIndex = section.indexOf(':');
+                                        if (splitIndex === -1) return null;
+                                        
+                                        const title = section.slice(0, splitIndex).trim();
+                                        const content = section.slice(splitIndex + 1).trim();
+                                        
+                                        // 종합 의견은 한 줄로 표시
+                                        if (title === '종합 의견') {
+                                            return (
+                                                <div key={idx} className="summary-section">
+                                                    <strong className="summary-title">
+                                                        <span className="title-icon">{getIcon(title)}</span>
+                                                        {title}
+                                                    </strong>
+                                                    <span className="summary-content">{content}</span>
+                                                </div>
+                                            );
+                                        }
+                
+                                        // 나머지는 상세 내용을 줄바꿈하여 표시
+                                        return (
+                                            <div key={idx} className="summary-section">
+                                                <strong className="summary-title">
+                                                    <span className="title-icon">{getIcon(title)}</span>
+                                                    {title}
+                                                </strong>
+                                                <div className="summary-content">
+                                                    {content.split('/').filter(Boolean).map((line, lineIdx) => (
+                                                        <p key={lineIdx} className="content-line">
+                                                            {line.trim()}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="no-results">매칭된 이력서가 없습니다.</div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 };

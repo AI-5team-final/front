@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 // Variables
 $error-color: #dc3545;
@@ -14,7 +14,7 @@ $hr-bg: #E1EAFE;
 }
 
 @mixin input-focus {
-  borderColor: $pointColor;
+  borderColor: Common.$pointColor;
   outline: none;
 }
 
@@ -114,7 +114,7 @@ $hr-bg: #E1EAFE;
 .tab-container {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 2px solid $borderColor;
+  border-bottom: 2px solid Common.$borderColor;
 }
 
 .tab-button {
@@ -124,7 +124,7 @@ $hr-bg: #E1EAFE;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: $gray;
+  color: Common.$gray;
   position: relative;
   transition: color 0.3s ease;
   transform: translateZ(0);
@@ -132,8 +132,8 @@ $hr-bg: #E1EAFE;
   backface-visibility: hidden;
 
   &.active {
-    color: $pointColor;
-    border-bottom: 2px solid $pointColor;
+    color: Common.$pointColor;
+    border-bottom: 2px solid Common.$pointColor;
     margin-bottom: -2px;
   }
 }
@@ -157,7 +157,7 @@ $hr-bg: #E1EAFE;
 
   input {
     padding: 12px;
-    border: 1px solid $borderColor;
+    border: 1px solid Common.$borderColor;
     border-radius: 5px;
     font-size: 16px;
     transition: borderColor 0.3s ease;
@@ -170,7 +170,7 @@ $hr-bg: #E1EAFE;
 
 // Buttons
 .login-button {
-  background-color: $pointColor;
+  background-color: Common.$pointColor;
   color: $white;
   padding: 12px;
   border: none;
@@ -181,7 +181,7 @@ $hr-bg: #E1EAFE;
   text-align: center;
 
   &:hover {
-    background-color: $pointHover;
+    background-color: Common.$pointHover;
   }
 }
 
@@ -197,17 +197,17 @@ $hr-bg: #E1EAFE;
   text-align: center;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid $borderColor;
+  border-top: 1px solid Common.$borderColor;
 
   p {
-    color: $gray;
+    color: Common.$gray;
     margin-bottom: 15px;
   }
 }
 
 .signup-link {
   display: inline-block;
-  color: $pointColor;
+  color: Common.$pointColor;
   text-decoration: none;
   font-weight: 500;
 

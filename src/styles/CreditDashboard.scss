@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 .l-credit {
   .inner {
@@ -29,7 +29,7 @@
       .balance {
         font-size: 1rem;
         font-weight: 500;
-        color: $gray;
+        color: Common.$gray;
       }
     }
   
@@ -41,8 +41,8 @@
       button {
         padding: 0.4rem 1rem;
         border-radius: 6px;
-        border: 1px solid $borderColor;
-        background-color: $bgColor;
+        border: 1px solid Common.$borderColor;
+        background-color: Common.$bgColor;
         color: #333;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
@@ -55,7 +55,7 @@
         }
   
         &:hover {
-          background-color: $gray;
+          background-color: Common.$gray;
           color: #fff;
         }
       }
@@ -72,7 +72,7 @@
         align-items: center;
         flex-wrap: wrap;
         padding: 1rem;
-        background-color: $bgColor;
+        background-color: Common.$bgColor;
         border-radius: 10px;
   
         .title {
@@ -82,7 +82,7 @@
   
         .date {
           font-size: 0.875rem;
-          color: $gray;
+          color: Common.$gray;
           flex: 1 1 50%;
         }
   
@@ -103,7 +103,7 @@
   
       .empty {
         text-align: center;
-        color: $gray;
+        color: Common.$gray;
         padding: 2rem 0;
       }
     }
@@ -114,7 +114,7 @@
       
         button {
           background-color: #fff;
-          border: 1px solid $borderColor;
+          border: 1px solid Common.$borderColor;
           padding: 6px 12px;
           margin: 0 4px;
           cursor: pointer;
@@ -123,7 +123,7 @@
           transition: all 0.2s ease-in-out;
       
           &:hover {
-            background-color: $bgColor;
+            background-color: Common.$bgColor;
           }
       
           &.active {
@@ -177,7 +177,7 @@
     }
 }
 
-@media screen and (max-width: $tablet){
+@media screen and (max-width: Common.$tablet){
   .credit-dashboard {
     width: 100%;
   }

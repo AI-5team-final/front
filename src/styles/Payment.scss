@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 .l-payment {
   display: flex;
@@ -24,7 +24,7 @@
     font-weight: bold;
     text-align: center;
     border: none;
-    border-bottom: 2px solid $borderColor;
+    border-bottom: 2px solid Common.$borderColor;
     background: transparent;
     outline: none;
     transition: border-color 0.2s ease;
@@ -35,7 +35,7 @@
     }
 
     &:focus {
-      border-bottom-color: $pointColor;
+      border-bottom-color: Common.$pointColor;
     }
   }
 
@@ -75,9 +75,9 @@
       min-width: 80px;
       padding: 10px 0;
       font-size: 14px;
-      background: $bgColor;
+      background: Common.$bgColor;
       color: #333;
-      border: 1px solid $borderColor;
+      border: 1px solid Common.$borderColor;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -88,10 +88,10 @@
       }
 
       &.selected {
-        background-color: $pointColor;
+        background-color: Common.$pointColor;
         color: #fff;
         font-weight: bold;
-        border-color: $pointColor;
+        border-color: Common.$pointColor;
       }
     }
   }
@@ -101,7 +101,7 @@
     margin: 20px 0 16px;
     hr {
       border: none;
-      border-top: 1px solid $borderColor;
+      border-top: 1px solid Common.$borderColor;
       margin-bottom: 8px;
     }
     .payment-label {
@@ -119,9 +119,9 @@
     padding: 12px 16px;
     margin-bottom: 16px;
     font-size: 16px;
-    border: 1px solid $borderColor;
+    border: 1px solid Common.$borderColor;
     border-radius: 8px;
-    background-color: $bgColor;
+    background-color: Common.$bgColor;
     appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
@@ -132,7 +132,7 @@
     cursor: pointer;
 
     &:focus {
-      border-color: $pointColor;
+      border-color: Common.$pointColor;
     }
   }
 
@@ -142,7 +142,7 @@
     display: block;
     width: 100%;
     padding: 12px;
-    background-color: $pointColor;
+    background-color: Common.$pointColor;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
@@ -153,7 +153,7 @@
     margin-top: 10px;
 
     &:hover {
-      background-color: $pointHover;
+      background-color: Common.$pointHover;
     }
   }
 

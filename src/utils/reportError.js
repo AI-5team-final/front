@@ -1,3 +1,5 @@
+import fetchClient from "./fetchClient";
+
 export const reportError = async ({ error, stack, url }) => {
     let message = "알 수 없는 오류";
   
@@ -22,7 +24,7 @@ export const reportError = async ({ error, stack, url }) => {
     };
   
     try {
-      await fetch("/front-error", {
+      await fetchClient("/front-error", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

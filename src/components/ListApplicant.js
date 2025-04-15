@@ -1,8 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { useMatch } from '../context/MatchContext';
-import '../styles/ListApplicant.scss';
 
 const getScoreClass = (score) => {
     if (score >= 90) return 'score-excellent';
@@ -27,14 +25,16 @@ const getIcon = (title) => {
 const ListApplicant = () => {
     const { userInfo } = useUser();
     const { matchResults } = useMatch();
+
     const navigate = useNavigate();
 
     const handleViewDetail = (index) => {
         navigate(`/view/${index}`);
     };
+    
 
     return (
-        <div className="l-list-applicant">
+        <div className="l-list-applicant l-list-common">
             <div className='inner'>
                 <h1 className="sub-tit">취업 성공 기원, Ai매치</h1>
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>

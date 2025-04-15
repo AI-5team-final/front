@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import config from "../config";
 import '../styles/SignUp.scss';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -160,7 +161,7 @@ const SignUp = () => {
                     </div>
 
                     <form onSubmit={handleSignUp} className="signup-form">
-                        <div className="form-group" style={{"margin-bottom": emailCheckMessage? "30px": 0}}>
+                        <div className="form-group">
                             <label>아이디 (이메일)</label>
                             <div className="email-input-group">
                                 <input
@@ -173,26 +174,29 @@ const SignUp = () => {
                                 />
                                 <span> @ </span>
                                 {!isCustomDomain ? (
-                                    <select
-                                        className={`domain-select ${emailDomain ? 'has-value' : ''}`}
-                                        value={emailDomain}
-                                        onChange={(e) => {
-                                            const selected = e.target.value;
-                                            if (selected === '직접입력') {
-                                                setIsCustomDomain(true);
-                                                setEmailDomain('');
-                                            } else {
-                                                setEmailDomain(selected);
-                                                setIsCustomDomain(false);
-                                            }
-                                        }}
-                                        required
-                                    >
-                                        <option value="">도메인 선택</option>
-                                        {domainList.map((domain) => (
-                                            <option key={domain} value={domain}>{domain}</option>
-                                        ))}
-                                    </select>
+                                    <div className='select-box'>
+                                        <select
+                                            className={`domain-select ${emailDomain ? 'has-value' : ''}`}
+                                            value={emailDomain}
+                                            onChange={(e) => {
+                                                const selected = e.target.value;
+                                                if (selected === '직접입력') {
+                                                    setIsCustomDomain(true);
+                                                    setEmailDomain('');
+                                                } else {
+                                                    setEmailDomain(selected);
+                                                    setIsCustomDomain(false);
+                                                }
+                                            }}
+                                            required
+                                        >
+                                            <option value="">도메인 선택</option>
+                                            {domainList.map((domain) => (
+                                                <option key={domain} value={domain}>{domain}</option>
+                                            ))}
+                                        </select>
+                                        <MdKeyboardArrowDown />
+                                    </div>
                                 ) : (
                                     <input
                                         type="text"

@@ -1,4 +1,4 @@
-@import '_Common';
+@use '_Common';
 
 // X button
 .btn-modal-close {
@@ -17,7 +17,7 @@
     .modal-title {
         font-size: 1.5rem;
         font-weight: 600;
-        color: $pointColor;
+        color: Common.$pointColor;
         margin-bottom: 20px;
         text-align: left;
         display: flex;
@@ -28,7 +28,7 @@
     .modal-filename {
         font-size: 1.2rem;
         font-weight: 600;
-        color: $pointColor;
+        color: Common.$pointColor;
         margin: 15px 0;
         word-break: break-word;
     }
@@ -45,18 +45,18 @@
             border: none;
             cursor: pointer;
             font-weight: 500;
-            background-color: $pointColor;
+            background-color: Common.$pointColor;
             color: #ffffff;
             transition: all 0.2s ease;
     
             &.cancel-button {
-                background-color: $gray;
+                background-color: Common.$gray;
                 &:hover {
                     background: #888;
                 }
             }
             &:hover {
-                background: $pointHover;
+                background: Common.$pointHover;
             }
         }
     }
@@ -68,14 +68,14 @@
     &-load {
         .resume-list-header {
             font-size: 1rem;
-            color: $gray;
+            color: Common.$gray;
             margin-bottom: 16px;
             text-align: left;
         }
     
         
         .divider {
-            border-bottom: 1px solid $borderColor;
+            border-bottom: 1px solid Common.$borderColor;
             margin: 16px 0;
         }
     
@@ -86,11 +86,11 @@
         width: 650px;
         .modal-subtitle {
             font-size: 1.1rem;
-            color: $gray;
+            color: Common.$gray;
             margin-bottom: 30px;
             text-align: left;
             line-height: 1.6;
-            background-color: $bgColor;
+            background-color: Common.$bgColor;
             padding: 15px 20px;
             border-radius: 8px;
         }
@@ -103,9 +103,9 @@
                 .load-button {
                     padding: 8px 16px;
                     border-radius: 6px;
-                    border: 1px solid $pointColor;
+                    border: 1px solid Common.$pointColor;
                     background-color: #ffffff;
-                    color: $pointColor;
+                    color: Common.$pointColor;
                     cursor: pointer;
                     font-size: 14px;
                     font-weight: 500;
@@ -114,7 +114,7 @@
                     gap: 6px;
                     transition: 0.2s;
                     &:hover {
-                        background: $pointColor;
+                        background: Common.$pointColor;
                         color: #fff;
                     }
                 }
@@ -137,7 +137,7 @@
     
             &.selected-resume-item {
                 background-color: #f1f8ff;
-                border: 1px solid $pointColor;
+                border: 1px solid Common.$pointColor;
             }
             svg {
                 flex-shrink: 0;
@@ -153,7 +153,7 @@
     
 }
 
-@media (max-width: $mobile2){
+@media (max-width: Common.$mobile2){
     .ReactModal__Content {
         width: calc(100% - 40px);
     }
