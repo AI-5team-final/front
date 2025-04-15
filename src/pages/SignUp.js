@@ -160,7 +160,7 @@ const SignUp = () => {
                     </div>
 
                     <form onSubmit={handleSignUp} className="signup-form">
-                        <div className="form-group">
+                        <div className="form-group" style={{"margin-bottom": emailCheckMessage? "30px": 0}}>
                             <label>아이디 (이메일)</label>
                             <div className="email-input-group">
                                 <input
@@ -206,14 +206,6 @@ const SignUp = () => {
                                 )}
 
                                 <div className="check-email-row">
-                                    {/* 왼쪽 메시지 */}
-                                    {emailCheckMessage && (
-                                        <p className={isEmailAvailable ? "success-message" : "error-message"}>
-                                            {emailCheckMessage}
-                                        </p>
-                                    )}
-
-                                    {/* 오른쪽 버튼 */}
                                     <button
                                         type="button"
                                         onClick={handleCheckEmail}
@@ -222,6 +214,11 @@ const SignUp = () => {
                                         이메일 확인
                                     </button>
                                 </div>
+                                {emailCheckMessage && (
+                                    <p className={isEmailAvailable ? "success-message" : "error-message"}>
+                                        {emailCheckMessage}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
