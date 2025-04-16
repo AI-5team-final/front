@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
 import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
@@ -7,78 +7,90 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import fetchClient from '../utils/fetchClient';
 import useToken from '../hooks/useToken';
 import '../styles/List.scss';
-import '../styles/SliderTransition.scss';
+import '../styles/ListCommon.scss';
 import '../styles/LoadingSpinner.scss';
 
 const List = () => {
-    const location = useLocation();
     const { role } = useToken();
-    const { matchResults, setMatchResults } = useMatch();
     const [loading, setLoading] = useState(false);
-    const [showContent, setShowContent] = useState(false);
-    const navigate = useNavigate();
+    const [ready, setReady] = useState(false);
+    const { resumeFile, jobPostFile, setMatchResults, matchResults } = useMatch();
     
 
     useEffect(() => {
-        const processEtoC = async () => {
-            const { resumeFile } = location.state || {};
+        const fetchMatches = async () => {
+            if (!role) return;
 
-            if (!resumeFile) {
-                console.warn("resumeFile이 없음 → /로 이동");
-                navigate("/");
+            const file = role === 'APPLICANT' ? resumeFile : jobPostFile;
+            if (!file) return;
+
+            // 이미 매칭 결과가 있으면 fetch 생략
+            if (matchResults?.length > 0) {
+                setReady(true);
                 return;
             }
 
+            setLoading(true);
+            console.log("로딩");
+            
             try {
-                setLoading(true);
                 const formData = new FormData();
-                formData.append('file', resumeFile);
+                formData.append('file', file);
 
-                const response = await fetchClient('/pdf/EtoC', {
+                const endpoint = role === 'APPLICANT' ? '/pdf/EtoC' : '/pdf/CtoE';
+                const response = await fetchClient(endpoint, {
                     method: 'POST',
                     body: formData
                 });
 
-                if (!response.ok) {
-                    throw new Error('EtoC 처리 실패');
-                }
+                if (!response.ok) throw new Error('매칭 요청 실패');
 
                 const data = await response.json();
+                console.log("data", data);
                 setMatchResults(data);
-                setTimeout(() => setShowContent(true), 100);
-            } catch (error) {
-                console.error('EtoC 처리 중 오류:', error);
+                setReady(true);
+                console.log("준비됨")
+            } catch (err) {
+                console.error(`${role} 요청 실패:`, err);
             } finally {
                 setLoading(false);
             }
         };
 
-        processEtoC();
-    }, [location.state, matchResults.length, setMatchResults]);
+        fetchMatches();
+    }, [resumeFile, jobPostFile, role]);
 
 
+    if (!role) return null;
 
-    if (loading) {
-        return (
-            <main className="l-list loading">
+    const isResumeUploaded = localStorage.getItem('resumeUploaded') === 'true';
+    const isJobPostUploaded = localStorage.getItem('jobPostUploaded') === 'true';
+
+    if (
+        (role === 'APPLICANT' && !resumeFile && !isResumeUploaded) ||
+        (role === 'HR' && !jobPostFile && !isJobPostUploaded)
+    ) {
+        return <Navigate to="/" />;
+    }
+    
+
+    return (
+        <main className={`l-list ${loading ? "loading": ""}`}>
+            {loading && (
                 <div className="slider-transition">
                     <div className="loading-spinner">
                         <LoadingSpinner />
                         <p className="loading-spinner__text">
-                            이력서를 분석하고 있습니다.<br />잠시만 기다려주세요...
+                            {role === 'APPLICANT'
+                                ? '이력서를 분석 중입니다'
+                                : '공고와 이력서를 매칭 중입니다'}
+                            <br />잠시만 기다려주세요...
                         </p>
                     </div>
                 </div>
-            </main>
-        );
-    }
-
-    return (
-        <main className="l-list">
-            <div className={`content-container ${showContent ? 'show' : ''}`}>
-                {role === 'HR' && <ListHR />}
-                {role === 'APPLICANT' && <ListApplicant matchResults={matchResults} />}
-            </div>
+            )}
+            {!loading && ready && role === 'APPLICANT' && <ListApplicant />}
+            {!loading && ready && role === 'HR' && <ListHR />}
         </main>
     );
 };

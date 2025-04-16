@@ -1,3 +1,5 @@
+@use '_Common';
+
 .loading-spinner {
     display: flex;
     flex-direction: column;
@@ -16,7 +18,7 @@
     &__dot {
         width: 12px;
         height: 12px;
-        background: #013A72;
+        background: Common.$pointColor;
         border-radius: 50%;
         animation: dotLoader 1.4s infinite ease-in-out both;
         
@@ -32,7 +34,7 @@
     &__text {
         margin-top: 1.5rem;
         font-size: 1.1rem;
-        color: #666;
+        color: Common.$gray;
         text-align: center;
         line-height: 1.5;
         animation: fadeIn 0.5s ease-out 0.2s both;

@@ -1,18 +1,27 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useMatch } from '../context/MatchContext';
 import MainContent from '../components/MainContent';
 import useToken from '../hooks/useToken';
-import '../styles/Main.scss'
 
 const Main = () => {
-	const navigate = useNavigate();
 	const { role } = useToken();
+	const { matchResults, clearResults, setResumeFile, setJobPostFile } = useMatch();
+	const location = useLocation();
+
+	useEffect(() => {
+		clearResults();
+		setResumeFile(null);
+		setJobPostFile(null);
+		localStorage.setItem("resumeUploaded", "false");
+		localStorage.setItem("jobPostFileUploaded", "false");
+	}, [location.pathname]);
 	
 	useEffect(() => {
-		if (!role) {
-			navigate('/login');
-		}
-	}, [role, navigate]);
+		// console.log("matchResults가 변경되었습니다:", matchResults);
+		// console.log("resumeFileLocal이 변경되었습니다:", localStorage.getItem("resumeFileLocal"));
+	  }, [matchResults]);
+	
 
 	return <MainContent role={role} />;
 }

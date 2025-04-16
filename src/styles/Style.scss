@@ -1,10 +1,9 @@
-@import '_Common';
+@use '_Common';
 
 body {
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    color: Common.$black;
 }
-
-
 
 .inner {
     width: 1400px;
@@ -17,7 +16,7 @@ body {
     font-weight: 700;
 }
 
-@media (max-width: $desktop) {
+@media (max-width: Common.$desktop) {
     .inner {
         width: 100%;
         padding: 0 20px;
@@ -25,10 +24,14 @@ body {
 }
 
 
-@media (max-width: $tablet) {
-    
+@media (max-width: Common.$tablet) {
+    .sub-tit {
+        font-size: 2.5rem;
+    }
 }
 
-@media (max-width: $mobile) {
-    
+@media (max-width: Common.$mobile) {
+    .sub-tit {
+        font-size: 2rem;
+    }
 }

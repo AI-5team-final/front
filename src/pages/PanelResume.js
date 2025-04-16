@@ -1,19 +1,19 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
 import useToken from '../hooks/useToken';
 import fetchClient from '../utils/fetchClient';
-import '../styles/PanelResume.scss';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import DeleteModal from '../modal/DeleteModal';
+import LoadingSpinner from '../components/LoadingSpinner';
+import '../styles/Panel.scss';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { token, removeToken } = useToken();
@@ -67,6 +67,8 @@ const PanelResume = () => {
 
         const formData = new FormData();
         formData.append('file', fileState.file);
+        setIsLoading(true);
+        setIsModalOpen(false);
 
         try {
             const response = await fetchClient('/pdf/upload', {
@@ -78,14 +80,14 @@ const PanelResume = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
             }
-
+            
             toast.success('이력서가 성공적으로 업로드되었습니다.');
             setFileState({ name: '', file: null });
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            setIsModalOpen(false);
             fetchResumes();
+            setIsLoading(false)
         } catch (error) {
             handleError(error);
         }
@@ -93,7 +95,6 @@ const PanelResume = () => {
 
     const handleDeleteRequest = (resume) => {
         setDeleteTarget(resume);
-        // setIsDeleteModalOpen(prev=>!prev);
     };
 
     const handleConfirmDelete = async () => {
@@ -101,6 +102,8 @@ const PanelResume = () => {
             handleAuthError();
             return;
         }
+
+        setDeleteTarget(null);
 
         try {
             const response = await fetchClient('/pdf/delete', {
@@ -112,10 +115,10 @@ const PanelResume = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || '삭제에 실패했습니다.');
             }
-
-            toast.success('이력서가 삭제되었습니다.');
+            
             setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
-            setDeleteTarget(null);
+            toast.success('이력서가 삭제되었습니다.');
+            
         } catch (error) {
             handleError(error);
         }
@@ -155,8 +158,9 @@ const PanelResume = () => {
     const closeUploadModal = () => setIsModalOpen(prev=>!prev);
     const closeDeleteModal = () => setDeleteTarget(null);
 
+
     return (
-        <main className="l-panel-resume">
+        <main className="l-panel l-panel-resume">
             <section className="hero-section">
                 <div className="inner">
                     <div className="hero-text">
@@ -171,7 +175,7 @@ const PanelResume = () => {
                 </div>
             </section>
 
-            <section className="container">
+            <section className="section section-upload">
                 <div className="inner">
                     <div className="upload-card">
                         <div
@@ -182,7 +186,7 @@ const PanelResume = () => {
                             <h2 className="upload-title">이력서 등록하기</h2>
                             <p className="upload-paragraph">PDF 형식의 이력서를 등록할 수 있습니다.</p>
                             <p className="upload-paragraph">원하지 않는 이력서는 언제든 삭제할 수 있어요.</p>
-                            <p className="upload-note">*이미지는 인식되지 않을 수 있습니다.</p>
+                            <p className="upload-note">*이미지는 인식되지 않습니다.</p>
                             <input
                                 type="file"
                                 accept="application/pdf"
@@ -193,23 +197,31 @@ const PanelResume = () => {
                         </div>
                     </div>
 
-                    <div className="resume-list">
+                    
+                </div>
+            </section>
+            <section className="section section-list">
+                <div className='inner'>
+                    <div className="list">
                         {isLoading ? (
-                            <div className="loading">
-                                이력서 목록을 불러오는 중...
+                            <div style={{padding: "20px 0"}}>
+                                <LoadingSpinner/>
+                                <div className="loading">
+                                    이력서 목록을 불러오는 중...
+                                </div>
                             </div>
-                        ) : !Array.isArray(resumes) || resumes.length === 0 ? (
+                        ) : !Array.isArray(resumes) || resumes.length === 0 ? ( 
                             <div className="empty-state">
                                 등록된 이력서가 없습니다.
                             </div>
                         ) : (
                             resumes.map((resume) => (
-                                <div key={resume.id} className="resume-item">
-                                    <div className="resume-info">
+                                <div key={resume.id} className="item">
+                                    <div className="info">
                                         <GrDocumentPdf size={40} color="#6B7280" />
                                         <div>
                                             <a
-                                                className="resume-link"
+                                                className="link"
                                                 href={resume.pdfUri}
                                                 download
                                                 target="_blank"
@@ -217,7 +229,7 @@ const PanelResume = () => {
                                             >
                                                 {resume.pdfFileName}
                                             </a>
-                                            <p className="resume-date">
+                                            <p className="date">
                                                 등록일: {new Date(resume.uploadedAt).toLocaleString()}
                                             </p>
                                         </div>
@@ -234,7 +246,6 @@ const PanelResume = () => {
                     </div>
                 </div>
             </section>
-            
 
             {/* 이력서 업로드 확인 모달 */}
             <UploadCheckModal isOpen={isModalOpen} onRequestClose={closeUploadModal} fileState={fileState} handleSubmit={handleConfirmUpload}/>
