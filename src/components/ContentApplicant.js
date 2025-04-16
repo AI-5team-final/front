@@ -162,9 +162,9 @@ const ContentApplicant = () => {
                         </p>
                     </div>
                     <div className="hero-image">
-                        <img
-                            src="/images/Applicant_MainContent_none.png"
-                            alt="AI 매칭 서비스"
+                        <img 
+                            src="/images/Applicant_MainContent_none.png" 
+                            alt="AI 매칭 서비스" 
                             className="hero-img"
                         />
                     </div>
@@ -224,7 +224,6 @@ const ContentApplicant = () => {
 
             {/* 이력서 불러오기 모달 */}
             <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm}/>
-
 
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles}/>

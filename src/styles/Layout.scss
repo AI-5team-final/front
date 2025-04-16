@@ -1,7 +1,7 @@
 @import '_Common';
 
 $headerHeight: 68px;
-$footerHeight: 132px;
+$footerHeight: 124px;
 
 // 공통
 .coin-display {
@@ -94,15 +94,12 @@ header {
                 }
 
             }
+            
         }
     }
 }
 
 .side-menu {
-    display: none;
-}
-
-.dimmed-bg {
     display: none;
 }
 
@@ -145,7 +142,6 @@ footer {
                     }
                 }
             }
-
 
             .btn-menu {
                 display: block;
@@ -254,6 +250,7 @@ footer {
         &-cont {
             button {
                 font-size: 1.5rem;
+                margin-bottom: 10px;
             }
         }
     }
@@ -261,7 +258,7 @@ footer {
 
 @media (max-width: $mobile){
     $headerHeight: 58px;
-    $footerHeight: 92px;
+    $footerHeight: 84px;
     header {
         .inner {
             height: $headerHeight;
@@ -278,7 +275,6 @@ footer {
         &-cont {
             button {
                 padding: 10px;
-              
             }
         }
     }

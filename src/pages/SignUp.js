@@ -135,7 +135,8 @@ const SignUp = () => {
         try {
             const res = await fetch(`${config.baseURL}/auth/signup`, {
                 method: 'POST',
-                body: JSON.stringify({ ...form, email, role: activeTab })
+                body: JSON.stringify({ ...form, email, role: activeTab }),
+                headers: {'Content-Type': 'application/json'},
             });
 
             if (!res.ok) throw new Error('회원가입 실패');

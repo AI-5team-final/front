@@ -1,31 +1,21 @@
 .l-list-applicant {
-    padding-top: 3.5rem;
-    
-    .container {
-        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-        padding: 40px 20px;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
+    padding: 100px 0 0;
 
     .title {
         font-size: 2.5rem;
-        color: #000000;
         margin-bottom: 15px;
         font-weight: bold;
     }
 
     .subtitle {
         font-size: 1.2rem;
-        color: #000000;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
     }
 
     .subtitle-note {
         font-size: 0.9rem;
         color: #666666;
-        margin-bottom: 20px;
-        margin-top: -30px;
+        margin-bottom: 40px;
     }
 
     .subtitle-note::before {
@@ -40,15 +30,15 @@
         cursor: pointer;
         position: relative;
         display: grid;
-        grid-template-columns: 150px 150px 1fr;
+        grid-template-columns: 180px 250px 1fr;
         gap: 20px;
         align-items: center;
         transition: all 0.2s ease;
 
-        border-bottom: 1px solid #000000;
+        border-bottom: 1px solid #e0e0e0;
 
         &:first-child {
-            border-top: 1px solid #000000;
+            border-top: 1px solid #e0e0e0;
         }
 
         &:hover {
