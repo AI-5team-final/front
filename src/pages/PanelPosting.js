@@ -22,6 +22,7 @@ const PanelPosting = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
     const { token, removeToken } = useToken();
     const fileInputRef = useRef();
     const startDateInputRef = useRef();
@@ -108,6 +109,7 @@ const PanelPosting = () => {
     };
 
     
+    
     const handleDeleteRequest = (posting) => {
         setDeleteTarget(posting);
     };
@@ -139,6 +141,15 @@ const PanelPosting = () => {
         }
     };
 
+    const handleChecked = () => {
+        if(startDateInputRef.current) startDateInputRef.current.value = ""
+        if(endDateInputRef.current) endDateInputRef.current.value = ""
+        
+        setIsChecked(prev=>!prev);
+        setStartDate(null);
+        setEndDate(null);
+    }
+
     const fetchPostings = async () => {
         if (!token) {
             handleAuthError();
@@ -165,10 +176,17 @@ const PanelPosting = () => {
     };
 
     const allSelected = () => {
-        if(!startDate || !endDate || !fileState.file){
-            return false;
-        }else {
+        if (isChecked) {
+            return !!fileState.file;
+        }
+        return !!(startDate && endDate && fileState.file);
+    }
+
+    const selectedOne = () => {
+        if(startDate || endDate || fileState.file || isChecked){
             return true;
+        }else {
+            return false;
         }
     }
     
@@ -178,6 +196,7 @@ const PanelPosting = () => {
         if(startDateInputRef.current) startDateInputRef.current.value = ""
         if(endDateInputRef.current) endDateInputRef.current.value = ""
         
+        setIsChecked(false);
         setStartDate(null);
         setEndDate(null);
         setFileState({ name: '', file: null });
@@ -221,24 +240,32 @@ const PanelPosting = () => {
                                 <h4>공고기간 설정</h4>
                                 <p>공고의 시작일과 마감일을 선택해주세요.<br/>
                                 선택한 기간 동안만 지원자가 공고를 확인할 수 있습니다.</p>
+                                <small>*상시채용이면 아래 체크박스를 선택해주세요.</small>
                             </div>
                             <div>
-                                <div className='date-wrap'>
-                                    <p>시작일</p>
-                                    <input type="date" name="startDate" id="startDate" onChange={(e) => {
-                                        const newStart = e.target.value;
-                                        if (endDate && endDate < newStart){
-                                            setEndDate('')
-                                            endDateInputRef.current.value = "";
-                                        } 
-                                        setStartDate(newStart);
-                                        startDateInputRef.current.value = newStart;
-                                    }} ref={startDateInputRef} required/>
+                                <div className='checkbox-wrap'>
+                                    <input type="checkbox" name="checkbox" id="checkbox" checked={isChecked} onChange={handleChecked}/>
+                                    <label htmlFor="checkbox">상시채용</label>
                                 </div>
-                                <div className='date-wrap'>
-                                    <p>마감일</p>
-                                    <input type="date" name="endDate" id="endDate" onChange={(e)=>{
-                                        setEndDate(e.target.value)}} ref={endDateInputRef} min={startDate || undefined} required/>
+                                <div className='date-wrap-box'>
+                                    <div className={`date-wrap ${isChecked ? "disabled": ""}`}>
+                                        <p>시작일</p>
+                                        <input type="date" name="startDate" id="startDate" onChange={(e) => {
+                                            const newStart = e.target.value;
+                                            if (endDate && endDate < newStart){
+                                                setEndDate('')
+                                                endDateInputRef.current.value = "";
+                                            } 
+                                            setStartDate(newStart);
+                                            startDateInputRef.current.value = newStart;
+                                        }} ref={startDateInputRef} 
+                                        required/>
+                                    </div>
+                                    <div className={`date-wrap ${isChecked ? "disabled": ""}`}>
+                                        <p>마감일</p>
+                                        <input type="date" name="endDate" id="endDate" onChange={(e)=>{
+                                            setEndDate(e.target.value)}} ref={endDateInputRef} min={startDate || undefined} required/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +305,7 @@ const PanelPosting = () => {
                         </div>
                     </div>
                     <div className='btn-wrap'>
-                        <button type="button" className='btn-reset' onClick={handleReset}><IoMdRefresh /> 초기화</button>
+                        <button type="button" className={`btn-reset ${selectedOne() ? "" : "disabled"}`} onClick={handleReset}><IoMdRefresh /> 초기화</button>
                         <button type="button" className={`btn-register ${allSelected() ? "" : "disabled"}`} onClick={()=>setIsModalOpen(true)}>등록하기</button>
                     </div>
                 </div>
@@ -306,7 +333,7 @@ const PanelPosting = () => {
                                         <div>
                                             <a
                                                 className="link"
-                                                href={posting.pdfUri}
+                                                href={posting.presignedUrl}
                                                 download
                                                 target="_blank"
                                                 rel="noopener noreferrer"

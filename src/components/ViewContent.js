@@ -2,10 +2,7 @@ import { useParams } from "react-router-dom";
 import { useMatch } from "../context/MatchContext";
 import CommonContent from "./CommonContent";
 
-
-
 const ViewContent = ({ role }) => {
-	
 	const { matchResults } = useMatch();
 	const { id } = useParams();
 	

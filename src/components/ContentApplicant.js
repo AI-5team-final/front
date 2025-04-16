@@ -99,6 +99,7 @@ const ContentApplicant = () => {
             }
 
             const data = await response.json();
+            
             setResumes(data.pdfs || []);
         } catch (error) {
             if (error.response?.status === 401) {
@@ -129,7 +130,7 @@ const ContentApplicant = () => {
                     name: selectedResume.pdfFileName, 
                     file: file 
                 });
-                setIsLoadModalOpen(false);
+                // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 toast.error('저장소에서 이력서를 불러오는데 실패했습니다.');

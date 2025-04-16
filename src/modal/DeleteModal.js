@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 
-const DeleteModal = ({isOpen, onRequestClose, deleteTarget, handleConfirmDelete}) => {
+const DeleteModal = ({isOpen, onRequestClose, deleteTarget, handleConfirmDelete, fileType}) => {
     return (
         <Modal
             isOpen={isOpen}
@@ -20,7 +20,7 @@ const DeleteModal = ({isOpen, onRequestClose, deleteTarget, handleConfirmDelete}
             }}
         >
             <div className="modal modal-delete">
-                <p>정말 이 이력서를 삭제하시겠습니까?</p>
+                <p>정말 이 {fileType}를 삭제하시겠습니까?</p>
                 <p className="modal-filename">{deleteTarget?.pdfFileName ?? ""}</p>
                 <div className="modal-buttons">
                     <button onClick={onRequestClose} className="modal-button cancel-button">취소</button>
