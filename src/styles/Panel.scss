@@ -66,7 +66,7 @@ $white: #ffffff;
 	// Main Container
 	.section-upload {
 		// padding: 40px 20px 20px;
-		padding: 120px 0 0;
+		padding: 100px 0 0;
 		background-color: $white;
 		display: flex;
 		flex-direction: column;
@@ -105,8 +105,6 @@ $white: #ffffff;
 		align-items: center;
 		gap: 15px;
 		width: 100%;
-		height: 250px;
-		justify-content: center;
 		h5 {
 			font-size: 1.25rem;
 			font-weight: 600;
@@ -136,7 +134,7 @@ $white: #ffffff;
 
 	.section-list {
 		margin: 0 auto;
-		padding: 150px 0;
+		padding: 70px 0 100px;
 		.list {
 			border-top: 1px solid Common.$borderColor;
 			// border-bottom: 1px solid Common.$borderColor;
@@ -221,7 +219,12 @@ $white: #ffffff;
 			}
 		}
 		.section-upload {
+			padding-top: 120px 0 0;
 			.inner {
+				.upload-area {
+					height: 250px;
+					justify-content: center;
+				}
 				.register-wrap {
 					display: flex;
 					justify-content: space-between;
@@ -252,41 +255,100 @@ $white: #ffffff;
 						p {
 							line-height: 1.4;
 						}
+						small {
+							font-size: 0.875rem;
+							color: Common.$gray;
+						}
+						.checkbox-wrap {
+							display: flex;
+							align-items: center;
+							padding-bottom: 20px;
+							border-bottom: 1px solid Common.$borderColor;
+							margin-bottom: 20px;
+							height: 44px;
+							input {
+								padding-left: 24px;
+								height: 100%;
+								position: relative;
+								&::before {
+									content: '';
+									position: absolute;
+									left: 0;
+									top: 50%;
+									transform: translateY(-50%);
+									width: 24px;
+									height: 100%;
+									border-radius: 50%;
+									border: 1px solid Common.$borderColor;
+								}
+								&:checked {
+									&::before {
+										border-color: Common.$pointColor;
+									}
+									&::after {
+										content: '';
+										position: absolute;
+										left: 4px;
+										top: 50%;
+										transform: translateY(-50%);
+										width: 16px;
+										height: 16px;
+										border-radius: 50%;
+										background: Common.$pointColor;
+									}
+								}
+							}
+							label {
+								height: 100%;
+								margin-left: 10px;
+								font-weight: 500;
+								line-height: 24px;
+								cursor: pointer;
+							}
+						}
+						.date-wrap-box {
+							display: flex;
+						}
 						.date-wrap {
 							p {
-								font-size: 1.125rem;
+								// font-size: 1.125rem;
 								font-weight: 500;
 								margin-bottom: 5px;
 							}
-							input {
+							input[type="date"] {
 								width: 100%;
 								// width: 80%;
 								border: 1px solid Common.$borderColor;
 								padding: 10px 15px;
 								border-radius: 5px;
-								// cursor: pointer;
+								cursor: pointer;
 								&:hover,&:focus {
 									box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 								}
-								&::-webkit-clear-button,
-								&::-webkit-inner-spin-button { 
+								&::-webkit-calendar-picker-indicator { 
 									cursor: pointer;
+									// width: 100%;
+									// height: 100%;
+								}
+							}
+							&.disabled {
+								p {
+									color: Common.$borderColor;
+								}
+								input {
+									pointer-events: none;
+									color: Common.$borderColor;
+									&::-webkit-calendar-picker-indicator {
+										background-image: none;
+									}
 								}
 							}
 							+ .date-wrap {
-								margin-top: 20px;
+								// margin-top: 20px;
+								margin-left: 20px;
 							}
 						}
-						// &::after {
-						// 	content: '';
-						// 	position: absolute;
-						// 	right: 30px;
-						// 	top: 50%;
-						// 	transform: translateY(-50%);
-						// 	height: 40%;
-						// 	width: 1px;
-						// 	background: Common.$gray;
-						// }
+						
 						
 					}
 					.card-area {
@@ -310,14 +372,26 @@ $white: #ffffff;
 						font-weight: 500;
 						border-radius: 5px;
 						cursor: pointer;
+						svg {
+							margin-right: 5px;
+						}
+						
 						&:hover {
 							@include hover-transition {
 								background-color: #f0f0f0;
 							}
 						}
-						svg {
-							margin-right: 5px;
+						&.disabled {
+							cursor: default;
+							background: #ccc;
+							border-color: #ccc;
+							color: #fff;
+							pointer-events: none;
+							&:hover {
+								background: #ccc;
+							}
 						}
+						
 						&.btn-register {
 							background: Common.$pointColor;
 							color: #fff;
@@ -334,6 +408,7 @@ $white: #ffffff;
 								cursor: default;
 								background: #ccc;
 								border-color: #ccc;
+								pointer-events: none;
 								&:hover {
 									background: #ccc;
 								}
@@ -344,7 +419,9 @@ $white: #ffffff;
 				
 			}
 		}
-		
+		.section-list {
+			padding: 150px 0;
+		}
 	}
 } 
 
@@ -371,7 +448,7 @@ $white: #ffffff;
 			}
 		}
 		.section-upload {
-			padding: 50px 0;
+			padding: 50px 0 0;
 			.upload-card {
 				width: 100%;
 			}
@@ -434,6 +511,11 @@ $white: #ffffff;
 				
 			}
 		}
+		&-postings {
+			.section-upload {
+				padding: 50px 0;
+			}
+		}
 	}
 }
 
@@ -450,6 +532,14 @@ $white: #ffffff;
 						> div {
 							h3 {
 								font-size: 1rem;
+							}
+						}
+						.date-wrap-box {
+							
+							.date-wrap {
+								+.date-wrap {
+									margin-left: 10px;
+								}
 							}
 						}
 						.date-area  {

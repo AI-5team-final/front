@@ -16,7 +16,7 @@ const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setS
                     bottom: 'auto',
                     transform: 'translate(-50%, -50%)',
                     borderRadius: '12px',
-                    zIndex: 11001,
+                    zIndex: 11002,
                 }
             }}
         >
@@ -53,10 +53,8 @@ const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setS
                     >
                         선택하기
                     </button>
-                   
                 </div>
             </div>
-               
         </Modal>
     );
 }

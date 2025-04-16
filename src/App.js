@@ -16,13 +16,13 @@ import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
 import CreditDashboard from "./pages/CreditDashboard";
+import Matching from "./pages/Matching";
+import PanelPosting from "./pages/PanelPosting";
 import "the-new-css-reset/css/reset.css";
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
 import './styles/Style.scss';
 import './styles/modal.scss';
-import Matching from "./pages/Matching";
-import PanelPosting from "./pages/PanelPosting";
 
 
 function AppRoutes() {

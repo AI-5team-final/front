@@ -222,10 +222,10 @@ const PanelResume = () => {
                                         <div>
                                             <a
                                                 className="link"
-                                                href={resume.pdfUri}
-                                                download
+                                                href={resume.presignedUrl}
+                                                // download
                                                 target="_blank"
-                                                rel="noopener noreferrer"
+                                                rel="noreferrer"
                                             >
                                                 {resume.pdfFileName}
                                             </a>
@@ -248,10 +248,10 @@ const PanelResume = () => {
             </section>
 
             {/* 이력서 업로드 확인 모달 */}
-            <UploadCheckModal isOpen={isModalOpen} onRequestClose={closeUploadModal} fileState={fileState} handleSubmit={handleConfirmUpload}/>
+            <UploadCheckModal isOpen={isModalOpen} onRequestClose={closeUploadModal} fileState={fileState} handleSubmit={handleConfirmUpload} fileType={"이력서"}/>
 
             {/* 삭제 모달 */}
-            <DeleteModal isOpen={deleteTarget} onRequestClose={closeDeleteModal} deleteTarget={deleteTarget} handleConfirmDelete={handleConfirmDelete} />
+            <DeleteModal isOpen={deleteTarget} onRequestClose={closeDeleteModal} deleteTarget={deleteTarget} handleConfirmDelete={handleConfirmDelete} fileType={"이력서"}/>
         </main>
     );
 };

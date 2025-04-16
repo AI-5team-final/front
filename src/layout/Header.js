@@ -84,15 +84,19 @@ const Header = () => {
                             <strong>{userInfo?.name}</strong>님
                         </p>
                         <span></span>
-                        <p className="coin-display" onClick={openPaymentModal} style={{ cursor: "pointer" }}>
-                            <RiCopperCoinLine />{" "}
-                            {userInfo?.credit ? new Intl.NumberFormat().format(userInfo.credit) : 0}
-                        </p>
-                        <span></span>
-                        <button type="button" onClick={() => handlePageRedirect("payment")}>
-                            결제 내역
-                        </button>
-                        <span></span>
+                        {role==="HR" ? "" : (
+                            <>
+                                <p className="coin-display" onClick={openPaymentModal} style={{ cursor: "pointer" }}>
+                                    <RiCopperCoinLine />{" "}
+                                    {userInfo?.credit ? new Intl.NumberFormat().format(userInfo.credit) : 0}
+                                </p>
+                                <span></span>
+                                <button type="button" onClick={() => handlePageRedirect("payment")}>
+                                    결제 내역
+                                </button>
+                                <span></span>
+                            </>
+                        )}
                         <button type="button" onClick={() => handlePageRedirect("resume")}>
                             {role === "HR" ? "공고 관리" : "이력서 관리"}
                         </button>
