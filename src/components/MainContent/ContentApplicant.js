@@ -7,10 +7,8 @@ import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
-import { handleNoFileError, handleFileTypeError,
-    handleAuthError, handleListLoadingError,
-    handleNetworkError, handleFileNotSelectedError,
-    handleFileLoadError } from './ErrorHandler';
+import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError } from './ErrorHandler';
+import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 
 
@@ -26,18 +24,6 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-
-    const validateFile = (file) => {
-        if (!file) {
-            handleNoFileError();
-            return false;
-        }
-        if (file.type !== 'application/pdf') {
-            handleFileTypeError(file.type);
-            return false;
-        }
-        return true;
-    };
 
     const handleDrop = (e) => {
         e.preventDefault();

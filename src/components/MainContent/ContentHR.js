@@ -5,13 +5,10 @@ import { useMatch } from '../../context/MatchContext';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
-import { handleNoFileError, handleFileTypeError,
-    handleAuthError, handleListLoadingError,
-    handleNetworkError, handleFileNotSelectedError,
-    handleFileLoadError } from './ErrorHandler';
+import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError } from './ErrorHandler';
+import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 import '../../styles/ContentHR.scss';
-
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -23,18 +20,6 @@ const ContentHR = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setJobPostFile } = useMatch();
-
-    const validateFile = (file) => {
-        if (!file) {
-            handleNoFileError();
-            return false;
-        }
-        if (file.type !== 'application/pdf') {
-            handleFileTypeError(file.type);
-            return false;
-        }
-        return true;
-    };
 
     const handleDrop = (e) => {
         e.preventDefault();
