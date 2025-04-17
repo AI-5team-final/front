@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useMatch } from '../context/MatchContext';
+import { useMatch } from '../../context/MatchContext';
 import { toast } from 'react-toastify';
-import fetchClient from '../utils/fetchClient';
-import UploadCheckModal from '../modal/UploadCheckModal';
-import LoadModal from '../modal/LoadModal';
-import '../styles/ContentApplicant.scss';
-import '../styles/ContentHR.scss';
+import fetchClient from '../../utils/fetchClient';
+import UploadCheckModal from '../../modal/UploadCheckModal';
+import LoadModal from '../../modal/LoadModal';
+import '../../styles/ContentApplicant.scss';
+import '../../styles/ContentHR.scss';
 
 
 const ContentHR = () => {
