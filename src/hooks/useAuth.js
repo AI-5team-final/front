@@ -35,7 +35,7 @@ const useAuth = create(
             isInitializing: false,
           });
 
-          console.log('✅ 로그인 상태 복원');
+          console.log('로그인 상태 복원');
         } catch (err) {
           console.warn('🚫 로그인 상태 복원 실패:', err);
           set({ userInfo: null, isLoggedIn: false, isInitializing: false });

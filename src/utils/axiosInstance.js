@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import config from '../config';
 import useAuth from '../hooks/useAuth';
-
+import Cookies from 'js-cookie';
 
 
 // 토큰 유효성 검사 함수
@@ -22,6 +22,12 @@ const isTokenExpired = (token) => {
 // accessToken을 갱신하는 함수
 // 만료 시, /auth/token/refresh로 refreshToken을 보내서 새 accessToken을 발급받음
 const refreshAccessToken = async () => {
+  const { userInfo } = useAuth.getState();
+  if (!userInfo) {
+    console.warn("🔒 유저 정보 없음 → 토큰 갱신 시도 생략");
+    return null;
+  }
+  
   try {
     const response = await axios.post(`${config.baseURL}/auth/token/refresh`, null, {
       withCredentials: true, // 쿠키에 있는 refreshToken 전송
@@ -66,7 +72,17 @@ axiosInstance.interceptors.request.use(
       }
     }
 
-    config.headers.Authorization = `Bearer ${token}`;
+    // Authorization 헤더 추가
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // CSRF 토큰 추가
+    const csrfToken = Cookies.get('XSRF-TOKEN');
+    if (csrfToken) {
+      config.headers['X-XSRF-TOKEN'] = csrfToken;
+    }
+
     return config;
   },
   (error) => Promise.reject(error)

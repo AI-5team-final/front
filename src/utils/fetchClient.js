@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 import useAuth from '../hooks/useAuth'; 
+import Cookies from 'js-cookie';
 
 const isTokenExpired = (token) => {
   if (!token) return true;
@@ -13,6 +14,12 @@ const isTokenExpired = (token) => {
 };
 
 const refreshAccessToken = async () => {
+  const { userInfo } = useAuth.getState();
+  if (!userInfo) {
+    console.warn("🔒 유저 정보 없음 → 토큰 갱신 시도 생략");
+    return null;
+  }
+  
   try {
     const response = await fetch(`${config.baseURL}/auth/token/refresh`, {
       method: 'POST',
@@ -64,12 +71,18 @@ const fetchClient = async (endpoint, options = {}) => {
     }
   }
 
+  const csrfToken = Cookies.get('XSRF-TOKEN');
+
   // FormData인 경우 토큰만 포함
   const headers = options.body instanceof FormData
-    ? { ...(token && { Authorization: `Bearer ${token}` }) }
+    ? {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
+      }
     : {
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token}` }),
+        ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
       };
 
   const fetchOptions = {

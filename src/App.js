@@ -63,9 +63,14 @@ function App() {
 
   // 새로고침 시 상태 복원
   useEffect(() => {
-    initialize();
-    console.log("initialize")
-  }, [initialize]);
+    const { isLoggedIn } = useAuth.getState();
+    if (isLoggedIn) {
+      initialize();
+    } else {
+      // 로그인 안했으면 로딩 상태 해제만
+      useAuth.setState({ isInitializing: false });
+    }
+  }, []);
 
 
     return (
