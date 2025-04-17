@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
 import { useMatch } from '../context/MatchContext';
+import useAuth from '../hooks/useAuth';
 
 const getScoreClass = (score) => {
     if (score >= 90) return 'score-excellent';
@@ -23,7 +23,7 @@ const getIcon = (title) => {
 };
 
 const ListApplicant = () => {
-    const { userInfo } = useUser();
+    const { userInfo } = useAuth();
     const { matchResults } = useMatch();
 
     const navigate = useNavigate();

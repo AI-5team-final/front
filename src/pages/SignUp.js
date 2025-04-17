@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 import useAuth from '../hooks/useAuth';
 import config from "../config";
 import '../styles/SignUp.scss';
-import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const SignUp = () => {
     const navigate = useNavigate();

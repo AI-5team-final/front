@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import '../styles/Payment.scss';
 
 const PayFail = () => {

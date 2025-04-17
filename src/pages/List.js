@@ -5,12 +5,13 @@ import ListApplicant from '../components/ListApplicant';
 import ListHR from '../components/ListHR';
 import LoadingSpinner from '../components/LoadingSpinner';
 import fetchClient from '../utils/fetchClient';
-import useToken from '../hooks/useToken';
 import '../styles/List.scss';
 import '../styles/LoadingSpinner.scss';
+import useAuth from '../hooks/useAuth';
 
 const List = () => {
-    const { role } = useToken();
+    const { userInfo } = useAuth();
+    const role = userInfo?.role;
     const [loading, setLoading] = useState(false);
     const [ready, setReady] = useState(false);
     const { resumeFile, jobPostFile, setMatchResults, matchResults } = useMatch();

@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
-import useToken from '../hooks/useToken';
 import fetchClient from '../utils/fetchClient';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import DeleteModal from '../modal/DeleteModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import '../styles/Panel.scss';
+import useAuth from '../hooks/useAuth';
 
 const PanelResume = () => {
     const [resumes, setResumes] = useState([]);
@@ -16,15 +16,19 @@ const PanelResume = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { token, removeToken } = useToken();
+    const { userInfo } = useAuth();
+    const role = userInfo?.role;
     const fileInputRef = useRef();
     const navigate = useNavigate();
 
-    const handleAuthError = () => {
-        toast.error('로그인이 필요한 서비스입니다.');
-        removeToken();
-        navigate('/login');
-    };
+    // const handleAuthError = () => {
+    //     toast.error('로그인이 필요한 서비스입니다.');
+    //     navigate('/login');
+    // };
+
+    useEffect(() => {
+        fetchResumes();
+    }, []);
 
     const handleError = (error) => {
         console.error('에러 발생:', error);
@@ -60,10 +64,6 @@ const PanelResume = () => {
             return;
         }
 
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         const formData = new FormData();
         formData.append('file', fileState.file);
@@ -98,10 +98,6 @@ const PanelResume = () => {
     };
 
     const handleConfirmDelete = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         setDeleteTarget(null);
 
@@ -125,11 +121,7 @@ const PanelResume = () => {
     };
 
     const fetchResumes = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
-
+       
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
@@ -149,11 +141,7 @@ const PanelResume = () => {
         }
     };
 
-    useEffect(() => {
-        if (token) {
-            fetchResumes();
-        }
-    }, [token]);
+    
 
     const closeUploadModal = () => setIsModalOpen(prev=>!prev);
     const closeDeleteModal = () => setDeleteTarget(null);

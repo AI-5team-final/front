@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
 import axiosClient from '../utils/axiosInstance'
 import '../styles/Payment.scss';
+import useAuth from "../hooks/useAuth";
 
 
 const PaySuccess = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { updateCredit } = useUser();
+    const { updateCredit } = useAuth();
 
     const [hasConfirmed, setHasConfirmed] = useState(false); // 중복 호출 방지
     const [message, setMessage] = useState(""); // 백엔드 메시지
