@@ -2,11 +2,13 @@ import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../../context/MatchContext';
-import { toast } from 'react-toastify';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
-import { handleError, handleAuthError } from './ErrorHandler';
+import { handleNoFileError, handleFileTypeError,
+    handleAuthError, handleListLoadingError,
+    handleNetworkError, handleFileNotSelectedError,
+    handleFileLoadError } from './ErrorHandler';
 import '../../styles/ContentApplicant.scss';
 import '../../styles/ContentHR.scss';
 
@@ -23,9 +25,12 @@ const ContentHR = () => {
     const { setJobPostFile } = useMatch();
 
     const validateFile = (file) => {
-        if (!file) return false;
+        if (!file) {
+            handleNoFileError();
+            return false;
+        }
         if (file.type !== 'application/pdf') {
-            toast.error('PDF 파일만 업로드 가능합니다.');
+            handleFileTypeError(file.type);
             return false;
         }
         return true;
@@ -50,13 +55,14 @@ const ContentHR = () => {
 
     const handleSubmit = async () => {
         if (!fileState.file) {
-            toast.error('PDF 파일을 선택해주세요.');
+            handleNoFileError();
+            setIsUploadModalOpen(false);
             return;
         }
         console.log("??")
         const token = localStorage.getItem('accessToken');
         if (!token) {
-            handleAuthError();
+            handleAuthError(null, navigate);
             return;
         }
 
@@ -66,23 +72,23 @@ const ContentHR = () => {
         navigate('/list');
     };
 
-    const fetchResumes = async () => {
+    const fetchPostings = async () => {
         const token = localStorage.getItem('accessToken');
         if (!token) {
-            handleAuthError();
+            handleAuthError(null, navigate);
             return;
         }
 
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
-            if (response.status === 401) {
-                handleAuthError();
+            if (!response.ok) {
+                handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
             }
-
-            if (!response.ok) {
-                throw new Error('채용공고 목록을 불러오는데 실패했습니다.');
+            if (response.status === 401) {
+                handleAuthError(null, navigate);
+                return;
             }
 
             const data = await response.json();
@@ -91,8 +97,9 @@ const ContentHR = () => {
             if (error.response?.status === 401) {
                 handleAuthError();
                 return;
+            } else {
+                handleNetworkError(error, navigate);
             }
-            handleError(error);
         } finally {
             setIsLoading(false);
         }
@@ -100,7 +107,7 @@ const ContentHR = () => {
 
     const handleLoadConfirm = async () => {
         if (!selectedId) {
-            toast.error('채용공고를 선택해주세요.');
+            handleFileNotSelectedError('채용공고');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
@@ -108,7 +115,12 @@ const ContentHR = () => {
             try {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
-                    throw new Error('채용공고를 불러오는데 실패했습니다.');
+                    handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
+                    return;
+                }
+                if (response.status === 401) {
+                    handleAuthError(null, navigate);
+                    return;
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
@@ -119,14 +131,14 @@ const ContentHR = () => {
                 setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
-                toast.error('저장소에서 채용공고를 불러오는데 실패했습니다.');
+                handleFileLoadError(error);
             }
         }
     };
 
     const handleLoadModalOpen = () => {
         setIsLoadModalOpen(true);
-        fetchResumes();
+        fetchPostings();
     };
 
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
