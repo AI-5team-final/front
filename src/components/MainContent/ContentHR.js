@@ -5,10 +5,11 @@ import { useMatch } from '../../context/MatchContext';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
-import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError } from './ErrorHandler';
+import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 import '../../styles/ContentHR.scss';
+import { HR_PAGE_STEPS } from '../Tutorial/HRTutorialSteps';
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });

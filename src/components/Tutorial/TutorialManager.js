@@ -1,6 +1,7 @@
 import introJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { useEffect, useRef } from 'react';
+import '../../styles/TutorialManager.scss';
 
 const TutorialManager = ({ steps, startImmediately = false }) => {
   const introInstance = useRef(null);

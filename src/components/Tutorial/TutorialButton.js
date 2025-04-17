@@ -1,27 +1,18 @@
 import React from 'react';
-import { Button } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { FaQuestionCircle } from 'react-icons/fa';
+import '../../styles/TutorialButton.scss';
 
 const TutorialButton = ({ onClick }) => {
-  return (
-    <Button
-      variant="outlined"
-      startIcon={<HelpOutlineIcon />}
-      onClick={onClick}
-      sx={{
-        position: 'fixed',
-        bottom: 20,
-        right: 20,
-        zIndex: 1000,
-        backgroundColor: 'white',
-        '&:hover': {
-          backgroundColor: '#f5f5f5',
-        },
-      }}
-    >
-      튜토리얼 시작
-    </Button>
-  );
+    return (
+        <button 
+            className="tutorial-button"
+            onClick={onClick}
+            title="튜토리얼 시작"
+        >
+            <FaQuestionCircle className="tutorial-icon" />
+            <span>튜토리얼</span>
+        </button>
+    );
 };
 
 export default TutorialButton; 

@@ -7,8 +7,11 @@ import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
-import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError } from './ErrorHandler';
+import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
+import TutorialManager from '../Tutorial/TutorialManager';
+import TutorialButton from '../Tutorial/TutorialButton';
+import { APPLICANT_PAGE_STEPS } from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 
 
@@ -24,6 +27,7 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -139,6 +143,11 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
+            <TutorialManager 
+                steps={APPLICANT_PAGE_STEPS} 
+                startImmediately={showTutorial} 
+            />
+            <TutorialButton onClick={() => setShowTutorial(true)} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
