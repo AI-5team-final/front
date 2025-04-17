@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { UserProvider } from './context/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { MatchProvider } from './context/MatchContext';
+import { useEffect } from "react";
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
 import List from "./pages/List";
@@ -11,13 +11,13 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import PanelResume from './pages/PanelResume';
 import PrivateRoute from "./components/PrivateRoute";
-import useAutoRefreshToken from './hooks/useAutoRefreshToken';
 import Payment from './pages/Payment';
 import PaySuccess from "./pages/PaySuccess";
 import PayFail from "./pages/PayFail";
 import CreditDashboard from "./pages/CreditDashboard";
 import Matching from "./pages/Matching";
 import PanelPosting from "./pages/PanelPosting";
+import useAuth from "./hooks/useAuth";
 import "the-new-css-reset/css/reset.css";
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
@@ -26,7 +26,6 @@ import './styles/modal.scss';
 
 
 function AppRoutes() {
-  useAutoRefreshToken();
 
   return (
     <Routes>
@@ -60,15 +59,24 @@ function AppRoutes() {
 }
 
 function App() {
+  const { initialize } = useAuth();
+
+  // 새로고침 시 상태 복원
+  useEffect(() => {
+    initialize();
+    console.log("initialize")
+  }, [initialize]);
+
+
     return (
-      <UserProvider>
+      <>
         <MatchProvider>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
         </MatchProvider>
         <ToastContainer position="top-center" autoClose={1000} style={{ zIndex: 11002 }}/>
-      </UserProvider>
+      </>
     );
   }
 

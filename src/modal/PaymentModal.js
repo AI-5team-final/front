@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal from 'react-modal';
 import Payment from '../pages/Payment'; // 실제 Payment 컴포넌트 경로에 맞게 수정
 import { IoClose } from 'react-icons/io5';

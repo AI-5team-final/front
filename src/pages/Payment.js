@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext";
-import '../styles/Payment.scss';
 import { toast } from 'react-toastify';
+import '../styles/Payment.scss';
+import useAuth from '../hooks/useAuth';
 
 const clientKey = "test_ck_P9BRQmyarYBweLQwgG778J07KzLN";
 const customerKey = "V97Io7HRQ1c3bzDqnpcCk";
@@ -14,7 +14,7 @@ const Payment = () => {
     const [method, setMethod] = useState("CARD");
     const [selected, setSelected] = useState(null); // 선택된 금액
     const [showExtra, setShowExtra] = useState(false); // 기타 펼치기
-    const { userInfo } = useUser();
+    const { userInfo } = useAuth();
 
 
 

@@ -1,52 +1,53 @@
 import { useEffect } from 'react';
-import axiosClient from '../utils/axiosInstance.js';
-import useToken from './useToken';
-import { useUser } from '../context/UserContext';
+import axiosInstance from '../utils/axiosInstance';
+import useAuth from './useAuth'; // zustand 훅
 import { jwtDecode } from 'jwt-decode';
 
 export default function useAutoRefreshToken() {
-  const { token, setToken, removeToken } = useToken();
-  const { updateUserInfoFromToken } = useUser();
+    const { userInfo, setUser, logout } = useAuth();
 
-  useEffect(() => {
-    if (!token) return;
+    useEffect(() => {
+    if (!userInfo) return;
 
-    // JWT 디코딩해서 accessToken exp 시점(만료 시간) 가져옴
-    // const decoded = JSON.parse(atob(token.split('.')[1]));
-    const decoded = jwtDecode(token);
-    const exp = decoded?.exp;
+    try {
+        const decoded = jwtDecode(userInfo?.accessToken);
+        const exp = decoded?.exp;
 
-    if (!exp) return;
+        if (!exp) return;
 
-    const now = Math.floor(Date.now() / 1000);
-    const timeLeft = exp - now;
+        const now = Math.floor(Date.now() / 1000);
+        const timeLeft = exp - now;
 
-    // 만료 120초 전 토큰 갱신 예약
-    const refreshThreshold = 120;
+        const refreshThreshold = 120; // 2분 전 미리 갱신
 
-    // setTimeout으로 백그라운드에서 자동 요청함
-    const timeoutId = setTimeout(async () => {
-      try {
-        const response = await axiosClient.post('/auth/token/refresh', {}, { withCredentials: true });
-        const { accessToken } = response.data;
-        if (accessToken) {
-          setToken(accessToken);
+        const timeoutId = setTimeout(async () => {
+        try {
+            const response = await axiosInstance.post('/auth/token/refresh', {}, {
+            withCredentials: true,
+            });
 
-          // 디코딩 후 Context에 유저 정보 갱신
-          const decodedNew = jwtDecode(accessToken);
-          updateUserInfoFromToken(decodedNew);
+            const { accessToken } = response.data;
 
-          console.log('accessToken 자동 갱신 + 유저 정보 업데이트');        
-          
+            if (accessToken) {
+            const decodedNew = jwtDecode(accessToken);
+            // 유저 정보 갱신 (accessToken + 유저 상태 통합)
+            setUser({
+                ...userInfo,
+                ...decodedNew,
+                accessToken,
+            });
+
+            console.log('🔄 accessToken 자동 갱신 완료');
+            }
+        } catch (err) {
+            console.error('❌ accessToken 자동 갱신 실패:', err);
+            logout(); // zustand에서 처리하도록
         }
-      } catch (err) {
-        // RT도 만료되었거나 잘못되면 로그인 페이지로 리디렉션
-        console.error('accessToken 자동 갱신 실패', err);
-        removeToken();
-        window.location.href = '/login';
-      }
-    }, (timeLeft - refreshThreshold) * 1000);
+        }, (timeLeft - refreshThreshold) * 1000);
 
-    return () => clearTimeout(timeoutId);
-  }, [token]);
+        return () => clearTimeout(timeoutId);
+    } catch (err) {
+        console.warn('❌ accessToken decode 실패:', err);
+    }
+    }, [userInfo]);
 }

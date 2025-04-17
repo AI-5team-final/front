@@ -1,16 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import { useUser } from "../context/UserContext";
 import PaymentModal from "../modal/PaymentModal";
 import useAuth from "../hooks/useAuth";
-import useToken from "../hooks/useToken";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import Toolbar from "./Header/Toolbar";
 import Sidebar from "./Header/Sidebar";
 
+
 const Header = () => {
-    const { userInfo } = useUser();
-    const { logout } = useAuth();
-    const { role } = useToken();
+    const { userInfo, logout } = useAuth();
+    const role = userInfo?.role;
+    
     const navigate = useNavigate();
     const headerRef = useRef(null);
 
