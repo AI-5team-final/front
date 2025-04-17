@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
-import { RiCopperCoinLine } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import UserTitle from "./UserTitle";
+import CoinDisplay from "./CoinDisplay";
 
 const Sidebar = ({ 
     isOpen, 
@@ -22,10 +22,7 @@ const Sidebar = ({
                     <UserTitle role={role} name={userInfo?.name} />
                     {role !== "HR" && (
                         <>
-                            <p className="coin-display" onClick={onPaymentClick} style={{ cursor: "pointer" }}>
-                                <RiCopperCoinLine />{" "}
-                                {userInfo?.credit ? new Intl.NumberFormat().format(userInfo.credit) : 0}
-                            </p>
+                            <CoinDisplay credit={userInfo?.credit} onClick={onPaymentClick} />
                             <button type="button" onClick={() => onPageRedirect("payment")}>
                                 결제 내역 <MdKeyboardArrowRight className="icon-arrow" />
                             </button>

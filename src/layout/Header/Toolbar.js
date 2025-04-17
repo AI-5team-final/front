@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { RiCopperCoinLine } from "react-icons/ri";
 import { RxHamburgerMenu } from "react-icons/rx";
 import UserTitle from "./UserTitle";
+import CoinDisplay from "./CoinDisplay";
 
 const Toolbar = ({ 
     onMenuClick, 
@@ -24,10 +24,7 @@ const Toolbar = ({
                 <span></span>
                 {role !== "HR" && (
                     <>
-                        <p className="coin-display" onClick={onPaymentClick} style={{ cursor: "pointer" }}>
-                            <RiCopperCoinLine />{" "}
-                            {userInfo?.credit ? new Intl.NumberFormat().format(userInfo.credit) : 0}
-                        </p>
+                        <CoinDisplay credit={userInfo?.credit} onClick={onPaymentClick} />
                         <span></span>
                         <button type="button" onClick={() => onPageRedirect("payment")}>
                             결제 내역
