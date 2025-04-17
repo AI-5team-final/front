@@ -12,6 +12,7 @@ import MarkdownResult from "./MarkdownResult";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import useAuth from "../hooks/useAuth";
+import Loading from "./Loading";
 
 
 const CommonContent = ({matchResult, role}) => {
@@ -191,12 +192,7 @@ const CommonContent = ({matchResult, role}) => {
                     (<div className="bg">
                         <div className="inner">
                             {loading ? (
-                                <div className="loading-spinner">
-                                        <LoadingSpinner/>
-                                        <p className="loading-spinner__text">
-                                                결과를 분석중입니다.<br />잠시만 기다려주세요...
-                                        </p>
-                                </div>
+                                <Loading text={"결과를 분석중입니다."}/>
                             ) : !agentFeedback ? (
                                 // 버튼 + 안내
                                 <>

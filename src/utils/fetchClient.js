@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 import useAuth from '../hooks/useAuth'; 
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 const isTokenExpired = (token) => {
   if (!token) return true;
@@ -80,19 +80,19 @@ const fetchClient = async (endpoint, options = {}) => {
     }
   }
 
-  const rawToken = Cookies.get('XSRF-TOKEN');
-  const csrfToken = decodeURIComponent(rawToken || '').trim();
+  // const rawToken = Cookies.get('XSRF-TOKEN');
+  // const csrfToken = decodeURIComponent(rawToken || '').trim();
 
   // FormData인 경우 토큰만 포함
   const headers = options.body instanceof FormData
     ? {
         ...(token && { Authorization:` Bearer ${token}` }),
-        ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
+        // ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
       }
     : {
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token} `}),
-        ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
+        // ...(csrfToken && { 'X-XSRF-TOKEN': csrfToken }),
       };
 
   const fetchOptions = {

@@ -16,6 +16,12 @@ body {
     font-weight: 700;
 }
 
+.l-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (max-width: Common.$desktop) {
     .inner {
         width: 100%;

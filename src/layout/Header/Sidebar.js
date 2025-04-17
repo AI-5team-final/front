@@ -1,5 +1,4 @@
 import { IoClose } from "react-icons/io5";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
 import PaymentButton from "./PaymentButton";

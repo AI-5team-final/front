@@ -34,11 +34,6 @@ const ContentHR = () => {
         toast.error('파일 업로드 중 오류가 발생했습니다.');
     };
 
-    const handleAuthError = () => {
-        toast.error('로그인이 필요한 서비스입니다.');
-        localStorage.removeItem('accessToken');
-        navigate('/login');
-    };
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -62,12 +57,6 @@ const ContentHR = () => {
             toast.error('PDF 파일을 선택해주세요.');
             return;
         }
-        console.log("??")
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         localStorage.setItem('jobPostFileUploaded', 'true');
         setJobPostFile(fileState.file);
@@ -76,19 +65,12 @@ const ContentHR = () => {
     };
 
     const fetchResumes = async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError();
-            return;
-        }
+    
 
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
-            if (response.status === 401) {
-                handleAuthError();
-                return;
-            }
+        
 
             if (!response.ok) {
                 throw new Error('채용공고 목록을 불러오는데 실패했습니다.');
@@ -97,10 +79,7 @@ const ContentHR = () => {
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
-            if (error.response?.status === 401) {
-                handleAuthError();
-                return;
-            }
+        
             handleError(error);
         } finally {
             setIsLoading(false);
@@ -125,7 +104,7 @@ const ContentHR = () => {
                     name: selectedResume.pdfFileName, 
                     file: file 
                 });
-                setIsLoadModalOpen(false);
+                // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 toast.error('저장소에서 채용공고를 불러오는데 실패했습니다.');

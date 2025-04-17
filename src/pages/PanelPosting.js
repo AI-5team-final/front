@@ -32,11 +32,6 @@ const PanelPosting = () => {
         fetchPostings();
     }, []);
 
-    // const handleAuthError = () => {
-    //     toast.error('로그인이 필요한 서비스입니다.');
-    //     navigate('/login');
-    // };
-
     const handleError = (error) => {
         console.error('에러 발생:', error);
         if (error instanceof Error) {

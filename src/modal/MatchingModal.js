@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaCloudDownloadAlt } from 'react-icons/fa';
 import { RiRobot2Line } from 'react-icons/ri';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import fetchClient from '../utils/fetchClient';
 import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { useMatch } from '../context/MatchContext';
+import { IoCloseSharp } from "react-icons/io5";
+import Loading from '../components/Loading';
 
-const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingModalOpen,setIsLoadModalOpen, matchingFiles}) => {
+const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingModalOpen,setIsLoadModalOpen, matchingFiles, setIsMatching}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const { setMatchResults } = useMatch();
+    const resumeInputRef = useRef();
+    const jobPostInputRef = useRef();
 
     const handleOneToOneMatching = async () => {
 
@@ -83,85 +86,116 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
                 }
             }}
         >
-            <div className='modal modal-match'>
-                {
-                    isLoading ? (
-                        <div className="loading-spinner">
-                            <LoadingSpinner/>
-                            <p className="loading-spinner__text">
-                                    결과를 분석중입니다.<br />잠시만 기다려주세요...
-                            </p>
+            
+            {
+                isLoading ? (
+                    <Loading text={"결과를 분석중입니다."}/>
+                ) : (
+                    <div className='modal modal-match'>
+                        <div className="modal-title">
+                            <RiRobot2Line size={24} color="#013A72" />
+                            <span>Fit Advisor</span>
                         </div>
-                    ) : (
-                        <>
-                            <div className="modal-title">
-                                <RiRobot2Line size={24} color="#013A72" />
-                                <span>Fit Advisor</span>
-                            </div>
-                            <div className="modal-subtitle">
-                                AI agent "Fit Advisor"는 당신이 가고 싶은 회사에 맞는 로드맵을 만들어줘요
-                            </div>
-                            <div className="divider" />
-                            <p className="resume-list-header">이력서 PDF 업로드</p>
-                            <div className="upload-section">
-                                <input
-                                    type="file"
-                                    accept="application/pdf"
-                                    onChange={(e) =>
-                                        setMatchingFiles((prev) => ({
-                                            ...prev,
-                                            resume: e.target.files[0],
-                                        }))
-                                    }
-                                />
-                                <button 
-                                    className="load-button"
-                                    onClick={() => {
-                                        setIsLoadModalOpen(true);
-                                    }}
-                                >
-                                    <FaCloudDownloadAlt size={16} />
-                                    이력서 불러오기
-                                </button>
-                            </div>
-                            {matchingFiles.resume && (
-                                <p className="modal-filename">{matchingFiles.resume.name}</p>
-                            )}
-                            <div className="divider" />
-                            <p className="resume-list-header">공고 PDF 업로드</p>
+                        <div className="modal-subtitle">
+                            AI agent "Fit Advisor"는 당신이 가고 싶은 회사에 맞는 로드맵을 만들어줘요
+                        </div>
+                        <div className="divider" />
+                        <p className="resume-list-header">이력서 PDF 업로드</p>
+                        <div className="upload-section">
                             <input
                                 type="file"
                                 accept="application/pdf"
+                                ref={resumeInputRef}
+                                style={{ display: 'none' }}
                                 onChange={(e) =>
                                     setMatchingFiles((prev) => ({
                                         ...prev,
-                                        jobPost: e.target.files[0],
+                                        resume: e.target.files[0],
                                     }))
                                 }
                             />
-                            {matchingFiles.jobPost && (
-                                <p className="modal-filename">{matchingFiles.jobPost.name}</p>
-                            )}
-                            <div className="modal-buttons">
-                                <button
-                                    className="modal-button cancel-button"
-                                    onClick={onRequestClose}
-                                >
-                                    취소
-                                </button>
-                                <button
-                                    className="modal-button"
-                                    onClick={handleOneToOneMatching}
-                                >
-                                    매칭 요청
-                                </button>
-                                
-                            </div>
-                        </>
-                    )
-                }
+                            <button 
+                                type='button'
+                                className='btn select-button'
+                                onClick={() => resumeInputRef.current.click()}>
+                                이력서 파일선택
+                            </button>
+                            <button 
+                                type='button'
+                                className="btn load-button"
+                                onClick={() => {
+                                    setIsLoadModalOpen(true);
+                                    setIsMatching(true);
+                                }}
+                            >
+                                <FaCloudDownloadAlt size={16} />
+                                이력서 불러오기
+                            </button>
+                        </div>
+                        {matchingFiles.resume && (
+                            <p className="modal-filename">
+                                {matchingFiles.resume.name} 
+                                <button type='button' className='btn-delete'
+                                    onClick={()=>{
+                                        setMatchingFiles((prev) => ({
+                                            ...prev,
+                                            resume: null,
+                                        }))
+                                    }}
+                                ><IoCloseSharp /></button>
+                            </p>
+                        )}
+                        <div className="divider" />
+                        <p className="resume-list-header">공고 PDF 업로드</p>
+                        <input
+                            type="file"
+                            accept="application/pdf"
+                            ref={jobPostInputRef}
+                            style={{ display: 'none' }}
+                            onChange={(e) =>
+                                setMatchingFiles((prev) => ({
+                                    ...prev,
+                                    jobPost: e.target.files[0],
+                                }))
+                            }
+                        />
+                        <button 
+                            type='button'
+                            className='btn select-button'
+                            onClick={() => jobPostInputRef.current.click()}>
+                            채용공고 파일선택
+                        </button>
+                        {matchingFiles.jobPost && (
+                            <p className="modal-filename">
+                                {matchingFiles.jobPost.name}
+                                <button type='button' className='btn-delete' onClick={()=>{
+                                    setMatchingFiles((prev) => ({
+                                        ...prev,
+                                        jobPost: null,
+                                    }))
+                                }}><IoCloseSharp /></button>
+                            </p>
+                        )}
+                        <div className="modal-buttons">
+                            <button
+                                className="modal-button cancel-button"
+                                onClick={onRequestClose}
+                            >
+                                취소
+                            </button>
+                            <button
+                                className="modal-button"
+                                onClick={handleOneToOneMatching}
+                            >
+                                매칭 요청
+                            </button>
+                            
+                        </div>
+                    </div>
+                )
+            }
                 
-            </div>
+            
         </Modal>
     );
 }

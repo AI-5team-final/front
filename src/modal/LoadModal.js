@@ -1,7 +1,25 @@
 import { GrDocumentPdf } from 'react-icons/gr';
 import Modal from 'react-modal';
 
-const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setSelectedId, handleLoadConfirm, fileType}) => {
+const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setSelectedId, handleLoadConfirm, fileType, isMatching, setMatchingFiles}) => {
+    
+    const handleClick = () => {
+        if(isMatching) {
+            const selectedResume = resumes.find(resume => resume.id === selectedId);
+            console.log('match',  selectedResume)
+
+            setMatchingFiles((prev) => ({
+                ...prev,
+                resume: {...selectedResume, name: selectedResume.pdfFileName},
+            })) 
+            onRequestClose();
+        }
+        else {
+            console.log('matchfalse')
+            handleLoadConfirm()
+        }
+    }
+
     return (
         <Modal
             isOpen={isOpen}
@@ -49,7 +67,7 @@ const LoadModal = ({isOpen, onRequestClose, isLoading, resumes, selectedId, setS
                     </button>   
                     <button
                         className="modal-button"
-                        onClick={handleLoadConfirm}
+                        onClick={handleClick}
                     >
                         선택하기
                     </button>

@@ -18,6 +18,7 @@ import CreditDashboard from "./pages/CreditDashboard";
 import Matching from "./pages/Matching";
 import PanelPosting from "./pages/PanelPosting";
 import useAuth from "./hooks/useAuth";
+import useAutoRefreshToken from "./hooks/useAutoRefreshToken";
 import "the-new-css-reset/css/reset.css";
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/fonts.css';
@@ -25,8 +26,10 @@ import './styles/Style.scss';
 import './styles/modal.scss';
 
 
-function AppRoutes() {
 
+
+function AppRoutes() {
+  useAutoRefreshToken();
   return (
     <Routes>
       {/* 로그인 안하면 전체 막히는 구간 */}
@@ -59,18 +62,18 @@ function AppRoutes() {
 }
 
 function App() {
-  // const { initialize } = useAuth();
+  const { initialize } = useAuth();
 
-  // // 새로고침 시 상태 복원
-  // useEffect(() => {
-  //   const { isLoggedIn } = useAuth.getState();
-  //   if (isLoggedIn) {
-  //     initialize();
-  //   } else {
-  //     // 로그인 안했으면 로딩 상태 해제만
-  //     useAuth.setState({ isInitializing: false });
-  //   }
-  // }, []);
+  // 새로고침 시 상태 복원
+  useEffect(() => {
+    const { isLoggedIn } = useAuth.getState();
+    if (isLoggedIn) {
+      initialize();
+    } else {
+      // 로그인 안했으면 로딩 상태 해제만
+      useAuth.setState({ isInitializing: false });
+    }
+  }, []);
 
 
     return (

@@ -25,6 +25,7 @@ const Main = () => {
 	
 
 	return <MainContent role={role} />;
+
 }
 
 export default Main;

@@ -9,7 +9,7 @@ const useAuth = create(
     (set, get) => ({
       userInfo: null,
       isLoggedIn: false,
-      // isInitializing: true,
+      isInitializing: true,
 
       setUser: (userData) => {
         // accessToken은 메모리에만 저장하고 persist에는 제외됨
@@ -23,26 +23,26 @@ const useAuth = create(
         set({ userInfo: { ...currentUser, credit: newCredit } });
       },
 
-      // initialize: async () => {
-      //   set({isInitializing: false})
-      //   // set({ isInitializing: true });
+      initialize: async () => {
+        set({ isInitializing: true });
         
-      //   // try {
-      //   //   const res = await axiosInstance.get('/auth/token/me', { withCredentials: true });
-      //   //   const data = res.data;
+        try {
+          // csrf 한다면 여기 요청추가
+          const res = await axiosInstance.get('/auth/token/me', { withCredentials: true });
+          const data = res.data;
 
-      //   //   set({
-      //   //     userInfo: data,
-      //   //     isLoggedIn: true,
-      //   //     isInitializing: false,
-      //   //   });
+          set({
+            userInfo: data,
+            isLoggedIn: true,
+            isInitializing: false,
+          });
 
-      //   //   console.log('로그인 상태 복원');
-      //   // } catch (err) {
-      //   //   console.warn('🚫 로그인 상태 복원 실패:', err);
-      //   //   set({ userInfo: null, isLoggedIn: false, isInitializing: false });
-      //   // }
-      // },
+          console.log('로그인 상태 복원');
+        } catch (err) {
+          console.warn('🚫 로그인 상태 복원 실패:', err);
+          set({ userInfo: null, isLoggedIn: false, isInitializing: false });
+        }
+      },
 
       login: async (username, password, role) => {
         try {

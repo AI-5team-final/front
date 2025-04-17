@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import config from '../config';
 import useAuth from '../hooks/useAuth';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 
 // 토큰 유효성 검사 함수
