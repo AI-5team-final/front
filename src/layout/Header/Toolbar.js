@@ -3,6 +3,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
 import PaymentButton from "./PaymentButton";
+import ManagementButton from "./ManagementButton";
 
 const Toolbar = ({ 
     onMenuClick, 
@@ -31,9 +32,7 @@ const Toolbar = ({
                         <span></span>
                     </>
                 )}
-                <button type="button" onClick={() => onPageRedirect("resume")}>
-                    {role === "HR" ? "공고 관리" : "이력서 관리"}
-                </button>
+                <ManagementButton onClick={() => onPageRedirect("resume")} role={role} />
                 <button onClick={onLogout} className="btn-logout">
                     로그아웃
                 </button>

@@ -3,6 +3,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
 import PaymentButton from "./PaymentButton";
+import ManagementButton from "./ManagementButton";
 
 const Sidebar = ({ 
     isOpen, 
@@ -27,9 +28,7 @@ const Sidebar = ({
                             <PaymentButton onClick={() => onPageRedirect("payment")} />
                         </>
                     )}
-                    <button onClick={() => onPageRedirect("resume")}>
-                        {role === "HR" ? "공고 관리" : "이력서 관리"} <MdKeyboardArrowRight className="icon-arrow" />
-                    </button>
+                    <ManagementButton onClick={() => onPageRedirect("resume")} role={role} showArrow={true} />
                 </div>
                 <button onClick={onLogout} className="btn-logout">
                     로그아웃
