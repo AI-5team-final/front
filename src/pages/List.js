@@ -31,7 +31,7 @@ const List = () => {
             }
 
             setLoading(true);
-            
+
             try {
                 const formData = new FormData();
                 formData.append('file', file);
@@ -196,7 +196,7 @@ const List = () => {
     }
     
 
-    return (
+        return (
         <main className={`l-list ${loading ? "loading": ""}`}>
             {loading && (
                 <div className="slider-transition">
