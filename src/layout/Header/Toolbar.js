@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
+import PaymentButton from "./PaymentButton";
 
 const Toolbar = ({ 
     onMenuClick, 
@@ -26,9 +27,7 @@ const Toolbar = ({
                     <>
                         <CoinDisplay credit={userInfo?.credit} onClick={onPaymentClick} />
                         <span></span>
-                        <button type="button" onClick={() => onPageRedirect("payment")}>
-                            결제 내역
-                        </button>
+                        <PaymentButton onClick={() => onPageRedirect("payment")} showArrow={false} />
                         <span></span>
                     </>
                 )}
@@ -38,6 +37,7 @@ const Toolbar = ({
                 <button onClick={onLogout} className="btn-logout">
                     로그아웃
                 </button>
+                {/* TODO: 햄버거버튼 Sidebar.js로 옮기기 */}
                 <button type="button" className="btn-menu" onClick={onMenuClick}>
                     <RxHamburgerMenu className="icon-menu" />
                 </button>

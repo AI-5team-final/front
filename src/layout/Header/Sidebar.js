@@ -2,6 +2,7 @@ import { IoClose } from "react-icons/io5";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
+import PaymentButton from "./PaymentButton";
 
 const Sidebar = ({ 
     isOpen, 
@@ -23,9 +24,7 @@ const Sidebar = ({
                     {role !== "HR" && (
                         <>
                             <CoinDisplay credit={userInfo?.credit} onClick={onPaymentClick} />
-                            <button type="button" onClick={() => onPageRedirect("payment")}>
-                                결제 내역 <MdKeyboardArrowRight className="icon-arrow" />
-                            </button>
+                            <PaymentButton onClick={() => onPageRedirect("payment")} />
                         </>
                     )}
                     <button onClick={() => onPageRedirect("resume")}>
