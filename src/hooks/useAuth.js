@@ -25,8 +25,10 @@ const useAuth = create(
 
       initialize: async () => {
         set({ isInitializing: true });
+        
         try {
-          const res = await axiosInstance.get('/auth/token/me');
+          // csrf 한다면 여기 요청추가
+          const res = await axiosInstance.get('/auth/token/me', { withCredentials: true });
           const data = res.data;
 
           set({
@@ -35,7 +37,7 @@ const useAuth = create(
             isInitializing: false,
           });
 
-          console.log('✅ 로그인 상태 복원');
+          console.log('로그인 상태 복원');
         } catch (err) {
           console.warn('🚫 로그인 상태 복원 실패:', err);
           set({ userInfo: null, isLoggedIn: false, isInitializing: false });

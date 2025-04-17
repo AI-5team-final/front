@@ -21,10 +21,6 @@ const PanelResume = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
 
-    // const handleAuthError = () => {
-    //     toast.error('로그인이 필요한 서비스입니다.');
-    //     navigate('/login');
-    // };
 
     useEffect(() => {
         fetchResumes();

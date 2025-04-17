@@ -8,6 +8,7 @@ import fetchClient from '../utils/fetchClient';
 import '../styles/List.scss';
 import '../styles/LoadingSpinner.scss';
 import useAuth from '../hooks/useAuth';
+import Loading from '../components/Loading';
 
 const List = () => {
     const { userInfo } = useAuth();
@@ -196,21 +197,13 @@ const List = () => {
     }
     
 
-        return (
-        <main className={`l-list ${loading ? "loading": ""}`}>
-            {loading && (
-                <div className="slider-transition">
-                    <div className="loading-spinner">
-                        <LoadingSpinner />
-                        <p className="loading-spinner__text">
-                            {role === 'APPLICANT'
-                                ? '이력서를 분석 중입니다'
-                                : '공고와 이력서를 매칭 중입니다'}
-                            <br />잠시만 기다려주세요...
-                        </p>
-                    </div>
-                </div>
-            )}
+    return (
+        loading ? 
+        <Loading text={role === 'APPLICANT'
+            ? '이력서를 분석 중입니다'
+            : '공고와 이력서를 매칭 중입니다'}/>
+        : 
+        <main className={`l-list`}>
             {!loading && ready && role === 'APPLICANT' && <ListApplicant />}
             {!loading && ready && role === 'HR' && <ListHR />}
         </main>

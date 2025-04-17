@@ -31,6 +31,14 @@
         color: Common.$pointColor;
         margin: 15px 0;
         word-break: break-word;
+        button {
+            cursor: pointer;
+        }
+        svg {
+            vertical-align: middle;
+            margin-left: 20px;
+            color: Common.$gray;
+        }
     }
 
     .modal-buttons {
@@ -84,6 +92,23 @@
     // 이력서 매칭 모달
     &-match {
         width: 650px;
+        .btn{
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid Common.$black;
+            color: Common.$black;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+            &:hover {
+                background: Common.$black;
+                color: #fff;
+            }
+        }
+
         .modal-subtitle {
             font-size: 1.1rem;
             color: Common.$gray;
@@ -98,21 +123,13 @@
             margin-top: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         
                 .load-button {
-                    padding: 8px 16px;
-                    border-radius: 6px;
                     border: 1px solid Common.$pointColor;
                     background-color: #ffffff;
                     color: Common.$pointColor;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 500;
-                    display: flex;
-                    align-items: center;
                     gap: 6px;
-                    transition: 0.2s;
                     &:hover {
                         background: Common.$pointColor;
                         color: #fff;

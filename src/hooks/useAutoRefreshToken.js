@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import axiosInstance from '../utils/axiosInstance';
 import useAuth from './useAuth'; // zustand 훅
-import { jwtDecode } from 'jwt-decode';
+
 
 export default function useAutoRefreshToken() {
     const { userInfo, setUser, logout } = useAuth();
@@ -19,6 +20,7 @@ export default function useAutoRefreshToken() {
         const timeLeft = exp - now;
 
         const refreshThreshold = 120; // 2분 전 미리 갱신
+        const waitTime = (timeLeft - refreshThreshold) * 1000;
 
         const timeoutId = setTimeout(async () => {
         try {
@@ -37,17 +39,17 @@ export default function useAutoRefreshToken() {
                 accessToken,
             });
 
-            console.log('🔄 accessToken 자동 갱신 완료');
+            console.log('accessToken 자동 갱신 완료');
             }
         } catch (err) {
-            console.error('❌ accessToken 자동 갱신 실패:', err);
+            console.error('accessToken 자동 갱신 실패:', err);
             logout(); // zustand에서 처리하도록
         }
-        }, (timeLeft - refreshThreshold) * 1000);
+        }, waitTime > 0 ? waitTime : 0);
 
         return () => clearTimeout(timeoutId);
     } catch (err) {
-        console.warn('❌ accessToken decode 실패:', err);
+        console.warn('accessToken decode 실패:', err);
     }
     }, [userInfo]);
 }
