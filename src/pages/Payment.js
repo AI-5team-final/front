@@ -27,7 +27,6 @@ const Payment = () => {
             .catch(console.error);
     }, []);
 
-    
 
     const presetAmounts = [1000, 3000, 5000, 10000];
     const extraAmounts = [20000, 30000, 50000];

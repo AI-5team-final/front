@@ -19,12 +19,15 @@ const refreshAccessToken = async () => {
     console.warn("🔒 유저 정보 없음 → 토큰 갱신 시도 생략");
     return null;
   }
-  
+
   try {
+    const csrfToken = Cookies.get('XSRF-TOKEN');
     const response = await fetch(`${config.baseURL}/auth/token/refresh`, {
       method: 'POST',
       credentials: 'include', //  refreshToken 쿠키 자동 포함
-
+      headers: {
+        'X-XSRF-TOKEN': csrfToken,
+      },
     });
   
     if (!response.ok) {
@@ -51,7 +54,7 @@ const refreshAccessToken = async () => {
 const fetchClient = async (endpoint, options = {}) => {
   const { userInfo, setUser, logout } = useAuth.getState();
   let token = userInfo?.accessToken;
-
+  console.log(token, "token 있음!")
   // accessToken이 없거나 만료되었으면 갱신
   if (!token || isTokenExpired(token)) {
     try {
