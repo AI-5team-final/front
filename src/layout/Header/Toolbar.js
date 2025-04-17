@@ -4,6 +4,7 @@ import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
 import PaymentButton from "./PaymentButton";
 import ManagementButton from "./ManagementButton";
+import LogoutButton from "./LogoutButton";
 
 const Toolbar = ({ 
     onMenuClick, 
@@ -33,9 +34,7 @@ const Toolbar = ({
                     </>
                 )}
                 <ManagementButton onClick={() => onPageRedirect("resume")} role={role} />
-                <button onClick={onLogout} className="btn-logout">
-                    로그아웃
-                </button>
+                <LogoutButton onClick={onLogout} />
                 {/* TODO: 햄버거버튼 Sidebar.js로 옮기기 */}
                 <button type="button" className="btn-menu" onClick={onMenuClick}>
                     <RxHamburgerMenu className="icon-menu" />

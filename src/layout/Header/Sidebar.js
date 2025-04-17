@@ -4,6 +4,7 @@ import UserTitle from "./UserTitle";
 import CoinDisplay from "./CoinDisplay";
 import PaymentButton from "./PaymentButton";
 import ManagementButton from "./ManagementButton";
+import LogoutButton from "./LogoutButton";
 
 const Sidebar = ({ 
     isOpen, 
@@ -30,9 +31,7 @@ const Sidebar = ({
                     )}
                     <ManagementButton onClick={() => onPageRedirect("resume")} role={role} showArrow={true} />
                 </div>
-                <button onClick={onLogout} className="btn-logout">
-                    로그아웃
-                </button>
+                <LogoutButton onClick={onLogout} />
             </div>
             {isOpen && <div className="dimmed-bg" onClick={onClose} />}
         </>
