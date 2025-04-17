@@ -1,6 +1,6 @@
 import PaymentModal from "../modal/PaymentModal";
 import useAuth from "../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Toolbar from "./Header/Toolbar";
 import Sidebar from "./Header/Sidebar";
