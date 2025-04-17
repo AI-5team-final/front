@@ -1,6 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import UserTitle from "./UserTitle";
 
 const Sidebar = ({ 
     isOpen, 
@@ -18,9 +19,7 @@ const Sidebar = ({
                     <IoClose />
                 </button>
                 <div className="side-menu-cont">
-                    <p>
-                        안녕하세요 <strong>{userInfo?.name}</strong>님
-                    </p>
+                    <UserTitle role={role} name={userInfo?.name} />
                     {role !== "HR" && (
                         <>
                             <p className="coin-display" onClick={onPaymentClick} style={{ cursor: "pointer" }}>

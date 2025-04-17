@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { RxHamburgerMenu } from "react-icons/rx";
+import UserTitle from "./UserTitle";
 
 const Toolbar = ({ 
     onMenuClick, 
@@ -19,10 +20,7 @@ const Toolbar = ({
             </h1>
 
             <div>
-                <p>
-                    <span>{role === "HR" ? "함께 성장하는" : "취업 성공기원"},{" "}</span>
-                    <strong>{userInfo?.name}</strong>님
-                </p>
+                <UserTitle role={role} name={userInfo?.name} />
                 <span></span>
                 {role !== "HR" && (
                     <>
