@@ -27,14 +27,18 @@ const refreshAccessToken = async () => {
     console.warn("🔒 유저 정보 없음 → 토큰 갱신 시도 생략");
     return null;
   }
-
+  
   try {
-    const csrfToken = Cookies.get('XSRF-TOKEN');
+    // const rawToken = Cookies.get('XSRF-TOKEN');
+    // const csrfToken = decodeURIComponent(rawToken || '').trim();
+    // console.log(rawToken, csrfToken, "axios csrf");
+    
     const response = await axios.post(`${config.baseURL}/auth/token/refresh`, null, {
       withCredentials: true, // 쿠키에 있는 refreshToken 전송
-      headers: {
-        'X-XSRF-TOKEN': csrfToken,
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'X-XSRF-TOKEN': csrfToken,
+      // },
     });
 
     const { accessToken } = response.data;
@@ -63,21 +67,23 @@ const axiosInstance = axios.create({
 // 모든 요청에 Authorization: Bearer 헤더를 자동으로 붙임
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const { userInfo } = useAuth.getState();
+    const { isLoggedIn, userInfo } = useAuth.getState();
     let token = userInfo?.accessToken;
-    console.log(token, "token 있음")
 
     // 만료되거나 없을때 경우 자동으로 갱신
     if (!token || isTokenExpired(token)) {
       try {
-        token = await refreshAccessToken(); // 갱신된 토큰으로 교체
+      
+      
+          token = await refreshAccessToken(); // 갱신된 토큰으로 교체
+      
+        
       } catch (err) {
         console.warn('🔒 accessToken 갱신 실패');
         throw err;
       }
     }
 
-    console.log(token, "token 있음2")
 
     // Authorization 헤더 추가
     if (token) {
@@ -85,12 +91,12 @@ axiosInstance.interceptors.request.use(
     }
 
     // CSRF 토큰 추가
-    const csrfToken = Cookies.get('XSRF-TOKEN');
-    console.log('csrfToken:', Cookies.get('XSRF-TOKEN'));
-    if (csrfToken) {
-      config.headers['X-XSRF-TOKEN'] = csrfToken;
-    }
-    config.withCredentials = true;
+    // const rawToken = Cookies.get('XSRF-TOKEN');
+    // const csrfToken = decodeURIComponent(rawToken || '').trim();
+    // if (csrfToken) {
+    //   config.headers['X-XSRF-TOKEN'] = csrfToken;
+    // }
+    // config.withCredentials = true;
 
     return config;
   },

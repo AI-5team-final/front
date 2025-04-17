@@ -59,18 +59,18 @@ function AppRoutes() {
 }
 
 function App() {
-  const { initialize } = useAuth();
+  // const { initialize } = useAuth();
 
-  // 새로고침 시 상태 복원
-  useEffect(() => {
-    const { isLoggedIn } = useAuth.getState();
-    if (isLoggedIn) {
-      initialize();
-    } else {
-      // 로그인 안했으면 로딩 상태 해제만
-      useAuth.setState({ isInitializing: false });
-    }
-  }, []);
+  // // 새로고침 시 상태 복원
+  // useEffect(() => {
+  //   const { isLoggedIn } = useAuth.getState();
+  //   if (isLoggedIn) {
+  //     initialize();
+  //   } else {
+  //     // 로그인 안했으면 로딩 상태 해제만
+  //     useAuth.setState({ isInitializing: false });
+  //   }
+  // }, []);
 
 
     return (
