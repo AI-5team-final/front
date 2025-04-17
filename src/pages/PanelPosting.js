@@ -1,18 +1,16 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
-import useToken from '../hooks/useToken';
+import { IoMdRefresh } from 'react-icons/io';
+import { BsChevronRight } from 'react-icons/bs';
 import fetchClient from '../utils/fetchClient';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import DeleteModal from '../modal/DeleteModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import UploadCheckPostingModal from '../modal/UploadCheckPostingModal';
-import { IoMdRefresh } from 'react-icons/io';
-import { BsChevronCompactRight, BsChevronRight } from 'react-icons/bs';
+import useAuth from '../hooks/useAuth';
 
 const PanelPosting = () => {
     const [postings, setPostings] = useState([]);
@@ -23,17 +21,21 @@ const PanelPosting = () => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [isChecked, setIsChecked] = useState(false);
-    const { token, removeToken } = useToken();
+    const { userInfo } = useAuth();
+    const role = userInfo?.role;
     const fileInputRef = useRef();
     const startDateInputRef = useRef();
     const endDateInputRef = useRef();
     const navigate = useNavigate();
 
-    const handleAuthError = () => {
-        toast.error('로그인이 필요한 서비스입니다.');
-        removeToken();
-        navigate('/login');
-    };
+    useEffect(() => {
+        fetchPostings();
+    }, []);
+
+    // const handleAuthError = () => {
+    //     toast.error('로그인이 필요한 서비스입니다.');
+    //     navigate('/login');
+    // };
 
     const handleError = (error) => {
         console.error('에러 발생:', error);
@@ -70,10 +72,6 @@ const PanelPosting = () => {
             return;
         }
 
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         const formData = new FormData();
         formData.append('file', fileState.file);
@@ -115,10 +113,6 @@ const PanelPosting = () => {
     };
 
     const handleConfirmDelete = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         setDeleteTarget(null);
 
@@ -151,10 +145,6 @@ const PanelPosting = () => {
     }
 
     const fetchPostings = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         try {
             setIsLoading(true);
@@ -203,15 +193,12 @@ const PanelPosting = () => {
     }
     
 
+    
 
-    useEffect(() => {
-        if (token) {
-            fetchPostings();
-        }
-    }, [token]);
 
     const closeUploadModal = () => setIsModalOpen(prev=>!prev);
     const closeDeleteModal = () => setDeleteTarget(null);
+    
 
 
     return (

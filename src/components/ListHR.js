@@ -1,10 +1,11 @@
-import { useUser } from '../context/UserContext';
+
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
+import useAuth from '../hooks/useAuth';
 
 
 const ListHR = () => {
-    const { userInfo } = useUser();
+    const { userInfo } = useAuth();
     const { matchResults } = useMatch();
     const navigate = useNavigate();
     

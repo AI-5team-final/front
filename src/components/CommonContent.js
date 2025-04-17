@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext";
+
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { GrDocumentDownload, GrDocumentPdf } from "react-icons/gr";
 import fetchClient from "../utils/fetchClient";
 import DonutChart from "./DonutChart";
 import LoadingSpinner from "./LoadingSpinner";
 import MarkdownResult from "./MarkdownResult";
-import { GrDocumentDownload, GrDocumentPdf } from "react-icons/gr";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import useAuth from "../hooks/useAuth";
 
 
 const CommonContent = ({matchResult, role}) => {
-    const { userInfo, updateCredit } = useUser();
+    // const { userInfo, updateCredit } = useUser();
+    const { userInfo, updateCredit } = useAuth();
     // pdf에서 가져온 이름
     const [name] = useState("");
 	const [comment, setComment] = useState("");

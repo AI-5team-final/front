@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
 import MainContent from '../components/MainContent/MainContent';
-import useToken from '../hooks/useToken';
+import useAuth from '../hooks/useAuth';
 
 const Main = () => {
-	const { role } = useToken();
+	const { userInfo } = useAuth();
+	const role = userInfo?.role;
 	const { matchResults, clearResults, setResumeFile, setJobPostFile } = useMatch();
 	const location = useLocation();
 

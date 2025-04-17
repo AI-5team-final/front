@@ -6,7 +6,7 @@ import '../styles/Login.scss';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login, isLoggedIn } = useAuth(); // ✅ 로그인 여부 가져오기
+    const { login, isLoggedIn } = useAuth(); 
     const [activeTab, setActiveTab] = useState('APPLICANT');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,9 +15,9 @@ const Login = () => {
     const [animationKey, setAnimationKey] = useState(0);
     const [isInitialRender, setIsInitialRender] = useState(true);
 
-    // ✅ 로그인 상태면 로그인 페이지 접근 시 자동 리다이렉트
+    // 로그인 상태면 로그인 페이지 접근 시 자동 리다이렉트
     useEffect(() => {
-        // console.log('🚀 useEffect 실행됨. isLoggedIn:', isLoggedIn);
+    
         if (isLoggedIn) {
             navigate('/');
         }
@@ -94,6 +94,7 @@ const Login = () => {
                                     value={password} 
                                     onChange={(e) => setPassword(e.target.value)} 
                                     placeholder="비밀번호를 입력하세요"
+                                    autoComplete='on'
                                     required 
                                 />
                             </div>

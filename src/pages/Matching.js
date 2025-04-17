@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
-import useToken from "../hooks/useToken";
 import MatchingContent from "../components/MatchingContent";
+import useAuth from "../hooks/useAuth";
 
 const Matching = () => {
     const { id } = useParams();
-    const { role } = useToken();
+    const { userInfo } = useAuth();
+    const role = userInfo?.role;
 
     return <MatchingContent role={role} id={id} />;
 }

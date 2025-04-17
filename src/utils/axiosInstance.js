@@ -1,6 +1,9 @@
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 import config from '../config';
+import useAuth from '../hooks/useAuth';
+
+
 
 // 토큰 유효성 검사 함수
 // 요청 전에 JWT를 decode해서 만료되었는지 확인함
@@ -15,10 +18,6 @@ const isTokenExpired = (token) => {
   }
 };
 
-// accessToken을 LocalStorage에서 꺼내는 함수
-const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
-};
 
 // accessToken을 갱신하는 함수
 // 만료 시, /auth/token/refresh로 refreshToken을 보내서 새 accessToken을 발급받음
@@ -30,9 +29,9 @@ const refreshAccessToken = async () => {
 
     const { accessToken } = response.data;
 
-    // 새로운 토큰을 갱신한 후 localStorage에 덮어씀
     if (accessToken) {
-      localStorage.setItem('accessToken', accessToken);
+      const { userInfo, setUser } = useAuth.getState();
+      setUser({ ...userInfo, accessToken });
       return accessToken;
     }
   } catch (err) {
@@ -54,10 +53,11 @@ const axiosInstance = axios.create({
 // 모든 요청에 Authorization: Bearer 헤더를 자동으로 붙임
 axiosInstance.interceptors.request.use(
   async (config) => {
-    let token = getAccessToken();
+    const { userInfo } = useAuth.getState();
+    let token = userInfo?.accessToken;
 
-    // 만료된 경우 자동으로 갱신
-    if (isTokenExpired(token)) {
+    // 만료되거나 없을때 경우 자동으로 갱신
+    if (!token || isTokenExpired(token)) {
       try {
         token = await refreshAccessToken(); // 갱신된 토큰으로 교체
       } catch (err) {
@@ -72,6 +72,6 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터: 토큰 만료 시 재시도 로직도 추가하고 싶다면 여기에서 구현 가능
+
 
 export default axiosInstance;
