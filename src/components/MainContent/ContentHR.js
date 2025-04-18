@@ -21,6 +21,18 @@ const ContentHR = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setJobPostFile } = useMatch();
+    const validateFile = (file) => {
+        if (!file) return false;
+        if (file.type !== 'application/pdf') {
+            toast.error('PDF 파일만 업로드 가능합니다.');
+            return false;
+        }
+        return true;
+    };
+
+    const handleError = (error) => {
+        toast.error('파일 업로드 중 오류가 발생했습니다.');
+    };
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -45,6 +57,7 @@ const ContentHR = () => {
             setIsUploadModalOpen(false);
             return;
         }
+
         console.log("??")
         const token = localStorage.getItem('accessToken');
         if (!token) {
@@ -68,6 +81,7 @@ const ContentHR = () => {
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
+            
             if (!response.ok) {
                 handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
@@ -86,6 +100,7 @@ const ContentHR = () => {
             } else {
                 handleNetworkError(error, navigate);
             }
+            handleError(error);
         } finally {
             setIsLoading(false);
         }
@@ -114,7 +129,7 @@ const ContentHR = () => {
                     name: selectedResume.pdfFileName, 
                     file: file 
                 });
-                setIsLoadModalOpen(false);
+                // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 handleFileLoadError(error);

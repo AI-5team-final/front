@@ -27,11 +27,6 @@ const Payment = () => {
             .catch(console.error);
     }, []);
 
-    
-
-    const presetAmounts = [1000, 3000, 5000, 10000];
-    const extraAmounts = [20000, 30000, 50000];
-
     const handleAmountSelect = (value) => {
         if (value === "기타") {
           setShowExtra(prev => !prev); // 💡 toggle
@@ -85,9 +80,8 @@ const Payment = () => {
             
         } catch (err) {
             if (err.code === 'USER_CANCEL' || err.code === 'PAY_PROCESS_CANCELED') {
-                console.warn('사용자가 결제를 취소했습니다:', err.message);
+                console.info('사용자가 결제를 취소했습니다:', err.message);
                 
-                toast.info('결제가 취소되었습니다.');
             } else {
                 console.error('결제 실패:', err.message); 
                 toast.error("결제가 실패되었습니다.");

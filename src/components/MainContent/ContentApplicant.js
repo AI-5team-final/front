@@ -24,6 +24,7 @@ const ContentApplicant = () => {
     const [selectedId, setSelectedId] = useState(null);
     const [resumes, setResumes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isMatching, setIsMatching] = useState(false);
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
@@ -76,6 +77,7 @@ const ContentApplicant = () => {
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
+
             if (!response.ok) {
                 handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
@@ -93,6 +95,7 @@ const ContentApplicant = () => {
             } else {
                 handleNetworkError(error, navigate);
             }
+            handleError(error);
         } finally {
             setIsLoading(false);
         }
@@ -131,10 +134,16 @@ const ContentApplicant = () => {
 
     const handleLoadModalOpen = () => {
         setIsLoadModalOpen(true);
+        setIsMatching(false);
         fetchResumes();
     };
-
+   
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
+
+    const openMatchingModal = () => {
+        setIsMatchingModalOpen(true);
+        fetchResumes();
+    };
     const closeMatchingModal = () => {
         setIsMatchingModalOpen(false);
         setMatchingFiles({ resume: null, jobPost: null });
@@ -201,10 +210,9 @@ const ContentApplicant = () => {
                         
                             <button 
                                 type="button"
-                                onClick={() => setIsMatchingModalOpen(true)}
+                                onClick={openMatchingModal}
                                 className="button active"
                             >
-
                                 <TbHeartHandshake className="cloud-icon" />
                                 <p>
                                     Fit Advisor로 <br/>
@@ -222,10 +230,10 @@ const ContentApplicant = () => {
             <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>            
 
             {/* 이력서 불러오기 모달 */}
-            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"}/>
+            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"} isMatching={isMatching} setMatchingFiles={setMatchingFiles}/>
             
             {/* 1대1 매칭 모달 */}
-            <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles}/>
+            <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
         </div>
     );
 };

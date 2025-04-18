@@ -1,16 +1,16 @@
 import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import { useEffect, useState } from 'react';
-import LoadingSpinner from './LoadingSpinner';
+import Loading from './Loading';
 
 const PrivateRoute = ({ children, allowedRoles = [] }) => {
   const { userInfo, isLoggedIn, isInitializing } = useAuth();
 
   if (isInitializing) {
-    return <LoadingSpinner />;
+    return <Loading text={"로딩중입니다."} />;
   }
 
   if (!isLoggedIn || !userInfo) {
+    console.log(isLoggedIn, userInfo)
     console.log('로그인 상태 아님 → 로그인 페이지로 리다이렉트');
     return <Navigate to="/login" replace />;
   }
