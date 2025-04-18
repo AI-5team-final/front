@@ -14,16 +14,6 @@ export default function useAutoRefreshToken() {
                 withCredentials: true,
             });
 
-            if (!response.ok) {
-                const error = new Error(`토큰 갱신 실패: ${response.status}`);
-                reportError({
-                    error,
-                    url: '/auth/token/refresh',
-                });
-            
-                throw error;
-            }
-
             const { accessToken } = response.data;
             if (!accessToken) throw new Error('accessToken 없음');
 
@@ -36,10 +26,6 @@ export default function useAutoRefreshToken() {
         } catch (err) {
             console.warn('accessToken 복구 실패', err);
             toast.info('세션이 만료되어 다시 로그인 해주세요.');
-            reportError({
-                err,
-                url: '/auth/token/refresh',
-            });
             logout(); 
         }
     };
