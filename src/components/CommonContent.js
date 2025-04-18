@@ -24,6 +24,9 @@ const CommonContent = ({matchResult, role}) => {
 	const [agentFeedback, setAgentFeedback] = useState("");
 	const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const isOneToOneMatch = localStorage.getItem("isOneToOneMatch") ?? false;
+    const oneResumeFile = localStorage.getItem("oneResumeFile") ?? null;
+    const oneJobPostFile = localStorage.getItem("oneJobPostFile") ?? null;
 
     const summaryItems = matchResult?.summary.split("/").map((item) => item.trim()).sort((a, b) =>
 		a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0 
@@ -120,20 +123,36 @@ const CommonContent = ({matchResult, role}) => {
     return (
         <main className="l-view">
             {isLoading ? (
-                <LoadingSpinner/>
+                <Loading text={"리포트를 다운로드 중입니다."}/>
             ) : (
                 <section className="section section-report" id="pdf-content">
                     <div className="inner">
                 
                         <h2 className="sub-tit">
-                            <span>{userInfo?.name} - {matchResult.name}</span> Ai매칭 결과
+                        {isOneToOneMatch ? "1대 1 " : (<span>`${userInfo?.name} - ${matchResult.name}`</span>)} Ai매칭 결과
                         </h2>
                         <h3 className="tit-line">Ai MATCHING REPORT</h3>
                         <div className="icon-area">
-                            <a href={`${matchResult.uri}`} className="btn btn-download" target="_blank" rel="noreferrer">
-                                <GrDocumentPdf/>
-                                <span>{role==="HR" ? "이력서" : "채용공고"}<br/> 미리보기</span>
-                            </a>     
+                            {
+                                isOneToOneMatch ? (
+                                    <>
+                                        <a href={oneResumeFile} className="btn btn-download" target="_blank" rel="noreferrer">
+                                            <GrDocumentPdf/>
+                                            <span>이력서<br/> 미리보기</span>
+                                        </a>
+                                        <span></span>
+                                        <a href={oneJobPostFile} className="btn btn-download" target="_blank" rel="noreferrer">
+                                            <GrDocumentPdf/>
+                                            <span>채용공고<br/> 미리보기</span>
+                                        </a>
+                                    </>
+                                ) : (
+                                    <a href={matchResult.uri} className="btn btn-download" target="_blank" rel="noreferrer">
+                                        <GrDocumentPdf/>
+                                        <span>{role==="HR" ? "이력서" : "채용공고"}<br/> 미리보기</span>
+                                    </a>   
+                                )
+                            }
                             <span></span>                  
                             <button type="button" className="btn btn-report-download" onClick={handleDownload}>
                                 <GrDocumentDownload />

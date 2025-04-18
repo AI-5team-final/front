@@ -16,6 +16,9 @@ const Main = () => {
 		setJobPostFile(null);
 		localStorage.setItem("resumeUploaded", "false");
 		localStorage.setItem("jobPostFileUploaded", "false");
+		localStorage.setItem("isOneToOneMatch", false);
+		localStorage.setItem("oneResumeFile", null);
+		localStorage.setItem("oneJobPostFile", null);
 	}, [location.pathname]);
 	
 	useEffect(() => {
