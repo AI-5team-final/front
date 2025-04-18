@@ -28,14 +28,14 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             formData.append('resume', matchingFiles.resume);
             formData.append('posting', matchingFiles.jobPost);
 
-            // const res = await fetchClient("/pdf/reEpo", {
-			// 	method: "POST",
-			// 	body: formData,
-			// });
+            const res = await fetchClient("/pdf/reEpo", {
+				method: "POST",
+				body: formData,
+			});
 
-            // if(!res.ok){
-            //     throw new Error("1대1매칭 실패");
-            // }
+            if(!res.ok){
+                throw new Error("1대1매칭 실패");
+            }
 
             // const data = await res.json();
             const data = [{
@@ -46,9 +46,9 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
 
             toast.success('매칭 요청 완료!');
             setMatchingFiles({ resume: null, jobPost: null });
-            setIsMatchingModalOpen(false);    
-
-            setMatchResults(data);
+            setIsMatchingModalOpen(false);
+            console.log(res);
+            setMatchResults(res);
             navigate(`/matching`);
         }catch(e){
             console.warn(`${e}: 1대1 매칭 중 에러가 발생했습니다.`);
