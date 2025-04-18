@@ -8,4 +8,4 @@ const MainContent = ({ role }) => {
     return <ContentApplicant />;
 };
 
-export default MainContent;
+export default MainContent; 

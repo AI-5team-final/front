@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useMatch } from '../context/MatchContext';
-import { toast } from 'react-toastify';
-import fetchClient from '../utils/fetchClient';
-import UploadCheckModal from '../modal/UploadCheckModal';
-import LoadModal from '../modal/LoadModal';
-import '../styles/ContentApplicant.scss';
-import '../styles/ContentHR.scss';
-
+import { useMatch } from '../../context/MatchContext';
+import fetchClient from '../../utils/fetchClient';
+import UploadCheckModal from '../../modal/UploadCheckModal';
+import LoadModal from '../../modal/LoadModal';
+import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
+import { validateFile } from './FileValidation';
+import '../../styles/ContentApplicant.scss';
+import '../../styles/ContentHR.scss';
+import { HR_PAGE_STEPS } from '../Tutorial/HRTutorialSteps';
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -20,20 +21,6 @@ const ContentHR = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setJobPostFile } = useMatch();
-
-    const validateFile = (file) => {
-        if (!file) return false;
-        if (file.type !== 'application/pdf') {
-            toast.error('PDF 파일만 업로드 가능합니다.');
-            return false;
-        }
-        return true;
-    };
-
-    const handleError = (error) => {
-        toast.error('파일 업로드 중 오류가 발생했습니다.');
-    };
-
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -54,7 +41,15 @@ const ContentHR = () => {
 
     const handleSubmit = async () => {
         if (!fileState.file) {
-            toast.error('PDF 파일을 선택해주세요.');
+            handleNoFileError();
+            setIsUploadModalOpen(false);
+            return;
+        }
+
+        console.log("??")
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError(null, navigate);
             return;
         }
 
@@ -64,23 +59,35 @@ const ContentHR = () => {
         navigate('/list');
     };
 
-    const fetchResumes = async () => {
-    
+    const fetchPostings = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            handleAuthError(null, navigate);
+            return;
+        }
 
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
-        
-
+            
             if (!response.ok) {
-                throw new Error('채용공고 목록을 불러오는데 실패했습니다.');
+                handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
+                return;
+            }
+            if (response.status === 401) {
+                handleAuthError(null, navigate);
+                return;
             }
 
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
-        
-            handleError(error);
+            if (error.response?.status === 401) {
+                handleAuthError();
+                return;
+            } 
+            
+            handleNetworkError(error, navigate);
         } finally {
             setIsLoading(false);
         }
@@ -88,7 +95,7 @@ const ContentHR = () => {
 
     const handleLoadConfirm = async () => {
         if (!selectedId) {
-            toast.error('채용공고를 선택해주세요.');
+            handleFileNotSelectedError('채용공고');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
@@ -96,7 +103,12 @@ const ContentHR = () => {
             try {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
-                    throw new Error('채용공고를 불러오는데 실패했습니다.');
+                    handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
+                    return;
+                }
+                if (response.status === 401) {
+                    handleAuthError(null, navigate);
+                    return;
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
@@ -107,14 +119,14 @@ const ContentHR = () => {
                 // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
-                toast.error('저장소에서 채용공고를 불러오는데 실패했습니다.');
+                handleFileLoadError(error);
             }
         }
     };
 
     const handleLoadModalOpen = () => {
         setIsLoadModalOpen(true);
-        fetchResumes();
+        fetchPostings();
     };
 
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
