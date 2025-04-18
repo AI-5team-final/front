@@ -7,7 +7,6 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { GrDocumentDownload, GrDocumentPdf } from "react-icons/gr";
 import fetchClient from "../utils/fetchClient";
 import DonutChart from "./DonutChart";
-import LoadingSpinner from "./LoadingSpinner";
 import MarkdownResult from "./MarkdownResult";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";

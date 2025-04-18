@@ -3,11 +3,13 @@ import 'intro.js/introjs.css';
 import { useEffect, useRef } from 'react';
 import '../../styles/TutorialManager.scss';
 
-const TutorialManager = ({ steps, startImmediately = false }) => {
+// Intro.js 설정 모듈
+const TutorialManager = ({ steps, startImmediately = false, onComplete, isMockPage = false }) => {
   const introInstance = useRef(null);
 
   useEffect(() => {
     introInstance.current = introJs();
+
     introInstance.current.setOptions({
       steps: steps,
       showProgress: true,
@@ -21,7 +23,21 @@ const TutorialManager = ({ steps, startImmediately = false }) => {
       doneLabel: '완료',
       tooltipClass: 'customTooltip',
       highlightClass: 'customHighlight',
+      scrollToElement: true,
+      scrollTo: 'element',
     });
+
+    if (isMockPage) {
+      introInstance.current.onchange((element) => {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      });
+    }
+
+    if (onComplete) {
+      introInstance.current.oncomplete(onComplete);
+    }
 
     if (startImmediately) {
       startTutorial();
@@ -43,4 +59,4 @@ const TutorialManager = ({ steps, startImmediately = false }) => {
   return null;
 };
 
-export default TutorialManager; 
+export default TutorialManager;

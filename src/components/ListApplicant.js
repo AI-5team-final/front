@@ -22,14 +22,20 @@ const getIcon = (title) => {
     }
 };
 
-const ListApplicant = () => {
-    const { userInfo } = useAuth();
-    const { matchResults } = useMatch();
-
+const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, isMock = false }) => {
+    const authUser = useAuth()?.userInfo;
+    const contextResults = useMatch()?.matchResults;
     const navigate = useNavigate();
 
+    const userInfo = propsUserInfo || authUser;
+    const matchResults = propsResults || contextResults;
+
     const handleViewDetail = (index) => {
-        navigate(`/view/${index}`);
+        if (!isMock) {
+            navigate(`/view/${index}`);
+        } else {
+            alert('튜토리얼에서는 상세 페이지 이동이 비활성화되어 있습니다.');
+        }
     };
     
 
@@ -111,11 +117,11 @@ const ListApplicant = () => {
                 <h1 className="sub-tit">취업 성공 기원, Ai매치</h1>
                 <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
                 <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
-                
+
                 <div className="list-applicant">
                     {matchResults && matchResults.length > 0 ? (
                         matchResults.map((result, index) => (
-                            <div 
+                            <div
                                 key={`${result.title}-${index}`}
                                 className="card"
                                 onClick={() => handleViewDetail(index)}
@@ -124,9 +130,9 @@ const ListApplicant = () => {
                                     <h3 className="card-company-heading">{result.name}</h3>
                                 </div>
                                 <div className="card-score">
-                                    <span className={`card-match-rate ${getScoreClass(result.total_score)}`}>
-                                        AI매칭 {result.total_score}점
-                                    </span>
+                                <span className={`card-match-rate ${getScoreClass(result.total_score)}`}>
+                                    AI매칭 {result.total_score}점
+                                </span>
                                 </div>
                                 <div className="card-summary">
                                     <p>{result.opinion1}</p>
