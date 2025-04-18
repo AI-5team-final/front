@@ -40,6 +40,10 @@ const useAuth = create(
           console.log('로그인 상태 복원');
         } catch (err) {
           console.warn('🚫 로그인 상태 복원 실패:', err);
+          reportError({
+            error: err,
+            url: '/auth/token/me',
+          });
           set({ userInfo: null, isLoggedIn: false, isInitializing: false });
         }
       },
@@ -66,6 +70,11 @@ const useAuth = create(
           toast.success('로그인 성공!');
         } catch (err) {
           toast.error('로그인 실패: 아이디 또는 비밀번호 확인');
+          
+          reportError({
+            error: err,
+            url: '/auth/login',
+          });
           throw err;
         }
       },
@@ -77,6 +86,10 @@ const useAuth = create(
           toast.success('로그아웃 되었습니다!');
         } catch (err) {
           toast.error('서버와의 연결에 실패했습니다.');
+          reportError({
+            error: err,
+            url: '/auth/token/logout',
+          });
         }
       },
     }),

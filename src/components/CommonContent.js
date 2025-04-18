@@ -13,6 +13,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import useAuth from "../hooks/useAuth";
 import Loading from "./Loading";
+import { handleClientError } from "../utils/handleClientError";
 
 
 const CommonContent = ({matchResult, role}) => {
@@ -57,8 +58,9 @@ const CommonContent = ({matchResult, role}) => {
         
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(pdfName);    
-        }catch(e){
-            console.error(`${e}: 에러가 발생했습니다.`)
+        }catch(error){
+            console.error('[CLIENT ERROR]', error);
+            toast.error(error.message);
         }finally {
             setIsLoading(false);
         }
@@ -78,7 +80,14 @@ const CommonContent = ({matchResult, role}) => {
             });
 
             if (!res1.ok) {
-                throw new Error('크레딧 차감 실패');
+                const errData = await res1.json();
+                const err = new Error(errData.message || '크레딧 차감 실패');
+                handleClientError({
+                    error: err,
+                    toastMessage: '크레딧 차감에 실패했습니다.',
+                    contextUrl: '/payments/credit'
+                });
+                throw err;
             }
             const data = await res1.json();
             toast.success("크레딧 차감 후 분석을 시작합니다.");
@@ -93,7 +102,16 @@ const CommonContent = ({matchResult, role}) => {
                 body: JSON.stringify({ gpt_answer: matchResult.summary }),
             });
 
-            if (!res.ok) throw new Error("Agent 분석 실패");
+            if (!res.ok) {
+                const errData = await res1.json();
+                const err = new Error(errData.message || 'Agent 분석 실패');
+                handleClientError({
+                    error: err,
+                    toastMessage: 'Agent 분석에 실패했습니다.',
+                    contextUrl: '/pdf/agent'
+                })
+                throw err;
+            }
 
             
             const feedback = await res.text();
@@ -101,8 +119,12 @@ const CommonContent = ({matchResult, role}) => {
             setAgentFeedback(feedback);
             toast.success("Fit Advisor 분석 완료! 크레딧이 차감되었습니다.");
         } catch (err) {
-            console.error("Agent 호출 오류:", err);
-            toast.error("Agent 분석 중 오류가 발생했습니다. 크레딧 차감을 취소합니다.");
+            handleClientError({
+                error: err,
+                toastMessage: "Agent 분석 중 오류가 발생했습니다. 크레딧 차감을 취소합니다.",
+                url: '/pdf/agent'
+            });
+
             // 오류 발생 시 크레딧 차감 롤백
             const rollbackRes = await fetchClient('/payments/rollback', {
                 method: 'POST',
@@ -113,7 +135,14 @@ const CommonContent = ({matchResult, role}) => {
                 const data = await rollbackRes.json();
                 updateCredit(data.balance);
             } else {
-                toast.error('크레딧 차감 취소를 실패했습니다.');
+                const rollbackData = await rollbackRes.json();
+                const rollbackError = new Error(rollbackData.message || '크레딧 차감 취소 실패 (catch)');
+                handleClientError({
+                    error: rollbackError,
+                    toastMessage: "크레딧 차감 취소를 실패했습니다.",
+                    url: '/payments/rollback'
+                });
+                throw rollbackError;
             }
         } finally {
             setLoading(false);

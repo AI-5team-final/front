@@ -85,6 +85,11 @@ const Payment = () => {
             } else {
                 console.error('결제 실패:', err.message); 
                 toast.error("결제가 실패되었습니다.");
+
+                reportError({
+                    error: new Error(`결제 실패 [${err.code}]: ${err.message}`),
+                    url: '/payment',
+                });
             }
         }
     };

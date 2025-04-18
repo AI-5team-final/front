@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import fetchClient from '../utils/fetchClient';
 import '../styles/CreditDashboard.scss';
+import { handleClientError } from '../utils/handleClientError';
 
 const CreditDashboard = () => {
   const [creditList, setCreditList] = useState([]);
@@ -10,19 +11,35 @@ const CreditDashboard = () => {
   const [totalPages, setTotalPages] = useState(0);
   const size = 5;
 
-  // 🔄 크레딧 내역 불러오기
+  // 크레딧 내역 불러오기
   const fetchCreditHistory = async () => {
     try {
       const res = await fetchClient('/payments/credit');
+
+      if(!res.ok){
+        const errData = await res.json();
+        const err = new Error(errData.message || "크레딧 조회에 실패했습니다.");
+        handleClientError({
+          error: err,
+          toastMessage: "크레딧 조회에 실패했습니다.",
+          url: '/payments/credit'
+        });
+        throw err;
+      }
+
+
       const data = await res.json();
   
-      // 응답이 배열이면 그대로 저장, 아니면 .content만 저장
       const creditArray = Array.isArray(data) ? data : data.content || [];
   
       setCreditList(creditArray);
       setBalance(creditArray[0]?.balance || 0);
     } catch (error) {
-      console.error('❌ 크레딧 조회 실패:', error);
+      handleClientError({
+        error: error,
+        toastMessage: "크레딧 조회에 실패했습니다.",
+        url: '/payments/credit'
+      })
     }
   };
 
