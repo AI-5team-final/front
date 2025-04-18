@@ -5,11 +5,12 @@ import { useMatch } from '../../context/MatchContext';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
-import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
+import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 import '../../styles/ContentHR.scss';
 import { HR_PAGE_STEPS } from '../Tutorial/HRTutorialSteps';
+import { toast } from 'react-toastify';
 
 const ContentHR = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -46,13 +47,6 @@ const ContentHR = () => {
             return;
         }
 
-        console.log("??")
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         localStorage.setItem('jobPostFileUploaded', 'true');
         setJobPostFile(fileState.file);
         // List 페이지로 이동
@@ -60,12 +54,6 @@ const ContentHR = () => {
     };
 
     const fetchPostings = async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
@@ -74,20 +62,12 @@ const ContentHR = () => {
                 handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
             }
-            if (response.status === 401) {
-                handleAuthError(null, navigate);
-                return;
-            }
 
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
-            if (error.response?.status === 401) {
-                handleAuthError();
-                return;
-            } 
-            
-            handleNetworkError(error, navigate);
+            console.error('[CLIENT ERROR]', error);
+            toast.error(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -104,11 +84,13 @@ const ContentHR = () => {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
                     handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
-                    return;
-                }
-                if (response.status === 401) {
-                    handleAuthError(null, navigate);
-                    return;
+                    const responseData = await response.json();
+                    const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
+                    reportError({
+                        error,
+                        url: selectedResume.pdfUri
+                    });
+                    throw error;
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
@@ -120,6 +102,10 @@ const ContentHR = () => {
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 handleFileLoadError(error);
+                reportError({
+                    error,
+                    url: selectedResume.pdfUri
+                });
             }
         }
     };

@@ -44,6 +44,7 @@ const Login = () => {
             await login(username, password, userRole);
         } catch (err) {
             setError(err.message);
+            console.error('[CLIENT ERROR]', error);
         }
     };
     

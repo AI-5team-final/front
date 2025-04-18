@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 import useAuth from '../hooks/useAuth'; 
+import { toast } from 'react-toastify';
 // import Cookies from 'js-cookie';
 
 const isTokenExpired = (token) => {
@@ -36,7 +37,13 @@ const refreshAccessToken = async () => {
     });
   
     if (!response.ok) {
-      throw new Error('refreshToken 만료 또는 서버 오류');
+      const error = new Error(`토큰 갱신 실패: ${response.status}`);
+      reportError({
+        error,
+        url: '/auth/token/refresh',
+      });
+  
+      throw error;
     }
 
     const data = await response.json(); // JSON 파싱
@@ -51,12 +58,17 @@ const refreshAccessToken = async () => {
     return null;
   }catch (err) {
     console.error('⚠️ 토큰 갱신 실패:', err);
+    toast.info('세션이 만료되어 다시 로그인 해주세요.');
+    reportError({
+      err,
+      url: '/auth/token/refresh',
+    });
     throw err;
   }
   
 };
 
-const fetchClient = async (endpoint, options = {}) => {
+const fetchClient = async (url, options = {}) => {
   const { userInfo, setUser, logout, isLoggedIn } = useAuth.getState();
   let token = userInfo?.accessToken;
   
@@ -106,11 +118,19 @@ const fetchClient = async (endpoint, options = {}) => {
   };
 
   try {
-    const response = await fetch(`${config.baseURL}${endpoint}`, fetchOptions);
+    const res = await fetch(`${config.baseURL}${url}`, fetchOptions);
 
-    return response;
+    if (!res.ok && res.status >= 500) {
+      reportError({
+        error: new Error(`fetch 500 error on ${url}`),
+        url,
+      });
+    }
+
+    return res;
   } catch (err) {
-    console.error('❌ fetchClient 에러:', err);
+    reportError({ err, url});
+    console.error('fetchClient 에러:', err);
     throw err;
   }
 };

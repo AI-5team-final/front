@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from '../utils/axiosInstance';
 import useAuth from './useAuth'; // zustand 훅
+import { toast } from 'react-toastify';
 
 export default function useAutoRefreshToken() {
     const { userInfo, setUser, logout, isLoggedIn } = useAuth();
@@ -9,22 +10,37 @@ export default function useAutoRefreshToken() {
     useEffect(() => {
     const tryRefreshToken = async () => {
         try {
-        const response = await axiosInstance.post('/auth/token/refresh', {}, {
-            withCredentials: true,
-        });
+            const response = await axiosInstance.post('/auth/token/refresh', {}, {
+                withCredentials: true,
+            });
 
-        const { accessToken } = response.data;
-        if (!accessToken) throw new Error('accessToken 없음');
+            if (!response.ok) {
+                const error = new Error(`토큰 갱신 실패: ${response.status}`);
+                reportError({
+                    error,
+                    url: '/auth/token/refresh',
+                });
+            
+                throw error;
+            }
 
-        setUser({
-            ...userInfo,
-            accessToken,
-        });
+            const { accessToken } = response.data;
+            if (!accessToken) throw new Error('accessToken 없음');
 
-        console.log('새로고침 이후 accessToken 복구 완료');
+            setUser({
+                ...userInfo,
+                accessToken,
+            });
+
+            console.log('새로고침 이후 accessToken 복구 완료');
         } catch (err) {
-        console.warn('accessToken 복구 실패', err);
-        logout(); // 필요 없다면 생략 가능
+            console.warn('accessToken 복구 실패', err);
+            toast.info('세션이 만료되어 다시 로그인 해주세요.');
+            reportError({
+                err,
+                url: '/auth/token/refresh',
+            });
+            logout(); 
         }
     };
 

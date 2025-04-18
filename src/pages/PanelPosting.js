@@ -83,7 +83,12 @@ const PanelPosting = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                const error =  new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                reportError({
+                    error,
+                    url: '/pdf/upload'
+                });
+                throw error;
             }
             
             toast.success('공고가 성공적으로 업로드되었습니다.');
@@ -96,6 +101,10 @@ const PanelPosting = () => {
             fetchPostings();
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/upload'
+            });
         } finally {
             setIsLoading(false)
         }
@@ -119,7 +128,12 @@ const PanelPosting = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '삭제에 실패했습니다.');
+                const error =  new Error(errorData.message || '삭제에 실패했습니다.');
+                reportError({
+                    error,
+                    url: '/pdf/delete'
+                });
+                throw error;
             }
             
             setPostings(prev => prev.filter(r => r.id !== deleteTarget.id));
@@ -127,6 +141,10 @@ const PanelPosting = () => {
             
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/delete'
+            });
         }
     };
 
@@ -153,8 +171,7 @@ const PanelPosting = () => {
             const response = await fetchClient('/pdf/list');
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || '채용공고 목록을 불러오는데 실패했습니다.');
+                throw new Error('채용공고 목록을 불러오는데 실패했습니다.');
             }
 
             const data = await response.json();
@@ -183,7 +200,6 @@ const PanelPosting = () => {
     }
     
     const handleReset = () => {
-        console.log("초기화")
     
         if(startDateInputRef.current) startDateInputRef.current.value = ""
         if(endDateInputRef.current) endDateInputRef.current.value = ""

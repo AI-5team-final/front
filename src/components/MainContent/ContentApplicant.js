@@ -7,12 +7,13 @@ import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
-import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
+import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
 import { APPLICANT_PAGE_STEPS } from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
+import { toast } from 'react-toastify';
 
 
 const ContentApplicant = () => {
@@ -54,12 +55,6 @@ const ContentApplicant = () => {
             return;
         }
 
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         localStorage.setItem('resumeFileUploaded', 'true');
         setResumeFile(fileState.file);
 
@@ -68,12 +63,6 @@ const ContentApplicant = () => {
     };
 
     const fetchResumes = async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
@@ -82,18 +71,12 @@ const ContentApplicant = () => {
                 handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
             }
-            if (response.status === 401) {
-                handleAuthError(null, navigate);
-                return;
-            }
 
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
-            if (error.response?.status === 401) {
-                handleAuthError(null, navigate);
-            } 
-            handleNetworkError(error, navigate);
+            console.error('[CLIENT ERROR]', error);
+            toast.error(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -110,12 +93,14 @@ const ContentApplicant = () => {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
                     handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
-                    return;
+                    const responseData = await response.json();
+                    const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
+                    reportError({
+                        error,
+                        url: selectedResume.pdfUri
+                    });
+                    throw error;
                 }
-                if (response.status === 401) {
-                    handleAuthError(null, navigate);
-                    return;
-                }  
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
                 setFileState({ 
@@ -126,6 +111,10 @@ const ContentApplicant = () => {
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 handleFileLoadError(error);
+                reportError({
+                    error,
+                    url: selectedResume.pdfUri
+                });
             }
         }
     };

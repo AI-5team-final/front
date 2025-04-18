@@ -29,7 +29,16 @@ const PaySuccess = () => {
                     orderId,
                     amount: parseInt(amount),
                 });
-                console.log("값", res.data)
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    const error = new Error(errorData.message || '결제 요청에 실패했습니다.');
+                    reportError({
+                        error,
+                        url: "/payments/confirm"
+                    })
+                    throw error;
+                }
 
                 const { credit, message, receiptUrl, status } = res.data;
 
@@ -62,6 +71,10 @@ const PaySuccess = () => {
                 } else {
                     console.error("결제 확인 실패:", error);
                     navigate("/fail");
+                    reportError({
+                        error,
+                        url: "/success"
+                    });
                 }
             }
         };

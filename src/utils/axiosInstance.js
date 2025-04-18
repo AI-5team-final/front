@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import config from '../config';
 import useAuth from '../hooks/useAuth';
+import { toast } from 'react-toastify';
 // import Cookies from 'js-cookie';
 
 
@@ -41,6 +42,16 @@ const refreshAccessToken = async () => {
       // },
     });
 
+    if (!response.ok) {
+      const error = new Error(`토큰 갱신 실패: ${response.status}`);
+      reportError({
+        error,
+        url: '/auth/token/refresh',
+      });
+  
+      throw error;
+    }
+
     const { accessToken } = response.data;
 
     if (accessToken) {
@@ -50,6 +61,11 @@ const refreshAccessToken = async () => {
     }
   } catch (err) {
     console.error('⚠️ 토큰 갱신 실패:', err);
+    toast.info('세션이 만료되어 다시 로그인 해주세요.');
+    reportError({
+      err,
+      url: '/auth/token/refresh',
+    });
     throw err;
   }
 };
@@ -100,7 +116,18 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    const { response } = error;
+
+    // 조건: 서버 오류(500 이상)만 report
+    if (response && response.status >= 500) {
+      reportError({
+        error,
+        url: response.config?.url,
+      });
+    }
+    Promise.reject(error)
+  }
 );
 
 
