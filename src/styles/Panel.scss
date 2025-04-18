@@ -270,31 +270,29 @@ $white: #ffffff;
 								padding-left: 24px;
 								height: 100%;
 								position: relative;
-								&::before {
+								&::before, &::after {
 									content: '';
 									position: absolute;
 									left: 0;
 									top: 50%;
 									transform: translateY(-50%);
 									width: 24px;
-									height: 100%;
-									border-radius: 50%;
+									height: 24px;
+									border-radius: 5px;
 									border: 1px solid Common.$borderColor;
 								}
+								&::after {
+									display: none;
+								}
 								&:checked {
-									&::before {
-										border-color: Common.$pointColor;
-									}
 									&::after {
-										content: '';
-										position: absolute;
-										left: 4px;
-										top: 50%;
-										transform: translateY(-50%);
-										width: 16px;
-										height: 16px;
-										border-radius: 50%;
-										background: Common.$pointColor;
+										display: block;
+										border-color: Common.$pointColor;
+										background: Common.$pointColor url("../images/icon-check.svg") center / contain;
+									}
+									+ label {
+										color: Common.$pointColor;
+										font-weight: 600;
 									}
 								}
 							}
