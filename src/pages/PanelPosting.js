@@ -1,18 +1,16 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { GrDocumentPdf } from 'react-icons/gr';
 import { toast } from 'react-toastify';
-import useToken from '../hooks/useToken';
+import { IoMdRefresh } from 'react-icons/io';
+import { BsChevronRight } from 'react-icons/bs';
 import fetchClient from '../utils/fetchClient';
 import UploadCheckModal from '../modal/UploadCheckModal';
 import DeleteModal from '../modal/DeleteModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import UploadCheckPostingModal from '../modal/UploadCheckPostingModal';
-import { IoMdRefresh } from 'react-icons/io';
-import { BsChevronCompactRight, BsChevronRight } from 'react-icons/bs';
+import useAuth from '../hooks/useAuth';
 
 const PanelPosting = () => {
     const [postings, setPostings] = useState([]);
@@ -22,17 +20,17 @@ const PanelPosting = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const { token, removeToken } = useToken();
+    const [isChecked, setIsChecked] = useState(false);
+    const { userInfo } = useAuth();
+    const role = userInfo?.role;
     const fileInputRef = useRef();
     const startDateInputRef = useRef();
     const endDateInputRef = useRef();
     const navigate = useNavigate();
 
-    const handleAuthError = () => {
-        toast.error('로그인이 필요한 서비스입니다.');
-        removeToken();
-        navigate('/login');
-    };
+    useEffect(() => {
+        fetchPostings();
+    }, []);
 
     const handleError = (error) => {
         console.error('에러 발생:', error);
@@ -69,10 +67,6 @@ const PanelPosting = () => {
             return;
         }
 
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         const formData = new FormData();
         formData.append('file', fileState.file);
@@ -108,15 +102,12 @@ const PanelPosting = () => {
     };
 
     
+    
     const handleDeleteRequest = (posting) => {
         setDeleteTarget(posting);
     };
 
     const handleConfirmDelete = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         setDeleteTarget(null);
 
@@ -139,11 +130,16 @@ const PanelPosting = () => {
         }
     };
 
+    const handleChecked = () => {
+        if(startDateInputRef.current) startDateInputRef.current.value = ""
+        if(endDateInputRef.current) endDateInputRef.current.value = ""
+        
+        setIsChecked(prev=>!prev);
+        setStartDate(null);
+        setEndDate(null);
+    }
+
     const fetchPostings = async () => {
-        if (!token) {
-            handleAuthError();
-            return;
-        }
 
         try {
             setIsLoading(true);
@@ -165,10 +161,17 @@ const PanelPosting = () => {
     };
 
     const allSelected = () => {
-        if(!startDate || !endDate || !fileState.file){
-            return false;
-        }else {
+        if (isChecked) {
+            return !!fileState.file;
+        }
+        return !!(startDate && endDate && fileState.file);
+    }
+
+    const selectedOne = () => {
+        if(startDate || endDate || fileState.file || isChecked){
             return true;
+        }else {
+            return false;
         }
     }
     
@@ -178,21 +181,19 @@ const PanelPosting = () => {
         if(startDateInputRef.current) startDateInputRef.current.value = ""
         if(endDateInputRef.current) endDateInputRef.current.value = ""
         
+        setIsChecked(false);
         setStartDate(null);
         setEndDate(null);
         setFileState({ name: '', file: null });
     }
     
 
+    
 
-    useEffect(() => {
-        if (token) {
-            fetchPostings();
-        }
-    }, [token]);
 
     const closeUploadModal = () => setIsModalOpen(prev=>!prev);
     const closeDeleteModal = () => setDeleteTarget(null);
+    
 
 
     return (
@@ -221,24 +222,32 @@ const PanelPosting = () => {
                                 <h4>공고기간 설정</h4>
                                 <p>공고의 시작일과 마감일을 선택해주세요.<br/>
                                 선택한 기간 동안만 지원자가 공고를 확인할 수 있습니다.</p>
+                                <small>*상시채용이면 아래 체크박스를 선택해주세요.</small>
                             </div>
                             <div>
-                                <div className='date-wrap'>
-                                    <p>시작일</p>
-                                    <input type="date" name="startDate" id="startDate" onChange={(e) => {
-                                        const newStart = e.target.value;
-                                        if (endDate && endDate < newStart){
-                                            setEndDate('')
-                                            endDateInputRef.current.value = "";
-                                        } 
-                                        setStartDate(newStart);
-                                        startDateInputRef.current.value = newStart;
-                                    }} ref={startDateInputRef} required/>
+                                <div className='checkbox-wrap'>
+                                    <input type="checkbox" name="checkbox" id="checkbox" checked={isChecked} onChange={handleChecked}/>
+                                    <label htmlFor="checkbox">상시채용</label>
                                 </div>
-                                <div className='date-wrap'>
-                                    <p>마감일</p>
-                                    <input type="date" name="endDate" id="endDate" onChange={(e)=>{
-                                        setEndDate(e.target.value)}} ref={endDateInputRef} min={startDate || undefined} required/>
+                                <div className='date-wrap-box'>
+                                    <div className={`date-wrap ${isChecked ? "disabled": ""}`}>
+                                        <p>시작일</p>
+                                        <input type="date" name="startDate" id="startDate" onChange={(e) => {
+                                            const newStart = e.target.value;
+                                            if (endDate && endDate < newStart){
+                                                setEndDate('')
+                                                endDateInputRef.current.value = "";
+                                            } 
+                                            setStartDate(newStart);
+                                            startDateInputRef.current.value = newStart;
+                                        }} ref={startDateInputRef} 
+                                        required/>
+                                    </div>
+                                    <div className={`date-wrap ${isChecked ? "disabled": ""}`}>
+                                        <p>마감일</p>
+                                        <input type="date" name="endDate" id="endDate" onChange={(e)=>{
+                                            setEndDate(e.target.value)}} ref={endDateInputRef} min={startDate || undefined} required/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +287,7 @@ const PanelPosting = () => {
                         </div>
                     </div>
                     <div className='btn-wrap'>
-                        <button type="button" className='btn-reset' onClick={handleReset}><IoMdRefresh /> 초기화</button>
+                        <button type="button" className={`btn-reset ${selectedOne() ? "" : "disabled"}`} onClick={handleReset}><IoMdRefresh /> 초기화</button>
                         <button type="button" className={`btn-register ${allSelected() ? "" : "disabled"}`} onClick={()=>setIsModalOpen(true)}>등록하기</button>
                     </div>
                 </div>
@@ -306,7 +315,7 @@ const PanelPosting = () => {
                                         <div>
                                             <a
                                                 className="link"
-                                                href={posting.pdfUri}
+                                                href={posting.presignedUrl}
                                                 download
                                                 target="_blank"
                                                 rel="noopener noreferrer"

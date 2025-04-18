@@ -22,7 +22,7 @@ const UploadCheckPostingModal = ({isOpen, onRequestClose, fileState, handleSubmi
             <div className="modal modal-upload">
                 <p>이 채용공고를 업로드하시겠습니까?</p>
                 <p className="modal-filename">{fileState.name}</p>
-                <p><span>공고기간 : </span><span>{startDate}</span><span> ~ </span><span>{endDate}</span></p>
+                <p><span>공고기간 : </span>{!startDate ? (<span>상시채용</span>) : (<><span>{startDate}</span><span> ~ </span><span>{endDate}</span></>)}</p>
                 <div className="modal-buttons">
                     <button onClick={onRequestClose} className="modal-button cancel-button">취소</button>
                     <button onClick={handleSubmit} className="modal-button">등록하기</button>

@@ -1,27 +1,27 @@
-import { Navigate } from "react-router-dom";
-import useToken from "../hooks/useToken";
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import Loading from './Loading';
 
 const PrivateRoute = ({ children, allowedRoles = [] }) => {
-  const { token, role } = useToken();
-  
-  if (!token) {
-    console.log('토큰 없음 → 로그인으로 리다이렉트');
+  const { userInfo, isLoggedIn, isInitializing } = useAuth();
+
+  if (isInitializing) {
+    return <Loading text={"로딩중입니다."} />;
+  }
+
+  if (!isLoggedIn || !userInfo) {
+    console.log(isLoggedIn, userInfo)
+    console.log('로그인 상태 아님 → 로그인 페이지로 리다이렉트');
     return <Navigate to="/login" replace />;
   }
 
-  if (!role) {
-    console.log('유저 role 없음 → 로그인으로 리다이렉트');
-    return <Navigate to="/login" replace />;
-  }
+  // 역할 기반 보호 (필요한 경우만 활성화)
+  // if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+  //   console.log('권한 없음 → 메인 페이지로');
+  //   return <Navigate to="/" replace />;
+  // }
 
-  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    console.log('접근 권한 없음 → 메인으로');
-    return <Navigate to="/" replace />;
-  }
-
-  console.log('인증 성공 → 컨텐츠 렌더링');
   return children;
 };
-
 
 export default PrivateRoute;

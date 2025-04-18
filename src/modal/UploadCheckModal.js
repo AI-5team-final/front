@@ -7,7 +7,7 @@ const UploadCheckModal = ({isOpen, onRequestClose, fileState, handleSubmit, file
             onRequestClose={onRequestClose}
             contentLabel="Upload Modal"
             style={{
-                overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 11000, },
+                overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 11003, },
                 content: {
                     top: '50%',
                     left: '50%',
@@ -15,7 +15,7 @@ const UploadCheckModal = ({isOpen, onRequestClose, fileState, handleSubmit, file
                     bottom: 'auto',
                     transform: 'translate(-50%, -50%)',
                     borderRadius: '12px',
-                    zIndex: 11000,
+                    zIndex: 11004,
                 }
             }}
         >
