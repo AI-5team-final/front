@@ -36,15 +36,6 @@ const refreshAccessToken = async () => {
       // body: JSON.stringify({})
     });
   
-    if (!response.ok) {
-      const error = new Error(`토큰 갱신 실패: ${response.status}`);
-      reportError({
-        error,
-        url: '/auth/token/refresh',
-      });
-  
-      throw error;
-    }
 
     const data = await response.json(); // JSON 파싱
     const { accessToken } = data;
@@ -59,11 +50,6 @@ const refreshAccessToken = async () => {
   }catch (err) {
     console.error('⚠️ 토큰 갱신 실패:', err);
     toast.info('세션이 만료되어 다시 로그인 해주세요.');
-    reportError({
-      err,
-      url: '/auth/token/refresh',
-    });
-    throw err;
   }
   
 };
