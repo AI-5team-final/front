@@ -4,9 +4,12 @@ import '../../styles/TutorialButton.scss';
 
 const TutorialButton = ({ onClick }) => {
     return (
-        <button 
+        <button
             className="tutorial-button"
-            onClick={onClick}
+            onClick={() => {
+                console.log('[TutorialButton] 버튼 클릭됨');
+                onClick(); // 호출
+            }}
             title="튜토리얼 시작"
         >
             <FaQuestionCircle className="tutorial-icon" />

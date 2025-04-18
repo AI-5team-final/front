@@ -11,9 +11,10 @@ import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
-import { APPLICANT_PAGE_STEPS } from '../Tutorial/ApplicantTutorialSteps';
+import {APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
+import ListApplicantMock from "../../mock/ListApplicantMock";
 
 
 const ContentApplicant = () => {
@@ -30,6 +31,8 @@ const ContentApplicant = () => {
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
     const [showTutorial, setShowTutorial] = useState(false);
+    const [tutorialFlow, setTutorialFlow] = useState(0); // 0: 튜토리얼 OFF, 1: PAGE, 2: LIST
+
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -103,9 +106,9 @@ const ContentApplicant = () => {
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
-                setFileState({ 
-                    name: selectedResume.pdfFileName, 
-                    file: file 
+                setFileState({
+                    name: selectedResume.pdfFileName,
+                    file: file
                 });
                 // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
@@ -124,7 +127,7 @@ const ContentApplicant = () => {
         setIsMatching(false);
         fetchResumes();
     };
-   
+
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
 
     const openMatchingModal = () => {
@@ -139,11 +142,37 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            <TutorialManager 
-                steps={APPLICANT_PAGE_STEPS} 
-                startImmediately={showTutorial} 
-            />
-            <TutorialButton onClick={() => setShowTutorial(true)} />
+            {tutorialFlow === 1 && (
+                <>
+                    <TutorialManager
+                        steps={APPLICANT_PAGE_STEPS}
+                        startImmediately={true}
+                        onComplete={() => {
+                            setTutorialFlow(2); // 먼저 flow 변경
+
+                            setTimeout(() => {
+                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
+                                if (listElement) {
+                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                }
+                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
+                        }}
+                    />
+                </>
+            )}
+
+            {tutorialFlow === 2 && (
+                <>
+                    <ListApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_LIST_STEPS}
+                        startImmediately={true}
+                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 끝!
+                        isMockPage={true}
+                    />
+                </>
+            )}
+            <TutorialButton onClick={() => setTutorialFlow(1)} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -157,9 +186,9 @@ const ContentApplicant = () => {
                         </p>
                     </div>
                     <div className="hero-image">
-                        <img 
-                            src="/images/Applicant_MainContent_none.png" 
-                            alt="AI 매칭 서비스" 
+                        <img
+                            src="/images/Applicant_MainContent_none.png"
+                            alt="AI 매칭 서비스"
                             className="hero-img"
                         />
                     </div>
@@ -185,8 +214,8 @@ const ContentApplicant = () => {
                                     style={{ display: 'none' }}
                                 />
                             </div>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={handleLoadModalOpen}
                                 className="button active"
@@ -194,8 +223,8 @@ const ContentApplicant = () => {
                                 <FaCloudDownloadAlt className="cloud-icon" />
                                 <span>내 이력서<br/>불러오기</span>
                             </button>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={openMatchingModal}
                                 className="button active"
@@ -214,11 +243,11 @@ const ContentApplicant = () => {
             </section>
 
             {/* 이력서 업로드 확인 모달 */}
-            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>            
+            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>
 
             {/* 이력서 불러오기 모달 */}
             <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"} isMatching={isMatching} setMatchingFiles={setMatchingFiles}/>
-            
+
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
         </div>

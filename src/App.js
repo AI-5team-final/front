@@ -25,9 +25,6 @@ import './styles/fonts.css';
 import './styles/Style.scss';
 import './styles/modal.scss';
 
-
-
-
 function AppRoutes() {
   useAutoRefreshToken();
   return (
