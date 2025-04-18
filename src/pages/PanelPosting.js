@@ -229,7 +229,7 @@ const PanelPosting = () => {
                                 <h4>공고기간 설정</h4>
                                 <p>공고의 시작일과 마감일을 선택해주세요.<br/>
                                 선택한 기간 동안만 지원자가 공고를 확인할 수 있습니다.</p>
-                                <small>*상시채용이면 아래 체크박스를 선택해주세요.</small>
+                                <small>*상시채용은 등록일로부터 1년간 공고가 유지됩니다.</small>
                             </div>
                             <div>
                                 <div className='checkbox-wrap'>
