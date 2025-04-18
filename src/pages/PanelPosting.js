@@ -135,8 +135,15 @@ const PanelPosting = () => {
         if(endDateInputRef.current) endDateInputRef.current.value = ""
         
         setIsChecked(prev=>!prev);
-        setStartDate(null);
-        setEndDate(null);
+        const today = new Date();
+        const year = today.getFullYear();
+        const addOneYear = year+1;
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        const dateString = year + '-' + month  + '-' + day;
+        const dateString2 = addOneYear + '-' + month  + '-' + day;
+        setStartDate(dateString);
+        setEndDate(dateString2);
     }
 
     const fetchPostings = async () => {

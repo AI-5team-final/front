@@ -121,10 +121,11 @@ const CommonContent = ({matchResult, role}) => {
     };
 
     return (
-        <main className="l-view">
-            {isLoading ? (
-                <Loading text={"리포트를 다운로드 중입니다."}/>
-            ) : (
+        isLoading ? (
+            <Loading text={"리포트를 다운로드 중입니다."}/>
+        ) : 
+        (
+            <main className="l-view">         
                 <section className="section section-report" id="pdf-content">
                     <div className="inner">
                 
@@ -249,8 +250,8 @@ const CommonContent = ({matchResult, role}) => {
                     </div>)
                     }
                 </section>
-                )}
         </main>
+        )
         // gpt
         // <main className="l-view">
         //     <section className="section section-report">
