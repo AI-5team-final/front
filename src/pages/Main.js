@@ -16,15 +16,14 @@ const Main = () => {
 		setJobPostFile(null);
 		localStorage.setItem("resumeUploaded", "false");
 		localStorage.setItem("jobPostFileUploaded", "false");
-		localStorage.setItem("isOneToOneMatch", false);
+		localStorage.setItem("isOneToOneMatch", "false");
 		localStorage.setItem("oneResumeFile", null);
 		localStorage.setItem("oneJobPostFile", null);
 	}, [location.pathname]);
 	
 	useEffect(() => {
-		// console.log("matchResults가 변경되었습니다:", matchResults);
-		// console.log("resumeFileLocal이 변경되었습니다:", localStorage.getItem("resumeFileLocal"));
-	  }, [matchResults]);
+		
+	}, [matchResults]);
 	
 
 	return <MainContent role={role} />;

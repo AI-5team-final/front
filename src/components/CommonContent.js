@@ -25,7 +25,7 @@ const CommonContent = ({matchResult, role}) => {
 	const [agentFeedback, setAgentFeedback] = useState("");
 	const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const isOneToOneMatch = localStorage.getItem("isOneToOneMatch") ?? false;
+    const isOneToOneMatch = localStorage.getItem("isOneToOneMatch")==="false"? false : true;
     const oneResumeFile = localStorage.getItem("oneResumeFile") ?? null;
     const oneJobPostFile = localStorage.getItem("oneJobPostFile") ?? null;
 
@@ -159,7 +159,7 @@ const CommonContent = ({matchResult, role}) => {
                     <div className="inner">
                 
                         <h2 className="sub-tit">
-                        {isOneToOneMatch ? "1대 1 " : (<span>`${userInfo?.name} - ${matchResult.name}`</span>)} Ai매칭 결과
+                            {isOneToOneMatch ? "1대 1 " : (<span>{userInfo?.name} - {matchResult.name}</span>)} Ai매칭 결과
                         </h2>
                         <h3 className="tit-line">Ai MATCHING REPORT</h3>
                         <div className="icon-area">
