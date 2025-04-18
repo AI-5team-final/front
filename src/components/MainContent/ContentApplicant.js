@@ -92,10 +92,8 @@ const ContentApplicant = () => {
         } catch (error) {
             if (error.response?.status === 401) {
                 handleAuthError(null, navigate);
-            } else {
-                handleNetworkError(error, navigate);
-            }
-            handleError(error);
+            } 
+            handleNetworkError(error, navigate);
         } finally {
             setIsLoading(false);
         }

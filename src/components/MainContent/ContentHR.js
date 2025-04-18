@@ -21,18 +21,6 @@ const ContentHR = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setJobPostFile } = useMatch();
-    const validateFile = (file) => {
-        if (!file) return false;
-        if (file.type !== 'application/pdf') {
-            toast.error('PDF 파일만 업로드 가능합니다.');
-            return false;
-        }
-        return true;
-    };
-
-    const handleError = (error) => {
-        toast.error('파일 업로드 중 오류가 발생했습니다.');
-    };
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -97,10 +85,9 @@ const ContentHR = () => {
             if (error.response?.status === 401) {
                 handleAuthError();
                 return;
-            } else {
-                handleNetworkError(error, navigate);
-            }
-            handleError(error);
+            } 
+            
+            handleNetworkError(error, navigate);
         } finally {
             setIsLoading(false);
         }
