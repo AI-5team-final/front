@@ -54,10 +54,17 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             }];
 
             toast.success('매칭 요청 완료!');
+            localStorage.setItem("isOneToOneMatch", true);
+            const blobUrlResume = URL.createObjectURL(matchingFiles.resume);
+            localStorage.setItem("oneResumeFile", blobUrlResume);
+            const blobUrlJobPost = URL.createObjectURL(matchingFiles.jobPost);
+            localStorage.setItem("oneJobPostFile", blobUrlJobPost);
+            
             setMatchingFiles({ resume: null, jobPost: null });
             setIsMatchingModalOpen(false);    
 
             setMatchResults(data);
+            
             navigate(`/matching`);
         }catch(e){
             console.warn(`${e}: 1대1 매칭 중 에러가 발생했습니다.`);

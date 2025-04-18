@@ -3,48 +3,55 @@ import { jwtDecode } from 'jwt-decode';
 import axiosInstance from '../utils/axiosInstance';
 import useAuth from './useAuth'; // zustand 훅
 
-
 export default function useAutoRefreshToken() {
-    const { userInfo, setUser, logout } = useAuth();
+    const { userInfo, setUser, logout, isLoggedIn } = useAuth();
 
     useEffect(() => {
-    if (!userInfo) return;
+    const tryRefreshToken = async () => {
+        try {
+        const response = await axiosInstance.post('/auth/token/refresh', {}, {
+            withCredentials: true,
+        });
+
+        const { accessToken } = response.data;
+        if (!accessToken) throw new Error('accessToken 없음');
+
+        setUser({
+            ...userInfo,
+            accessToken,
+        });
+
+        console.log('새로고침 이후 accessToken 복구 완료');
+        } catch (err) {
+        console.warn('accessToken 복구 실패', err);
+        logout(); // 필요 없다면 생략 가능
+        }
+    };
+
+    if(!isLoggedIn){
+        return;
+    }
+    if (!userInfo || !userInfo.accessToken) {
+        tryRefreshToken();
+        return;
+    }
+
+    // accessToken 있는 경우 → 만료 시간 체크해서 갱신 예약
+    const { accessToken } = userInfo;
+    if (!accessToken) return;
 
     try {
-        const decoded = jwtDecode(userInfo?.accessToken);
+        const decoded = jwtDecode(accessToken);
         const exp = decoded?.exp;
-
         if (!exp) return;
 
         const now = Math.floor(Date.now() / 1000);
         const timeLeft = exp - now;
-
-        const refreshThreshold = 120; // 2분 전 미리 갱신
+        const refreshThreshold = 120;
         const waitTime = (timeLeft - refreshThreshold) * 1000;
 
-        const timeoutId = setTimeout(async () => {
-        try {
-            const response = await axiosInstance.post('/auth/token/refresh', {}, {
-            withCredentials: true,
-            });
-
-            const { accessToken } = response.data;
-
-            if (accessToken) {
-            const decodedNew = jwtDecode(accessToken);
-            // 유저 정보 갱신 (accessToken + 유저 상태 통합)
-            setUser({
-                ...userInfo,
-                ...decodedNew,
-                accessToken,
-            });
-
-            console.log('accessToken 자동 갱신 완료');
-            }
-        } catch (err) {
-            console.error('accessToken 자동 갱신 실패:', err);
-            logout(); // zustand에서 처리하도록
-        }
+        const timeoutId = setTimeout(() => {
+        tryRefreshToken();
         }, waitTime > 0 ? waitTime : 0);
 
         return () => clearTimeout(timeoutId);
