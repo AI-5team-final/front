@@ -15,7 +15,7 @@ import Loading from "./Loading";
 import { handleClientError } from "../utils/handleClientError";
 
 
-const CommonContent = ({matchResult, role}) => {
+const CommonContent = ({matchResult, role, isMock = false}) => {
     // const { userInfo, updateCredit } = useUser();
     const { userInfo, updateCredit } = useAuth();
     // pdf에서 가져온 이름
@@ -43,6 +43,11 @@ const CommonContent = ({matchResult, role}) => {
     // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
+        if (isMock) {
+            toast.info("튜토리얼에서는 다운로드가 비활성화되어 있습니다.");
+            return;
+        }
+
         try {
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
@@ -67,6 +72,11 @@ const CommonContent = ({matchResult, role}) => {
     }
 
     const handleAnalyzeWithAgent = async () => {
+        if (isMock) {
+            toast.info("튜토리얼에서는 Fit Advisor 기능이 비활성화되어 있습니다.");
+            return;
+        }
+
         if(userInfo?.credit < 500){
             toast.error("크레딧이 부족합니다.\n결제 후에 이용하실 수 있습니다.");
             return;
