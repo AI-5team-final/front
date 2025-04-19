@@ -3,15 +3,15 @@ import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../../context/MatchContext';
+import { useTutorial } from '../../context/TutorialContext';
+import TutorialManager from '../../context/temp/TutorialManager';
+import TutorialButton from '../Tutorial/TutorialButton';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
 import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
-import TutorialManager from '../Tutorial/TutorialManager';
-import TutorialButton from '../Tutorial/TutorialButton';
-import {APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
 import ListApplicantMock from "../../mock/ListApplicantMock";
@@ -30,8 +30,7 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-    const [showTutorial, setShowTutorial] = useState(false);
-    const [tutorialFlow, setTutorialFlow] = useState(0); // 0: 튜토리얼 OFF, 1: PAGE, 2: LIST
+    const { startTutorial, isTutorialActive } = useTutorial();
 
 
     const handleDrop = (e) => {
@@ -142,41 +141,12 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            {tutorialFlow === 1 && (
-                <>
-                    <TutorialManager
-                        steps={APPLICANT_PAGE_STEPS}
-                        startImmediately={true}
-                        onComplete={() => {
-                            setTutorialFlow(2); // 먼저 flow 변경
-
-                            setTimeout(() => {
-                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
-                                if (listElement) {
-                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                                }
-                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
-                        }}
-                    />
-                </>
-            )}
-
-            {tutorialFlow === 2 && (
-                <>
-                    <ListApplicantMock />
-                    <TutorialManager
-                        steps={APPLICANT_LIST_STEPS}
-                        startImmediately={true}
-                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 끝!
-                        isMockPage={true}
-                    />
-                </>
-            )}
-            <TutorialButton onClick={() => setTutorialFlow(1)} />
+            <TutorialManager />
+            <TutorialButton onClick={() => startTutorial('applicant-journey')} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
-                        <h1 className="hero-title">
+                        <h1 className="hero-title" id="applicant-welcome">
                             AI 매칭으로 취업 성공까지<br />
                             한 걸음 더
                         </h1>

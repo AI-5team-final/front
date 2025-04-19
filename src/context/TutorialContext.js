@@ -1,39 +1,61 @@
 import { createContext, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { APPLICANT_JOURNEY } from './temp/steps/ApplicantJourney';
 
 const TutorialContext = createContext();
 
 export const TutorialProvider = ({ children }) => {
-    const [showTutorial, setShowTutorial] = useState(false);
-    const [tutorialStage, setTutorialStage] = useState('applicant');
-    const [currentStep, setCurrentStep] = useState(0);
+    const navigate = useNavigate();
+    const [isTutorialActive, setIsTutorialActive] = useState(false);
+    const [currentJourney, setCurrentJourney] = useState(null);
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-    const startTutorial = () => {
-        setShowTutorial(true);
-        setCurrentStep(0);
+    const startTutorial = (journeyId) => {
+        // 현재는 구직자 journey만 있으므로 하드코딩
+        setCurrentJourney(APPLICANT_JOURNEY);
+        setCurrentStepIndex(0);
+        setIsTutorialActive(true);
     };
 
     const endTutorial = () => {
-        setShowTutorial(false);
-        setCurrentStep(0);
+        setIsTutorialActive(false);
+        setCurrentJourney(null);
+        setCurrentStepIndex(0);
     };
 
     const nextStep = () => {
-        setCurrentStep(prev => prev + 1);
+        if (currentJourney && currentStepIndex < currentJourney.steps.length - 1) {
+            setCurrentStepIndex(prev => prev + 1);
+        }
     };
 
     const prevStep = () => {
-        setCurrentStep(prev => prev - 1);
+        if (currentStepIndex > 0) {
+            setCurrentStepIndex(prev => prev - 1);
+        }
+    };
+
+    const navigateToStep = (path) => {
+        if (isTutorialActive) {
+            navigate(path);
+        }
+    };
+
+    const getCurrentStep = () => {
+        if (!currentJourney) return null;
+        return currentJourney.steps[currentStepIndex];
     };
 
     const value = {
-        showTutorial,
-        tutorialStage,
-        currentStep,
+        isTutorialActive,
+        currentJourney,
+        currentStepIndex,
         startTutorial,
         endTutorial,
         nextStep,
         prevStep,
-        setTutorialStage
+        navigateToStep,
+        getCurrentStep
     };
 
     return (
