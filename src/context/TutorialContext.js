@@ -1,11 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { APPLICANT_JOURNEY } from './temp/steps/ApplicantJourney';
 
 const TutorialContext = createContext();
 
 export const TutorialProvider = ({ children }) => {
-    const navigate = useNavigate();
     const [isTutorialActive, setIsTutorialActive] = useState(false);
     const [currentJourney, setCurrentJourney] = useState(null);
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -35,12 +33,6 @@ export const TutorialProvider = ({ children }) => {
         }
     };
 
-    const navigateToStep = (path) => {
-        if (isTutorialActive) {
-            navigate(path);
-        }
-    };
-
     const getCurrentStep = () => {
         if (!currentJourney) return null;
         return currentJourney.steps[currentStepIndex];
@@ -54,7 +46,6 @@ export const TutorialProvider = ({ children }) => {
         endTutorial,
         nextStep,
         prevStep,
-        navigateToStep,
         getCurrentStep
     };
 
