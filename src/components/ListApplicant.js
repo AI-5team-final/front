@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
-import { useTutorial } from '../context/temp/TutorialManager';
 import useAuth from '../hooks/useAuth';
 
 const getScoreClass = (score) => {
@@ -26,18 +25,16 @@ const getIcon = (title) => {
 const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, isMock = false }) => {
     const authUser = useAuth()?.userInfo;
     const contextResults = useMatch()?.matchResults;
-    const { isTutorialMode } = useTutorial();
     const navigate = useNavigate();
 
     const userInfo = propsUserInfo || authUser;
     const matchResults = propsResults || contextResults;
 
     const handleViewDetail = (index) => {
-        if (!isTutorialMode) {
+        if (!isMock) {
             navigate(`/view/${index}`);
         } else {
-            // 튜토리얼 모드에서는 상세 페이지로 이동하지 않음
-            console.log('튜토리얼 모드에서는 상세 페이지로 이동할 수 없습니다.');
+            alert('튜토리얼에서는 상세 페이지 이동이 비활성화되어 있습니다.');
         }
     };
     

@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import { MatchProvider } from './context/MatchContext';
-import { TutorialProvider } from './context/temp/TutorialManager';
+import { TutorialProvider } from './context/TutorialContext';
+import TutorialManager from './context/temp/TutorialManager';
 import { useEffect } from "react";
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
@@ -29,7 +30,10 @@ import './styles/modal.scss';
 function AppRoutes() {
   const navigate = useNavigate();
   useAutoRefreshToken();
-  
+
+  // TutorialManager 초기화
+  TutorialManager.init(navigate);
+
   return (
     <Routes>
       {/* 로그인 안하면 전체 막히는 구간 */}
