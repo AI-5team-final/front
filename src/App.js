@@ -73,16 +73,20 @@ function App() {
     }
   }, []);
 
-  return (
-    <BrowserRouter>
-      <MatchProvider>
-        <TutorialProvider>
-          <AppRoutes />
-        </TutorialProvider>
-      </MatchProvider>
-      <ToastContainer position="top-center" autoClose={1000} style={{ zIndex: 11002 }}/>
-    </BrowserRouter>
-  );
-}
+
+    return (
+      <>
+        <MatchProvider>
+          <TutorialProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </TutorialProvider>
+        </MatchProvider>
+        <ToastContainer position="top-center" autoClose={1000} style={{ zIndex: 11002 }}/>
+      </>
+    );
+  }
+
 
 export default App;
