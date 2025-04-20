@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import { MatchProvider } from './context/MatchContext';
-import { TutorialProvider } from './context/TutorialContext';
 import { useEffect } from "react";
 import Layout from "./layout/Layout";
 import Main from "./pages/Main";
@@ -77,11 +76,9 @@ function App() {
     return (
       <>
         <MatchProvider>
-          <TutorialProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </TutorialProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
         </MatchProvider>
         <ToastContainer position="top-center" autoClose={1000} style={{ zIndex: 11002 }}/>
       </>
