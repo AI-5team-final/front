@@ -3,9 +3,7 @@ import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../../context/MatchContext';
-import { useTutorial } from '../../context/TutorialContext';
-import TutorialManager from '../../context/temp/TutorialManager';
-import TutorialButton from '../Tutorial/TutorialButton';
+import { TutorialButton } from '../../context/temp/TutorialManager';
 import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
@@ -15,8 +13,6 @@ import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
 import ListApplicantMock from "../../mock/ListApplicantMock";
-import introJs from 'intro.js';
-import 'intro.js/introjs.css';
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -31,7 +27,6 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-    const { startTutorial } = useTutorial();
 
     const handleDrop = (e) => {
         e.preventDefault();

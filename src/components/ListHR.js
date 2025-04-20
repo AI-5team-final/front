@@ -1,12 +1,12 @@
-
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
+import { useTutorial } from '../context/temp/TutorialManager';
 import useAuth from '../hooks/useAuth';
-
 
 const ListHR = () => {
     const { userInfo } = useAuth();
     const { matchResults } = useMatch();
+    const { isTutorialMode } = useTutorial();
     const navigate = useNavigate();
     
 
@@ -32,7 +32,12 @@ const ListHR = () => {
     };
 
     const handleViewDetail = (index) => {
-        navigate(`/view/${index}`);
+        if (!isTutorialMode) {
+            navigate(`/view/${index}`);
+        } else {
+            // 튜토리얼 모드에서는 상세 페이지로 이동하지 않음
+            console.log('튜토리얼 모드에서는 상세 페이지로 이동할 수 없습니다.');
+        }
     };
     
 

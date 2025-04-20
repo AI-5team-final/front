@@ -1,11 +1,12 @@
 import React from 'react';
 import { FaQuestionCircle } from 'react-icons/fa';
-import TutorialManager from '../../context/temp/TutorialManager';
 import '../../styles/TutorialButton.scss';
+import { startTutorial } from '../../context/temp/TutorialManager';
 
-const TutorialButton = () => {
+const TutorialButton = ({ onClick }) => {
     const handleClick = () => {
-        TutorialManager.startTutorial();
+        startTutorial();
+        if (onClick) onClick();
     };
 
     return (
