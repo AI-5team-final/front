@@ -15,8 +15,7 @@ import { validateFile } from './FileValidation';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
 import ListApplicantMock from "../../mock/ListApplicantMock";
-import introJs from 'intro.js';
-import 'intro.js/introjs.css';
+
 
 const ContentApplicant = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
@@ -31,7 +30,8 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-    const { startTutorial } = useTutorial();
+    const { startTutorial, isTutorialActive } = useTutorial();
+
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -141,7 +141,8 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            <TutorialButton />
+            <TutorialManager />
+            <TutorialButton onClick={() => startTutorial('applicant-journey')} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
