@@ -25,29 +25,6 @@ const TUTORIAL_STEPS = {
         element: '.upload-area',
         intro: '드래그 앤 드롭이나 버튼을 눌러서 이력서를 업로드하면 맞춤형 매칭을 시작할 수 있어요!',
         position: 'left',
-      },
-      {
-        id: 'list-intro',
-        page: '/',
-        element: '.l-list',
-        intro: '매칭된 결과를 확인할 수 있는 리스트 페이지입니다. 각 항목을 클릭하면 상세 정보를 볼 수 있어요.',
-        position: 'bottom',
-        nextPath: '/list'
-      },
-      {
-        id: 'match-card',
-        page: '/list',
-        element: '.match-card',
-        intro: '매칭 결과 카드입니다. 총점과 이력서, 자기소개서 점수를 한눈에 확인할 수 있습니다.',
-        position: 'right',
-        nextPath: '/list'
-      },
-      {
-        id: 'view-detail',
-        page: '/list',
-        element: '.view-detail-button',
-        intro: '상세 보기 버튼을 클릭하면 매칭 결과의 자세한 내용을 확인할 수 있습니다.',
-        position: 'left',
         nextPath: '/list'
       }
     ]
@@ -75,6 +52,7 @@ export const TutorialProvider = ({ children }) => {
   let introInstance = null;
 
   const startTutorial = (journeyType = 'APPLICANT') => {
+    console.log('튜토리얼 시작:', journeyType);
     const journey = TUTORIAL_STEPS[journeyType];
     
     if (!journey) {
@@ -135,6 +113,7 @@ export const TutorialProvider = ({ children }) => {
       })
       .oncomplete(() => {
         console.log('튜토리얼 완료');
+        navigate('/list');
         endTutorial();
       })
       .onexit(() => {
