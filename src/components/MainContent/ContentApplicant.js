@@ -11,10 +11,11 @@ import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
-import {APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
+import {APPLICANT_DETAIL_STEPS, APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
 import ListApplicantMock from "../../mock/ListApplicantMock";
+import DetailApplicantMock from "../../mock/DetailApplicantMock";
 
 
 const ContentApplicant = () => {
@@ -172,6 +173,18 @@ const ContentApplicant = () => {
                     />
                 </>
             )}
+
+            {tutorialFlow === 3 && (
+                <>
+                    <DetailApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_DETAIL_STEPS}
+                        startImmediately={true}
+                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 종료
+                    />
+                </>
+            )}
+
             <TutorialButton onClick={() => setTutorialFlow(1)} />
             <section className="hero">
                 <div className='inner'>
