@@ -46,6 +46,7 @@ const ContentApplicant = () => {
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
+        console.log("file", file)
         if (validateFile(file)) {
             setFileState({ name: file.name, file });
             setIsUploadModalOpen(true);
@@ -92,16 +93,17 @@ const ContentApplicant = () => {
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
+        
         if (selectedResume) {
             try {
-                const response = await fetch(selectedResume.pdfUri);
+                const response = await fetch(selectedResume.presignedUrl);
                 if (!response.ok) {
                     handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
                     const responseData = await response.json();
                     const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
                     reportError({
                         error,
-                        url: selectedResume.pdfUri
+                        url: selectedResume.presignedUrl
                     });
                     throw error;
                 }
@@ -117,7 +119,7 @@ const ContentApplicant = () => {
                 handleFileLoadError(error);
                 reportError({
                     error,
-                    url: selectedResume.pdfUri
+                    url: selectedResume.presignedUrl
                 });
             }
         }
