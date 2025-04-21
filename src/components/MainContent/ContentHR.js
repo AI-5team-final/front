@@ -1,43 +1,27 @@
 import { useRef, useState } from 'react';
 import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
-import { TbHeartHandshake } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import { useMatch } from '../context/MatchContext';
+import { useMatch } from '../../context/MatchContext';
+import fetchClient from '../../utils/fetchClient';
+import UploadCheckModal from '../../modal/UploadCheckModal';
+import LoadModal from '../../modal/LoadModal';
+import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNoFileError } from './ErrorHandler';
+import { validateFile } from './FileValidation';
+import '../../styles/ContentApplicant.scss';
+import '../../styles/ContentHR.scss';
+import { HR_PAGE_STEPS } from '../Tutorial/HRTutorialSteps';
 import { toast } from 'react-toastify';
-import fetchClient from '../utils/fetchClient';
-import '../styles/ContentApplicant.scss';
-import UploadCheckModal from '../modal/UploadCheckModal';
-import LoadModal from '../modal/LoadModal';
-import MatchingModal from '../modal/MatchingModal';
-import '../styles/ContentApplicant.scss';
 
-
-const ContentApplicant = () => {
+const ContentHR = () => {
     const [fileState, setFileState] = useState({ name: '', file: null });
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
-    const [isMatchingModalOpen, setIsMatchingModalOpen] = useState(false);
-    const [matchingFiles, setMatchingFiles] = useState({ resume: null, jobPost: null });
     const [selectedId, setSelectedId] = useState(null);
     const [resumes, setResumes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isMatching, setIsMatching] = useState(false);
     const fileInputRef = useRef();
     const navigate = useNavigate();
-    const { setResumeFile } = useMatch();
-
-    const validateFile = (file) => {
-        if (!file) return false;
-        if (file.type !== 'application/pdf') {
-            toast.error('PDF 파일만 업로드 가능합니다.');
-            return false;
-        }
-        return true;
-    };
-
-    const handleError = (error) => {
-        toast.error('파일 업로드 중 오류가 발생했습니다.');
-    };
+    const { setJobPostFile } = useMatch();
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -58,33 +42,32 @@ const ContentApplicant = () => {
 
     const handleSubmit = async () => {
         if (!fileState.file) {
-            toast.error('PDF 파일을 선택해주세요.');
+            handleNoFileError();
+            setIsUploadModalOpen(false);
             return;
         }
 
-
-        localStorage.setItem('resumeFileUploaded', 'true');
-        setResumeFile(fileState.file);
-
+        localStorage.setItem('jobPostFileUploaded', 'true');
+        setJobPostFile(fileState.file);
         // List 페이지로 이동
         navigate('/list');
     };
 
-    const fetchResumes = async () => {
-
+    const fetchPostings = async () => {
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
             
             if (!response.ok) {
-                throw new Error('이력서 목록을 불러오는데 실패했습니다.');
+                handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
+                return;
             }
 
             const data = await response.json();
-            
             setResumes(data.pdfs || []);
         } catch (error) {
-            handleError(error);
+            console.error('[CLIENT ERROR]', error);
+            toast.error(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -92,7 +75,7 @@ const ContentApplicant = () => {
 
     const handleLoadConfirm = async () => {
         if (!selectedId) {
-            toast.error('이력서를 선택해주세요.');
+            handleFileNotSelectedError('채용공고');
             return;
         }
         const selectedResume = resumes.find(resume => resume.id === selectedId);
@@ -100,7 +83,14 @@ const ContentApplicant = () => {
             try {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
-                    throw new Error('이력서를 불러오는데 실패했습니다.');
+                    handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
+                    const responseData = await response.json();
+                    const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
+                    reportError({
+                        error,
+                        url: selectedResume.pdfUri
+                    });
+                    throw error;
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
@@ -111,46 +101,39 @@ const ContentApplicant = () => {
                 // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
-                toast.error('저장소에서 이력서를 불러오는데 실패했습니다.');
+                handleFileLoadError(error);
+                reportError({
+                    error,
+                    url: selectedResume.pdfUri
+                });
             }
         }
     };
 
     const handleLoadModalOpen = () => {
         setIsLoadModalOpen(true);
-        setIsMatching(false);
-        fetchResumes();
+        fetchPostings();
     };
-   
-    const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
 
-    const openMatchingModal = () => {
-        setIsMatchingModalOpen(true);
-        fetchResumes();
-    };
-    const closeMatchingModal = () => {
-        setIsMatchingModalOpen(false);
-        setMatchingFiles({ resume: null, jobPost: null });
-    };
+    const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
     const closeUploadCheckModal = () => setIsUploadModalOpen(prev=>!prev);
 
     return (
-        <div className='l-content-apply'>
+        <div className="l-content-hr">
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
                         <h1 className="hero-title">
-                            AI 매칭으로 취업 성공까지<br />
+                            AI 매칭으로 인재 채용까지<br />
                             한 걸음 더
                         </h1>
                         <p className="hero-subtitle">
-                            내게 맞는 채용공고만 정확히 추천해드려요 <br />
-                            이력서 첨부하고 나에게 딱 맞는 채용공고 매칭 받으세요
+                            우리 회사에 맞는 인재를 정확히 추천해드려요.
                         </p>
                     </div>
                     <div className="hero-image">
                         <img 
-                            src="/images/Applicant_MainContent_none.png" 
+                            src="/images/HR_MainContent_none.png" 
                             alt="AI 매칭 서비스" 
                             className="hero-img"
                         />
@@ -168,7 +151,7 @@ const ContentApplicant = () => {
                                 onClick={() => fileInputRef.current.click()}
                             >
                                 <FaPlusCircle className="icon" />
-                                <span className="upload-text">이력서 매칭하기</span>
+                                <span className="upload-text">채용공고 매칭하기</span>
                                 <input
                                     type="file"
                                     accept="application/pdf"
@@ -184,37 +167,23 @@ const ContentApplicant = () => {
                                 className="button active"
                             >
                                 <FaCloudDownloadAlt className="cloud-icon" />
-                                <span>내 이력서<br/>불러오기</span>
+                                <span>우리회사 공고<br/>불러오기</span>
                             </button>
-                        
-                            <button 
-                                type="button"
-                                onClick={openMatchingModal}
-                                className="button active"
-                            >
-                                <TbHeartHandshake className="cloud-icon" />
-                                <p>
-                                    Fit Advisor로 <br/>
-                                    1대1 매칭하기
-                                </p>
-                            </button>
+                    
                         </div>
                         <p className="file-note">*등록가능한 파일 형식 및 확장자: PDF</p>
-                        <p className="file-note">**불필요한 개인정보가 포함되지 않도록 확인 후 첨부하세요</p>
                     </div>
                 </div>
             </section>
+        
 
-            {/* 이력서 업로드 확인 모달 */}
-            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>
+            {/* 채용공고 업로드 확인 모달 */}
+            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"공고"}/>            
 
-            {/* 이력서 불러오기 모달 */}
-            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"} isMatching={isMatching} setMatchingFiles={setMatchingFiles}/>
-            
-            {/* 1대1 매칭 모달 */}
-            <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
+            {/* 채용공고 불러오기 모달 */}
+            <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"공고"}/>
         </div>
     );
-};
+}
 
-export default ContentApplicant;
+export default ContentHR; 

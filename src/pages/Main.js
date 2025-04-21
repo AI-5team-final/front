@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
-import MainContent from '../components/MainContent';
+import MainContent from '../components/MainContent/MainContent';
 import useAuth from '../hooks/useAuth';
 
 const Main = () => {
@@ -16,6 +16,9 @@ const Main = () => {
 		setJobPostFile(null);
 		localStorage.setItem("resumeUploaded", "false");
 		localStorage.setItem("jobPostFileUploaded", "false");
+		localStorage.setItem("isOneToOneMatch", false);
+		localStorage.setItem("oneResumeFile", null);
+		localStorage.setItem("oneJobPostFile", null);
 	}, [location.pathname]);
 	
 	useEffect(() => {

@@ -1,6 +1,11 @@
+import useAuth from "../hooks/useAuth";
 import fetchClient from "./fetchClient";
+import classifyErrorLevel from './classifyErrorLevel';
 
-export const reportError = async ({ error, stack, url }) => {
+export const reportError = async ({ error, stack, url, level = 'CRITICAL' }) => {
+    // 자동 레벨 분류
+    const finalLevel = level || classifyErrorLevel(error);
+
     let message = "알 수 없는 오류";
   
     if (typeof error === "string") {
@@ -15,12 +20,30 @@ export const reportError = async ({ error, stack, url }) => {
       }
     }
   
+    const buildUserInfoPayload = () => {
+      const { userInfo } = useAuth.getState?.() ?? {};
+      if (!userInfo) return null;
+    
+      const mask = (email) => {
+        if (!email || !email.includes('@')) return email;
+        const [local, domain] = email.split('@');
+        return `${local[0]}***@${domain}`;
+      };
+    
+      return {
+        email: mask(userInfo.email),
+        role: userInfo.role,
+      };
+    };
+
     const payload = {
       message,
-      stack,
       url,
+      stack,
+      level: finalLevel,
       userAgent: navigator.userAgent,
       time: new Date().toISOString(),
+      user: buildUserInfoPayload(),
     };
   
     try {

@@ -9,6 +9,8 @@ import '../styles/List.scss';
 import '../styles/LoadingSpinner.scss';
 import useAuth from '../hooks/useAuth';
 import Loading from '../components/Loading';
+import { toast } from 'react-toastify';
+import { handleClientError } from '../utils/handleClientError';
 
 const List = () => {
     const { userInfo } = useAuth();
@@ -174,7 +176,11 @@ const List = () => {
                 setMatchResults(data);
                 setReady(true);
             } catch (err) {
-                console.error(`${role} 요청 실패:`, err);
+                handleClientError({
+                    error: err,
+                    toastMessage: 'AI 매칭 중 문제가 발생했어요.',
+                    contextUrl: role === 'APPLICANT' ? '/pdf/EtoC' : '/pdf/CtoE',
+                });
             } finally {
                 setLoading(false);
             }

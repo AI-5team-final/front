@@ -83,7 +83,12 @@ const PanelPosting = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                const error =  new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                reportError({
+                    error,
+                    url: '/pdf/upload'
+                });
+                throw error;
             }
             
             toast.success('공고가 성공적으로 업로드되었습니다.');
@@ -96,6 +101,10 @@ const PanelPosting = () => {
             fetchPostings();
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/upload'
+            });
         } finally {
             setIsLoading(false)
         }
@@ -119,7 +128,12 @@ const PanelPosting = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '삭제에 실패했습니다.');
+                const error =  new Error(errorData.message || '삭제에 실패했습니다.');
+                reportError({
+                    error,
+                    url: '/pdf/delete'
+                });
+                throw error;
             }
             
             setPostings(prev => prev.filter(r => r.id !== deleteTarget.id));
@@ -127,6 +141,10 @@ const PanelPosting = () => {
             
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/delete'
+            });
         }
     };
 
@@ -135,8 +153,15 @@ const PanelPosting = () => {
         if(endDateInputRef.current) endDateInputRef.current.value = ""
         
         setIsChecked(prev=>!prev);
-        setStartDate(null);
-        setEndDate(null);
+        const today = new Date();
+        const year = today.getFullYear();
+        const addOneYear = year+1;
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        const dateString = year + '-' + month  + '-' + day;
+        const dateString2 = addOneYear + '-' + month  + '-' + day;
+        setStartDate(dateString);
+        setEndDate(dateString2);
     }
 
     const fetchPostings = async () => {
@@ -146,8 +171,7 @@ const PanelPosting = () => {
             const response = await fetchClient('/pdf/list');
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || '채용공고 목록을 불러오는데 실패했습니다.');
+                throw new Error('채용공고 목록을 불러오는데 실패했습니다.');
             }
 
             const data = await response.json();
@@ -176,7 +200,6 @@ const PanelPosting = () => {
     }
     
     const handleReset = () => {
-        console.log("초기화")
     
         if(startDateInputRef.current) startDateInputRef.current.value = ""
         if(endDateInputRef.current) endDateInputRef.current.value = ""
@@ -222,7 +245,7 @@ const PanelPosting = () => {
                                 <h4>공고기간 설정</h4>
                                 <p>공고의 시작일과 마감일을 선택해주세요.<br/>
                                 선택한 기간 동안만 지원자가 공고를 확인할 수 있습니다.</p>
-                                <small>*상시채용이면 아래 체크박스를 선택해주세요.</small>
+                                <small>*상시채용은 등록일로부터 1년간 공고가 유지됩니다.</small>
                             </div>
                             <div>
                                 <div className='checkbox-wrap'>
