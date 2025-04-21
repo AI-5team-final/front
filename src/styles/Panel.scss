@@ -280,6 +280,7 @@ $white: #ffffff;
 									height: 24px;
 									border-radius: 5px;
 									border: 1px solid Common.$borderColor;
+									cursor: pointer;
 								}
 								&::after {
 									display: none;
