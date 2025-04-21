@@ -60,6 +60,15 @@ const PanelPosting = () => {
         }
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (validateFile(file)) {
+            setFileState({ name: file.name, file });
+            // setIsModalOpen(true);
+        }
+    };
+
 
     const handleConfirmUpload = async () => {
         if (!fileState.file) {
@@ -117,7 +126,6 @@ const PanelPosting = () => {
     };
 
     const handleConfirmDelete = async () => {
-
         setDeleteTarget(null);
 
         try {
@@ -209,7 +217,6 @@ const PanelPosting = () => {
         setEndDate(null);
         setFileState({ name: '', file: null });
     }
-    
 
     
 
@@ -279,6 +286,8 @@ const PanelPosting = () => {
                             <div className="upload-card">
                                 <div 
                                     className="upload-area"
+                                    onDrop={handleDrop}
+                                    onDragOver={(e) => e.preventDefault()}
                                     onClick={() => fileInputRef.current.click()}
                                 >
                                     {fileState.name ? (
@@ -288,7 +297,7 @@ const PanelPosting = () => {
                                         </>
                                     ) : (
                                         <>
-                                         <FaCloudArrowUp className="icon" />
+                                            <FaCloudArrowUp className="icon" />
                                         {/* <h4 className="upload-title">PDF 등록하기</h4> */}
                                         
                                         <p className="upload-paragraph">PDF 파일로 채용공고를 등록해보세요.  </p>
