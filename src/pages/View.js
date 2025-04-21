@@ -1,18 +1,12 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import useToken from '../hooks/useToken';
+import { useParams } from 'react-router-dom';
 import ViewContent from "../components/ViewContent";
+import "../styles/CommonContent.scss";
+import useAuth from '../hooks/useAuth';
 
 const View = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
-    const { role } = useToken();
-    
-    useEffect(() => {
-        if (!role) {
-            navigate('/login');
-        }
-    }, [role, navigate]);
+    const {userInfo} = useAuth();
+    const role = userInfo?.role;
 
     return <ViewContent role={role} id={id} />;
 }

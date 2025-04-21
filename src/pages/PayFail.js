@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import '../styles/Payment.scss';
 
 const PayFail = () => {
@@ -14,8 +13,8 @@ const PayFail = () => {
                     <p><strong>에러 코드:</strong> {code}</p>
                     <p><strong>메시지:</strong> {message}</p>
                 </div>
-                <a className="retry-button" href="/payment">
-                    ← 결제 페이지로 돌아가기
+                <a className="retry-button" href="/">
+                    홈으로 돌아가기
                 </a>
             </div>
         </main>

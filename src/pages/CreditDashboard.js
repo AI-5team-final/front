@@ -52,61 +52,65 @@ const CreditDashboard = () => {
   };
 
   return (
-    <div className="credit-dashboard">
-      <div className="header">
-        <h2>크레딧 내역</h2>
-        <div className="balance">잔액: {balance.toLocaleString()} Credits</div>
-      </div>
-
-      <div className="filter-tabs">
-        <button className={filter === 'ALL' ? 'active' : ''} onClick={() => handleFilterChange('ALL')}>전체 내역</button>
-        <button className={filter === 'CHARGE' ? 'active' : ''} onClick={() => handleFilterChange('CHARGE')}>충전 내역</button>
-        <button className={filter === 'USE' ? 'active' : ''} onClick={() => handleFilterChange('USE')}>차감 내역</button>
-      </div>
-
-      <div className="credit-list">
-        {paginatedList.map((item, idx) => (
-          <div className="credit-item" key={idx}>
-            <div className="title">
-              {item.type === 'CHARGE'
-                ? '크레딧 충전'
-                : item.type === 'USE'
-                ? '서비스 이용'
-                : item.type === 'WELCOME'
-                ? '🎁 가입 축하 크레딧'
-                : '기타'}
-            </div>
-
-            {item.type !== 'WELCOME' && (
-              <div className="date">
-                {new Date(item.approvedAt).toLocaleString()}
-              </div>
-            )}
-
-            <div className={`amount ${item.type === 'CHARGE' || item.type === 'WELCOME' ? 'plus' : 'minus'}`}>
-              {(item.type === 'CHARGE' || item.type === 'WELCOME') ? '+' : '-'}
-              {item.amount.toLocaleString()} Credits
-            </div>
+    <main className='l-credit'>
+      <div className='inner'>
+        <div className="credit-dashboard">
+          <div className="header">
+            <h2>크레딧 내역</h2>
+            <div className="balance">잔액: {balance.toLocaleString()} Credits</div>
           </div>
-        ))}
-        {paginatedList.length === 0 && <p className="empty">내역이 없습니다.</p>}
-      </div>
-
-      {/* 📄 페이지 버튼 */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              className={page === i ? 'active' : ''}
-              onClick={() => setPage(i)}
-            >
-              {i + 1}
-            </button>
-          ))}
+        
+          <div className="filter-tabs">
+            <button className={filter === 'ALL' ? 'active' : ''} onClick={() => handleFilterChange('ALL')}>전체 내역</button>
+            <button className={filter === 'CHARGE' ? 'active' : ''} onClick={() => handleFilterChange('CHARGE')}>충전 내역</button>
+            <button className={filter === 'USE' ? 'active' : ''} onClick={() => handleFilterChange('USE')}>차감 내역</button>
+          </div>
+        
+          <div className="credit-list">
+            {paginatedList.map((item, idx) => (
+              <div className="credit-item" key={idx}>
+                <div className="title">
+                  {item.type === 'CHARGE'
+                    ? '크레딧 충전'
+                    : item.type === 'USE'
+                    ? '서비스 이용'
+                    : item.type === 'WELCOME'
+                    ? '🎁 가입 축하 크레딧'
+                    : '기타'}
+                </div>
+        
+                {item.type !== 'WELCOME' && (
+                  <div className="date">
+                    {new Date(item.approvedAt).toLocaleString()}
+                  </div>
+                )}
+        
+                <div className={`amount ${item.type === 'CHARGE' || item.type === 'WELCOME' ? 'plus' : 'minus'}`}>
+                  {(item.type === 'CHARGE' || item.type === 'WELCOME') ? '+' : '-'}
+                  {item.amount.toLocaleString()} Credits
+                </div>
+              </div>
+            ))}
+            {paginatedList.length === 0 && <p className="empty">내역이 없습니다.</p>}
+          </div>
+        
+          {/* 📄 페이지 버튼 */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  className={page === i ? 'active' : ''}
+                  onClick={() => setPage(i)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </main>
   );
 };
 

@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext";
+import { toast } from 'react-toastify';
 import '../styles/Payment.scss';
+import useAuth from '../hooks/useAuth';
 
 const clientKey = "test_ck_P9BRQmyarYBweLQwgG778J07KzLN";
 const customerKey = "V97Io7HRQ1c3bzDqnpcCk";
@@ -13,7 +14,9 @@ const Payment = () => {
     const [method, setMethod] = useState("CARD");
     const [selected, setSelected] = useState(null); // 선택된 금액
     const [showExtra, setShowExtra] = useState(false); // 기타 펼치기
-    const { userInfo } = useUser();
+    const { userInfo } = useAuth();
+
+
 
     useEffect(() => {
         loadTossPayments(clientKey)
@@ -23,9 +26,6 @@ const Payment = () => {
             })
             .catch(console.error);
     }, []);
-
-    const presetAmounts = [1000, 3000, 5000, 10000];
-    const extraAmounts = [20000, 30000, 50000];
 
     const handleAmountSelect = (value) => {
         if (value === "기타") {
@@ -43,6 +43,7 @@ const Payment = () => {
         setSelected(value);
     };
 
+   
     const requestPayment = async () => {
         if (!payment) return;
 
@@ -73,9 +74,18 @@ const Payment = () => {
         };
 
         try {
-            await payment.requestPayment(paymentOptions);
+            await payment.requestPayment(paymentOptions, {
+                redirectUrl: window.location.origin + '/success', 
+            });
+            
         } catch (err) {
-            console.error("결제 요청 실패:", err);
+            if (err.code === 'USER_CANCEL' || err.code === 'PAY_PROCESS_CANCELED') {
+                console.info('사용자가 결제를 취소했습니다:', err.message);
+                
+            } else {
+                console.error('결제 실패:', err.message); 
+                toast.error("결제가 실패되었습니다.");
+            }
         }
     };
 

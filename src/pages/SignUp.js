@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 import useAuth from '../hooks/useAuth';
 import config from "../config";
 import '../styles/SignUp.scss';
@@ -135,7 +136,8 @@ const SignUp = () => {
         try {
             const res = await fetch(`${config.baseURL}/auth/signup`, {
                 method: 'POST',
-                body: JSON.stringify({ ...form, email, role: activeTab })
+                body: JSON.stringify({ ...form, email, role: activeTab }),
+                headers: {'Content-Type': 'application/json'},
             });
 
             if (!res.ok) throw new Error('회원가입 실패');
@@ -172,26 +174,29 @@ const SignUp = () => {
                                 />
                                 <span> @ </span>
                                 {!isCustomDomain ? (
-                                    <select
-                                        className={`domain-select ${emailDomain ? 'has-value' : ''}`}
-                                        value={emailDomain}
-                                        onChange={(e) => {
-                                            const selected = e.target.value;
-                                            if (selected === '직접입력') {
-                                                setIsCustomDomain(true);
-                                                setEmailDomain('');
-                                            } else {
-                                                setEmailDomain(selected);
-                                                setIsCustomDomain(false);
-                                            }
-                                        }}
-                                        required
-                                    >
-                                        <option value="">도메인 선택</option>
-                                        {domainList.map((domain) => (
-                                            <option key={domain} value={domain}>{domain}</option>
-                                        ))}
-                                    </select>
+                                    <div className='select-box'>
+                                        <select
+                                            className={`domain-select ${emailDomain ? 'has-value' : ''}`}
+                                            value={emailDomain}
+                                            onChange={(e) => {
+                                                const selected = e.target.value;
+                                                if (selected === '직접입력') {
+                                                    setIsCustomDomain(true);
+                                                    setEmailDomain('');
+                                                } else {
+                                                    setEmailDomain(selected);
+                                                    setIsCustomDomain(false);
+                                                }
+                                            }}
+                                            required
+                                        >
+                                            <option value="">도메인 선택</option>
+                                            {domainList.map((domain) => (
+                                                <option key={domain} value={domain}>{domain}</option>
+                                            ))}
+                                        </select>
+                                        <MdKeyboardArrowDown />
+                                    </div>
                                 ) : (
                                     <input
                                         type="text"
@@ -205,14 +210,6 @@ const SignUp = () => {
                                 )}
 
                                 <div className="check-email-row">
-                                    {/* 왼쪽 메시지 */}
-                                    {emailCheckMessage && (
-                                        <p className={isEmailAvailable ? "success-message" : "error-message"}>
-                                            {emailCheckMessage}
-                                        </p>
-                                    )}
-
-                                    {/* 오른쪽 버튼 */}
                                     <button
                                         type="button"
                                         onClick={handleCheckEmail}
@@ -221,6 +218,11 @@ const SignUp = () => {
                                         이메일 확인
                                     </button>
                                 </div>
+                                {emailCheckMessage && (
+                                    <p className={isEmailAvailable ? "success-message" : "error-message"}>
+                                        {emailCheckMessage}
+                                    </p>
+                                )}
                             </div>
                         </div>
 

@@ -8,6 +8,8 @@ export const MatchProvider = ({ children }) => {
         const saved = localStorage.getItem('matchResults');
         return saved ? JSON.parse(saved) : [];
     });
+    const [resumeFile, setResumeFile] = useState(null);
+    const [jobPostFile, setJobPostFile] = useState(null);
 
     // localStorage 동기화
     useEffect(() => {
@@ -25,7 +27,11 @@ export const MatchProvider = ({ children }) => {
     const value = {
         matchResults,
         setMatchResults,
-        clearResults
+        clearResults,
+        resumeFile,
+        setResumeFile,
+        jobPostFile,
+        setJobPostFile
     };
 
     return (

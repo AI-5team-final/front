@@ -1,3 +1,5 @@
+@use '_Common';
+
 // X button
 .btn-modal-close {
     position: absolute;
@@ -15,7 +17,7 @@
     .modal-title {
         font-size: 1.5rem;
         font-weight: 600;
-        color: #013A72;
+        color: Common.$pointColor;
         margin-bottom: 20px;
         text-align: left;
         display: flex;
@@ -26,9 +28,17 @@
     .modal-filename {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #013A72;
+        color: Common.$pointColor;
         margin: 15px 0;
         word-break: break-word;
+        button {
+            cursor: pointer;
+        }
+        svg {
+            vertical-align: middle;
+            margin-left: 20px;
+            color: Common.$gray;
+        }
     }
 
     .modal-buttons {
@@ -42,14 +52,19 @@
             border-radius: 6px;
             border: none;
             cursor: pointer;
-            // font-size: 14px;
             font-weight: 500;
-            background-color: #013A72;
+            background-color: Common.$pointColor;
             color: #ffffff;
             transition: all 0.2s ease;
     
             &.cancel-button {
-                background-color: #6B7280;
+                background-color: Common.$gray;
+                &:hover {
+                    background: #888;
+                }
+            }
+            &:hover {
+                background: Common.$pointHover;
             }
         }
     }
@@ -61,14 +76,14 @@
     &-load {
         .resume-list-header {
             font-size: 1rem;
-            color: #666;
+            color: Common.$gray;
             margin-bottom: 16px;
             text-align: left;
         }
     
         
         .divider {
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid Common.$borderColor;
             margin: 16px 0;
         }
     
@@ -77,13 +92,30 @@
     // 이력서 매칭 모달
     &-match {
         width: 650px;
+        .btn{
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid Common.$black;
+            color: Common.$black;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+            &:hover {
+                background: Common.$black;
+                color: #fff;
+            }
+        }
+
         .modal-subtitle {
             font-size: 1.1rem;
-            color: #455A64;
+            color: Common.$gray;
             margin-bottom: 30px;
             text-align: left;
             line-height: 1.6;
-            background-color: #F5F9FF;
+            background-color: Common.$bgColor;
             padding: 15px 20px;
             border-radius: 8px;
         }
@@ -91,20 +123,17 @@
             margin-top: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         
                 .load-button {
-                    padding: 8px 16px;
-                    border-radius: 6px;
-                    border: 1px solid #013A72;
+                    border: 1px solid Common.$pointColor;
                     background-color: #ffffff;
-                    color: #013A72;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 500;
-                    display: flex;
-                    align-items: center;
+                    color: Common.$pointColor;
                     gap: 6px;
+                    &:hover {
+                        background: Common.$pointColor;
+                        color: #fff;
+                    }
                 }
             }
     }
@@ -125,7 +154,7 @@
     
             &.selected-resume-item {
                 background-color: #f1f8ff;
-                border: 1px solid #013A72;
+                border: 1px solid Common.$pointColor;
             }
             svg {
                 flex-shrink: 0;
@@ -138,5 +167,40 @@
         }    
             
     }
+    
+}
 
+@media (max-width: Common.$mobile2){
+    .ReactModal__Content {
+        width: calc(100% - 40px);
+    }
+    .modal {
+        width: 100%;
+        padding: 0;
+        .modal-title {
+            font-size: 1.25rem;
+        }
+        .modal-buttons {
+            .modal-button {
+                font-size: 0.875rem;
+                padding: 8px 15px;
+            }
+        }
+
+        &-match {
+            .modal-subtitle {
+                font-size: 1rem;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .upload-section {
+                flex-direction: column;
+                align-items: flex-start;
+                input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
 }
