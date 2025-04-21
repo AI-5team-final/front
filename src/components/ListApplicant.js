@@ -27,8 +27,8 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
     const contextResults = useMatch()?.matchResults;
     const navigate = useNavigate();
 
-    const userInfo = propsUserInfo || authUser;
-    const matchResults = propsResults || contextResults;
+    const userInfo = isMock ? propsUserInfo : authUser;
+    const matchResults = isMock ? propsResults : contextResults;
 
     const handleViewDetail = (index) => {
         if (!isMock) {
@@ -37,7 +37,6 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
             alert('튜토리얼에서는 상세 페이지 이동이 비활성화되어 있습니다.');
         }
     };
-    
 
     return (
         // gpt
@@ -46,11 +45,11 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
         //         <h1 className="sub-tit">취업 성공 기원, Ai매치</h1>
         //         <p className="subtitle">{userInfo?.name}님의 이력서와 높은 확률로 매칭된 공고들입니다!</p>
         //         <p className="subtitle-note">카드를 클릭하면 세부 정보를 확인할 수 있습니다</p>
-                
+
         //         <div className="list-applicant">
         //             {matchResults && matchResults.length > 0 ? (
         //                 matchResults.map((result, index) => (
-        //                     <div 
+        //                     <div
         //                         key={`${result.title}-${index}`}
         //                         className="card"
         //                         onClick={() => handleViewDetail(index)}
@@ -66,13 +65,13 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
         //                         <div className="card-summary">
         //                             {result.summary?.split('/').map((section, idx) => {
         //                                 if (!section?.trim()) return null;
-                                        
+
         //                                 const splitIndex = section.indexOf(':');
         //                                 if (splitIndex === -1) return null;
-                                        
+
         //                                 const title = section.slice(0, splitIndex).trim();
         //                                 const content = section.slice(splitIndex + 1).trim();
-                                        
+
         //                                 // 종합 의견은 한 줄로 표시
         //                                 if (title === '종합 의견') {
         //                                     return (
@@ -85,7 +84,7 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
         //                                         </div>
         //                                     );
         //                                 }
-                
+
         //                                 // 나머지는 상세 내용을 줄바꿈하여 표시
         //                                 return (
         //                                     <div key={idx} className="summary-section">
@@ -130,9 +129,9 @@ const ListApplicant = ({ matchResults: propsResults, userInfo: propsUserInfo, is
                                     <h3 className="card-company-heading">{result.name}</h3>
                                 </div>
                                 <div className="card-score">
-                                <span className={`card-match-rate ${getScoreClass(result.total_score)}`}>
-                                    AI매칭 {result.total_score}점
-                                </span>
+                                    <span className={`card-match-rate ${getScoreClass(result.total_score)}`}>
+                                        AI매칭 {result.total_score}점
+                                    </span>
                                 </div>
                                 <div className="card-summary">
                                     <p>{result.opinion1}</p>

@@ -11,10 +11,16 @@ import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
-import {APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
+import {
+    APPLICANT_DETAIL_STEPS,
+    APPLICANT_LIST_STEPS,
+    APPLICANT_PAGE_STEPS,
+    APPLICANT_TOOLBAR_STEPS
+} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
 import ListApplicantMock from "../../mock/ListApplicantMock";
+import DetailApplicantMock from "../../mock/DetailApplicantMock";
 
 
 const ContentApplicant = () => {
@@ -30,7 +36,6 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-    const [showTutorial, setShowTutorial] = useState(false);
     const [tutorialFlow, setTutorialFlow] = useState(0); // 0: 튜토리얼 OFF, 1: PAGE, 2: LIST
 
 
@@ -142,37 +147,6 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            {tutorialFlow === 1 && (
-                <>
-                    <TutorialManager
-                        steps={APPLICANT_PAGE_STEPS}
-                        startImmediately={true}
-                        onComplete={() => {
-                            setTutorialFlow(2); // 먼저 flow 변경
-
-                            setTimeout(() => {
-                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
-                                if (listElement) {
-                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                                }
-                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
-                        }}
-                    />
-                </>
-            )}
-
-            {tutorialFlow === 2 && (
-                <>
-                    <ListApplicantMock />
-                    <TutorialManager
-                        steps={APPLICANT_LIST_STEPS}
-                        startImmediately={true}
-                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 끝!
-                        isMockPage={true}
-                    />
-                </>
-            )}
-            <TutorialButton onClick={() => setTutorialFlow(1)} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -218,7 +192,7 @@ const ContentApplicant = () => {
                             <button
                                 type="button"
                                 onClick={handleLoadModalOpen}
-                                className="button active"
+                                className="button active btn-load-resume"
                             >
                                 <FaCloudDownloadAlt className="cloud-icon" />
                                 <span>내 이력서<br/>불러오기</span>
@@ -227,7 +201,7 @@ const ContentApplicant = () => {
                             <button
                                 type="button"
                                 onClick={openMatchingModal}
-                                className="button active"
+                                className="button active btn-one2one"
                             >
                                 <TbHeartHandshake className="cloud-icon" />
                                 <p>
@@ -250,6 +224,64 @@ const ContentApplicant = () => {
 
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
+            {tutorialFlow === 1 && (
+                <>
+                    <TutorialManager
+                        steps={APPLICANT_PAGE_STEPS}
+                        startImmediately={true}
+                        onComplete={() => {
+                            setTutorialFlow(2); // 먼저 flow 변경
+
+                            setTimeout(() => {
+                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
+                                if (listElement) {
+                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                }
+                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
+                        }}
+                    />
+                </>
+            )}
+
+            {tutorialFlow === 2 && (
+                <div style={{ paddingTop: '80px' }}>
+                    <ListApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_LIST_STEPS}
+                        startImmediately={true}
+                        onBeforeStart={() => {
+                            // 리스트 mock 위치로 부드럽게 스크롤 이동
+                            const listSection = document.querySelector('.l-list-applicant');
+                            if (listSection) {
+                                listSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
+                        onComplete={() => setTutorialFlow(3)}
+                        isMockPage={true}
+                    />
+                </div>
+            )}
+
+            {tutorialFlow === 3 && (
+                <div style={{ paddingTop: '100px' }}>
+                    <DetailApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_DETAIL_STEPS}
+                        startImmediately={true}
+                        onBeforeStart={() => {
+                            // 상세 mock 위치로 부드럽게 스크롤 이동
+                            const detailSection = document.querySelector('.l-view');
+                            if (detailSection) {
+                                detailSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
+                        onComplete={() => setTutorialFlow(0)}
+                        isMockPage={true}
+                    />
+                </div>
+            )}
+            <TutorialButton onClick={() => setTutorialFlow(1)} />
+
         </div>
     );
 };
