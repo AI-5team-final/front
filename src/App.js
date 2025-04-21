@@ -69,7 +69,7 @@ function App() {
       // 로그인 안했으면 로딩 상태 해제만
       useAuth.setState({ isInitializing: false });
     }
-  }, [initialize]); //일단 빈 배열에 넣음
+  }, [initialize]);
     return (
       <>
         <MatchProvider>
