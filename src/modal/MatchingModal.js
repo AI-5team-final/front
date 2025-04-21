@@ -33,9 +33,9 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             formData.append('posting', matchingFiles.jobPost);
 
             const res = await fetchClient("/pdf/reEpo", {
-				method: "POST",
-				body: formData,
-			});
+                method: "POST",
+                body: formData,
+            });
 
             if(!res.ok){
                 const err = new Error("1대1매칭 실패");
@@ -65,12 +65,12 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             localStorage.setItem("oneResumeFile", blobUrlResume);
             const blobUrlJobPost = URL.createObjectURL(matchingFiles.jobPost);
             localStorage.setItem("oneJobPostFile", blobUrlJobPost);
-            
+
             setMatchingFiles({ resume: null, jobPost: null });
-            setIsMatchingModalOpen(false);    
+            setIsMatchingModalOpen(false);
 
             setMatchResults(data);
-            
+
             navigate(`/matching`);
         }catch(err){
             handleClientError({
@@ -89,20 +89,49 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Matching Modal"
-            style={{
-                overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 11000, },
-                content: {
-                    top: '50%',
-                    left: '50%',
-                    right: 'auto',
-                    bottom: 'auto',
-                    transform: 'translate(-50%, -50%)',
-                    borderRadius: '12px',
-                    zIndex: 11000,
-                }
-            }}
+            style={
+                isLoading
+                    ? {
+                        overlay: {
+                            zIndex: 11000,
+                        },
+                        content: {
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            padding: 0,
+                            border: 'none',
+                            background: '#fff',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: 11000,
+                        },
+                    }
+                    : {
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            zIndex: 11000,
+                        },
+                        content: {
+                            top: '50%',
+                            left: '50%',
+                            right: 'auto',
+                            bottom: 'auto',
+                            transform: 'translate(-50%, -50%)',
+                            borderRadius: '12px',
+                            zIndex: 11000,
+                            padding: '20px',
+                            background: '#fff',
+                            overflow: 'auto',
+                            maxHeight: '90vh',
+                        },
+                    }
+            }
         >
-            
+
             {
                 isLoading ? (
                     <Loading text={"결과를 분석중입니다."}/>
@@ -130,13 +159,13 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
                                     }))
                                 }
                             />
-                            <button 
+                            <button
                                 type='button'
                                 className='btn select-button'
                                 onClick={() => resumeInputRef.current.click()}>
                                 이력서 파일선택
                             </button>
-                            <button 
+                            <button
                                 type='button'
                                 className="btn load-button"
                                 onClick={() => {
@@ -150,14 +179,14 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
                         </div>
                         {matchingFiles.resume && (
                             <p className="modal-filename">
-                                {matchingFiles.resume.name} 
+                                {matchingFiles.resume.name}
                                 <button type='button' className='btn-delete'
-                                    onClick={()=>{
-                                        setMatchingFiles((prev) => ({
-                                            ...prev,
-                                            resume: null,
-                                        }))
-                                    }}
+                                        onClick={()=>{
+                                            setMatchingFiles((prev) => ({
+                                                ...prev,
+                                                resume: null,
+                                            }))
+                                        }}
                                 ><IoCloseSharp /></button>
                             </p>
                         )}
@@ -175,7 +204,7 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
                                 }))
                             }
                         />
-                        <button 
+                        <button
                             type='button'
                             className='btn select-button'
                             onClick={() => jobPostInputRef.current.click()}>
@@ -205,16 +234,15 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
                             >
                                 매칭 요청
                             </button>
-                            
+
                         </div>
                     </div>
                 )
             }
-                
-            
+
+
         </Modal>
     );
 }
 
 export default MatchingModal;
-
