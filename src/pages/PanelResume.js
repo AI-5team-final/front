@@ -134,6 +134,15 @@ const PanelResume = () => {
         }
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (validateFile(file)) {
+            setFileState({ name: file.name, file });
+            setIsModalOpen(true);
+        }
+    };
+
     const fetchResumes = async () => {
        
         try {
@@ -181,6 +190,8 @@ const PanelResume = () => {
                     <div className="upload-card">
                         <div
                             className="upload-area"
+                            onDrop={handleDrop}
+                            onDragOver={(e) => e.preventDefault()}
                             onClick={() => fileInputRef.current.click()}
                         >
                             <FaCloudArrowUp className="icon" />
