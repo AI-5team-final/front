@@ -1,0 +1,224 @@
+@use '_Common';
+
+// Variables
+$error-color: #dc3545;
+$white: #ffffff;
+$applicant-bg: #A8D7FF;
+$hr-bg: #E1EAFE;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin input-focus {
+  borderColor: Common.$pointColor;
+  outline: none;
+}
+
+// Page Container
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $white;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  
+  &.applicant {
+    background-color: $applicant-bg;
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    animation: expand-applicant 0.6s ease forwards;
+  }
+  
+  &.hr {
+    background-color: $hr-bg;
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    animation: expand-hr 0.6s ease forwards;
+  }
+
+  &.initial {
+    background-color: $white;
+    clip-path: none;
+  }
+}
+
+@keyframes expand-applicant {
+  0% {
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $applicant-bg;
+  }
+  100% {
+    clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $applicant-bg;
+  }
+}
+
+@keyframes expand-hr {
+  0% {
+    clip-path: circle(0% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $hr-bg;
+  }
+  100% {
+    clip-path: circle(150% at var(--clip-position-x) var(--clip-position-y));
+    background-color: $hr-bg;
+  }
+}
+
+// Login Container
+.login-container {
+  flex: 1;
+  @include flex-center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+// Login Box
+.login-box {
+  background: $white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+// Tab Container
+.tab-container {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid Common.$borderColor;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: Common.$gray;
+  position: relative;
+  transition: color 0.3s ease;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+
+  &.active {
+    color: Common.$pointColor;
+    border-bottom: 2px solid Common.$pointColor;
+    margin-bottom: -2px;
+  }
+}
+
+// Login Form
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    color: #555;
+    font-weight: 500;
+  }
+
+  input {
+    padding: 12px;
+    border: 1px solid Common.$borderColor;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: borderColor 0.3s ease;
+
+    &:focus {
+      @include input-focus;
+    }
+  }
+}
+
+// Buttons
+.login-button {
+  background-color: Common.$pointColor;
+  color: $white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: Common.$pointHover;
+  }
+}
+
+// Error Message
+.error-message {
+  color: $error-color;
+  text-align: center;
+  margin-top: 15px;
+}
+
+// Signup Section
+.signup-section {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid Common.$borderColor;
+
+  p {
+    color: Common.$gray;
+    margin-bottom: 15px;
+  }
+}
+
+.signup-link {
+  display: inline-block;
+  color: Common.$pointColor;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Footer 스타일 추가
+footer {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+} 

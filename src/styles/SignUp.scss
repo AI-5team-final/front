@@ -1,0 +1,279 @@
+@use '_Common';
+
+// Variables
+$secondary-color: #6c757d;
+$secondary-hover: #5a6268;
+$error-color: #dc3545;
+$white: #ffffff;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin input-focus {
+  border-color: Common.$pointColor;
+  outline: none;
+}
+
+// Page Container
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: Common.$bgColor;
+}
+
+// Signup Container
+.signup-container {
+  flex: 1;
+  @include flex-center;
+  padding: 20px;
+}
+
+// Signup Box
+.signup-box {
+  background: $white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+
+  h2 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+}
+
+// Tab Container
+.tab-container {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid Common.$borderColor;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: Common.$gray;
+  transition: all 0.3s ease;
+
+  &.active {
+    color: Common.$pointColor;
+    border-bottom: 2px solid Common.$pointColor;
+    margin-bottom: -2px;
+  }
+}
+
+// Signup Form
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    color: Common.$gray;
+    font-weight: 500;
+  }
+
+  input {
+    padding: 12px;
+    border: 1px solid Common.$borderColor;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      @include input-focus;
+    }
+    &:not(:focus):not(:placeholder-shown) {
+      border-color: Common.$pointColor;
+    }
+  }
+}
+input:not(:focus):not(:placeholder-shown) {
+  border-color: Common.$pointColor;
+}
+input.error {
+  border-color: $error-color;  // phoneError가 있으면 빨간 테두리
+}
+
+// Buttons
+.signup-button {
+  background-color: $secondary-color;  // 기본 색상 (비활성화 상태)
+  color: $white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+
+  &.active {
+    background-color: Common.$pointColor;  
+    &:hover {
+      background-color: Common.$pointHover;
+    }
+  }
+
+  &:disabled {
+    background-color: Common.$gray;  // 비활성화 상태
+    cursor: not-allowed;  // 비활성화 시 커서 변경
+  }
+}
+.email-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // height: 45px;
+  flex-wrap: wrap;
+}
+.email-input-group {
+  input[type="text"] {
+    width: 25%;
+  }
+  span {
+    + {
+      input[type=text] {
+        width: 40%;
+      }
+    }
+  }
+}
+.back-to-login-button {
+  background-color: $secondary-color;
+  color: $white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  // margin-top: 10px;
+  width: 100%;
+  text-align: center;
+
+  &:hover {
+    background-color: $secondary-hover;
+  }
+}
+.select-box {
+  position: relative;
+  width: 40%;
+  svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.domain-select {
+  padding: 12px;
+  border: 1px solid Common.$borderColor;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  &:focus {
+    @include input-focus;
+  }
+
+  &.has-value {
+    border-color: Common.$pointColor;
+  }
+}
+input.match {
+  border: 1px solid Common.$pointColor;
+}
+
+input.mismatch {
+  border: 1px solid $error-color;
+}
+
+// Error Message
+.error-message {
+  color: $error-color;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.check-email-row {
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between; // 혹은 gap + margin-auto 활용
+  // margin-top: 8px;
+  height: 100%;
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .check-email-button {
+    // margin-left: auto; // 버튼을 오른쪽 끝으로
+    padding: 10px 16px;
+    background-color: Common.$pointColor;
+    color: $white;
+    height: 45px;
+    // font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: Common.$pointHover;
+    }
+  }
+}
+
+.success-message {
+  color: Common.$pointColor;
+  margin: 10px 0;
+}
+.error-message {
+  color: $error-color;
+}
+
+@media screen and (max-width: Common.$mobile2) {
+  .signup-box {
+    padding: 20px;
+  }
+  .email-input-group {
+    input[type=text] {
+      width: 35%;
+    }
+    span {
+      + input[type=text] {
+        width: 55%;
+      }
+    }
+  }
+  .select-box {
+    width: 55%;
+  }
+  .check-email-row {
+    width: 100%;
+    margin-top: 10px;
+    button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

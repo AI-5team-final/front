@@ -1,50 +1,91 @@
-import { Link } from "react-router-dom";
-import useAuth from '../hooks/useAuth';
-import useToken from '../hooks/useToken';
-import { useEffect, useRef } from "react";
+import PaymentModal from "../modal/PaymentModal";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import Toolbar from "./Header/Toolbar";
+import Sidebar from "./Header/Sidebar";
+
 
 const Header = () => {
-    const { logout } = useAuth();
-    const { role, name } = useToken();
+    const { userInfo, logout } = useAuth();
+    const role = userInfo?.role;
+    
+    const navigate = useNavigate();
     const headerRef = useRef(null);
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+    const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+    const openPaymentModal = () => {
+        setIsMenuOpen(false);
+        setIsPaymentModalOpen(true);
+    };
+    const closePaymentModal = () => setIsPaymentModalOpen(false);
+
+    // 매개변수 destination에 따라 분기하여 경로를 결정하는 함수
+    const handlePageRedirect = (destination) => {
+        setIsMenuOpen(false);
+        if (destination === "payment") {
+            navigate("/dashboard");
+        } else {
+            navigate(role === "HR" ? "/postings" : "/resume");
+        }
+    };
 
     useEffect(() => {
         const handleScroll = () => {
-            if (headerRef.current) {
-                headerRef.current.style.left = -window.scrollX + 'px';
+            if (window.scrollY > headerRef.current.style.height) {
+                headerRef.current.classList.add("active");
+            } else {
+                headerRef.current.classList.remove("active");
             }
         };
 
         window.addEventListener("scroll", handleScroll);
 
-        // Cleanup
+        const handleResize = () => {
+            if (window.innerWidth > 1023) {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener("resize", handleResize);
+
         return () => {
+            window.removeEventListener("resize", handleResize);
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
-    
+
     return (
-        <header ref={headerRef}>
-            <div className="inner">
-                <h1 className="logo">
-                    <Link to="/"><img src="/images/logo.svg" alt="Rezoom Logo" /></Link>
-                </h1>
-                <div>
-                    <p>{role==='HR'? "함께 성장하는" : "취업 성공기원"}, <strong>{name}</strong>님</p>
-                    <span></span>
-                    <button 
-                        onClick={logout} 
-                        style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                        aria-label="로그아웃"
-                        role="button"
-                        tabIndex={0}
-                    >
-                        로그아웃
-                    </button>
-                </div>
-            </div>
-        </header>
+        <>
+            {/* 결제 모달 */}
+            <PaymentModal isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} />
+
+            {/* Header */}
+            <header ref={headerRef}>
+                <Toolbar 
+                    onMenuClick={toggleMenu}
+                    onPaymentClick={openPaymentModal}
+                    onLogout={logout}
+                    onPageRedirect={handlePageRedirect}
+                    userInfo={userInfo}
+                    role={role}
+                />
+            </header>
+
+            <Sidebar 
+                isOpen={isMenuOpen}
+                onClose={toggleMenu}
+                onPaymentClick={openPaymentModal}
+                onLogout={logout}
+                onPageRedirect={handlePageRedirect}
+                userInfo={userInfo}
+                role={role}
+            />
+        </>
     );
-}
+};
 
 export default Header;

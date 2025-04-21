@@ -1,0 +1,75 @@
+@use '_Common';
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    color: Common.$black;
+}
+
+.inner {
+    width: 1400px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.sub-tit {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.l-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.errorPage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img {
+        width: 30%;
+    }
+    a {
+        border-radius: 5px;
+        // border: 1px solid Common.$pointColor;
+        background: Common.$pointColor;
+        color: #fff;
+        padding: 10px 15px;
+        font-size: 1.125rem;
+        transition: 0.2s;
+        &:hover {
+            background: Common.$pointHover;
+        }
+    }
+}
+
+@media (max-width: Common.$desktop) {
+    .inner {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+
+@media (max-width: Common.$tablet) {
+    .sub-tit {
+        font-size: 2.5rem;
+    }
+    .errorPage {
+        img {
+            width: 60%;
+        }
+        a{
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (max-width: Common.$mobile) {
+    .sub-tit {
+        font-size: 2rem;
+    }
+}

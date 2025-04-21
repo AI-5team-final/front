@@ -1,0 +1,37 @@
+@use '_Common';
+
+.error-boundary {
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    h2 {
+        font-size: 1.25rem;
+    }
+    p {
+        color: Common.$gray;
+        font-size: 0.875rem;
+        margin-top: 1rem;
+    }
+    > div {
+        margin-top: 1.5rem;
+        button {
+            cursor: pointer;
+            padding: 10px 15px;
+            border: 1px solid Common.$borderColor;
+            border-radius: 5px;
+            transition: 0.2s;
+            &:last-of-type {
+                background: Common.$pointColor;
+                color: #fff;
+                border-color: Common.$pointColor;
+                &:hover {
+                    background: Common.$pointHover;
+                }
+            }
+            
+        }
+    }
+}
