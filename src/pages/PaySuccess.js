@@ -30,39 +30,26 @@ const PaySuccess = () => {
                     amount: parseInt(amount),
                 });
 
-                if (!res.ok) {
-                    const errorData = await res.json();
-                    const error = new Error(errorData.message || '결제 요청에 실패했습니다.');
-                    reportError({
-                        error,
-                        url: "/payments/confirm"
-                    })
-                    throw error;
-                }
-
+                // axios는 status code 200~299가 아니면 자동으로 catch로 감
                 const { credit, message, receiptUrl, status } = res.data;
 
-            // 크레딧 반영 (승인된 경우만 업데이트됨)
-            if (credit !== undefined) {
-                updateCredit(credit);
-            }
+                if (credit !== undefined) {
+                    updateCredit(credit);
+                }
 
-            // 승인 상태에 따라 분기 처리
-            if (status === "WAITING_FOR_DEPOSIT") {
-                // 가상계좌 입금 대기 상태
-                setMessage(message || "가상계좌가 발급되었습니다. 입금 후 결제가 완료됩니다.");
+                if (status === "WAITING_FOR_DEPOSIT") {
+                    setMessage(message || "가상계좌가 발급되었습니다. 입금 후 결제가 완료됩니다.");
+                    setReceiptUrl(receiptUrl);
+                    setHasConfirmed(true);
+                    return;
+                }
+
+                setMessage(message || "결제가 완료되었습니다.");
                 setReceiptUrl(receiptUrl);
                 setHasConfirmed(true);
-                return;
-            }
-
-            // 정상 승인된 경우
-            setMessage(message || "결제가 완료되었습니다.");
-            setReceiptUrl(receiptUrl);
-            setHasConfirmed(true);
 
             } catch (error) {
-                const errorMessage = error.response?.data?.message || "";
+                const errorMessage = error.response?.data?.message || error.message || "결제 실패";
 
                 if (errorMessage.includes("이미 처리된 결제")) {
                     console.warn("⚠️ 이미 처리된 결제입니다.");
@@ -72,7 +59,7 @@ const PaySuccess = () => {
                     console.error("결제 확인 실패:", error);
                     navigate("/fail");
                     reportError({
-                        error,
+                        error: JSON.stringify(error, null, 2), // 여기서 문자열화
                         url: "/success"
                     });
                 }
