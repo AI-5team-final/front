@@ -3,6 +3,7 @@ import { FaPlusCircle, FaCloudDownloadAlt } from 'react-icons/fa';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../../context/MatchContext';
+import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
@@ -10,11 +11,16 @@ import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
-import { APPLICANT_PAGE_STEPS } from '../Tutorial/ApplicantTutorialSteps';
+import {
+    APPLICANT_DETAIL_STEPS,
+    APPLICANT_LIST_STEPS,
+    APPLICANT_PAGE_STEPS,
+    APPLICANT_TOOLBAR_STEPS
+} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
 import { toast } from 'react-toastify';
-import fetchClient from '../../utils/fetchClient';
-import '../../styles/ContentApplicant.scss';
+import ListApplicantMock from "../../mock/ListApplicantMock";
+import DetailApplicantMock from "../../mock/DetailApplicantMock";
 
 
 const ContentApplicant = () => {
@@ -30,7 +36,8 @@ const ContentApplicant = () => {
     const fileInputRef = useRef();
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
-    const [showTutorial, setShowTutorial] = useState(false);
+    const [tutorialFlow, setTutorialFlow] = useState(0); // 0: 튜토리얼 OFF, 1: PAGE, 2: LIST
+
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -56,7 +63,6 @@ const ContentApplicant = () => {
             return;
         }
 
-
         localStorage.setItem('resumeFileUploaded', 'true');
         setResumeFile(fileState.file);
 
@@ -65,7 +71,6 @@ const ContentApplicant = () => {
     };
 
     const fetchResumes = async () => {
-
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
@@ -76,7 +81,6 @@ const ContentApplicant = () => {
             }
 
             const data = await response.json();
-            
             setResumes(data.pdfs || []);
         } catch (error) {
             console.error('[CLIENT ERROR]', error);
@@ -94,22 +98,22 @@ const ContentApplicant = () => {
         const selectedResume = resumes.find(resume => resume.id === selectedId);
         if (selectedResume) {
             try {
-                const response = await fetch(selectedResume.pdfUri);
+                const response = await fetch(selectedResume.presignedUrl);
                 if (!response.ok) {
                     handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
                     const responseData = await response.json();
                     const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
                     reportError({
                         error,
-                        url: selectedResume.pdfUri
+                        url: selectedResume.presignedUrl
                     });
                     throw error;
                 }
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
-                setFileState({ 
-                    name: selectedResume.pdfFileName, 
-                    file: file 
+                setFileState({
+                    name: selectedResume.pdfFileName,
+                    file: file
                 });
                 // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
@@ -117,7 +121,7 @@ const ContentApplicant = () => {
                 handleFileLoadError(error);
                 reportError({
                     error,
-                    url: selectedResume.pdfUri
+                    url: selectedResume.presignedUrl
                 });
             }
         }
@@ -128,7 +132,7 @@ const ContentApplicant = () => {
         setIsMatching(false);
         fetchResumes();
     };
-   
+
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
 
     const openMatchingModal = () => {
@@ -143,11 +147,6 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            <TutorialManager
-                steps={APPLICANT_PAGE_STEPS}
-                startImmediately={showTutorial}
-            />
-            <TutorialButton onClick={() => setShowTutorial(true)} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -161,9 +160,9 @@ const ContentApplicant = () => {
                         </p>
                     </div>
                     <div className="hero-image">
-                        <img 
-                            src="/images/Applicant_MainContent_none.png" 
-                            alt="AI 매칭 서비스" 
+                        <img
+                            src="/images/Applicant_MainContent_none.png"
+                            alt="AI 매칭 서비스"
                             className="hero-img"
                         />
                     </div>
@@ -189,20 +188,20 @@ const ContentApplicant = () => {
                                     style={{ display: 'none' }}
                                 />
                             </div>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={handleLoadModalOpen}
-                                className="button active"
+                                className="button active btn-load-resume"
                             >
                                 <FaCloudDownloadAlt className="cloud-icon" />
                                 <span>내 이력서<br/>불러오기</span>
                             </button>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={openMatchingModal}
-                                className="button active"
+                                className="button active btn-one2one"
                             >
                                 <TbHeartHandshake className="cloud-icon" />
                                 <p>
@@ -222,9 +221,67 @@ const ContentApplicant = () => {
 
             {/* 이력서 불러오기 모달 */}
             <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"} isMatching={isMatching} setMatchingFiles={setMatchingFiles}/>
-            
+
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
+            {tutorialFlow === 1 && (
+                <>
+                    <TutorialManager
+                        steps={APPLICANT_PAGE_STEPS}
+                        startImmediately={true}
+                        onComplete={() => {
+                            setTutorialFlow(2); // 먼저 flow 변경
+
+                            setTimeout(() => {
+                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
+                                if (listElement) {
+                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                }
+                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
+                        }}
+                    />
+                </>
+            )}
+
+            {tutorialFlow === 2 && (
+                <div style={{ paddingTop: '80px' }}>
+                    <ListApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_LIST_STEPS}
+                        startImmediately={true}
+                        onBeforeStart={() => {
+                            // 리스트 mock 위치로 부드럽게 스크롤 이동
+                            const listSection = document.querySelector('.l-list-applicant');
+                            if (listSection) {
+                                listSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
+                        onComplete={() => setTutorialFlow(3)}
+                        isMockPage={true}
+                    />
+                </div>
+            )}
+
+            {tutorialFlow === 3 && (
+                <div style={{ paddingTop: '100px' }}>
+                    <DetailApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_DETAIL_STEPS}
+                        startImmediately={true}
+                        onBeforeStart={() => {
+                            // 상세 mock 위치로 부드럽게 스크롤 이동
+                            const detailSection = document.querySelector('.l-view');
+                            if (detailSection) {
+                                detailSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
+                        onComplete={() => setTutorialFlow(0)}
+                        isMockPage={true}
+                    />
+                </div>
+            )}
+            <TutorialButton onClick={() => setTutorialFlow(1)} />
+
         </div>
     );
 };

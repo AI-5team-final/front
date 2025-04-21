@@ -7,7 +7,6 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { GrDocumentDownload, GrDocumentPdf } from "react-icons/gr";
 import fetchClient from "../utils/fetchClient";
 import DonutChart from "./DonutChart";
-import LoadingSpinner from "./LoadingSpinner";
 import MarkdownResult from "./MarkdownResult";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -16,7 +15,7 @@ import Loading from "./Loading";
 import { handleClientError } from "../utils/handleClientError";
 
 
-const CommonContent = ({matchResult, role}) => {
+const CommonContent = ({matchResult, role, isMock = false}) => {
     // const { userInfo, updateCredit } = useUser();
     const { userInfo, updateCredit } = useAuth();
     // pdf에서 가져온 이름
@@ -25,7 +24,7 @@ const CommonContent = ({matchResult, role}) => {
 	const [agentFeedback, setAgentFeedback] = useState("");
 	const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const isOneToOneMatch = localStorage.getItem("isOneToOneMatch") ?? false;
+    const isOneToOneMatch = localStorage.getItem("isOneToOneMatch")==="false"? false : true;
     const oneResumeFile = localStorage.getItem("oneResumeFile") ?? null;
     const oneJobPostFile = localStorage.getItem("oneJobPostFile") ?? null;
 
@@ -44,6 +43,11 @@ const CommonContent = ({matchResult, role}) => {
     // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
+        if (isMock) {
+            toast.info("튜토리얼에서는 다운로드가 비활성화되어 있습니다.");
+            return;
+        }
+
         try {
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
@@ -68,6 +72,11 @@ const CommonContent = ({matchResult, role}) => {
     }
 
     const handleAnalyzeWithAgent = async () => {
+        if (isMock) {
+            toast.info("튜토리얼에서는 Fit Advisor 기능이 비활성화되어 있습니다.");
+            return;
+        }
+
         if(userInfo?.credit < 500){
             toast.error("크레딧이 부족합니다.\n결제 후에 이용하실 수 있습니다.");
             return;
@@ -154,132 +163,131 @@ const CommonContent = ({matchResult, role}) => {
             <Loading text={"리포트를 다운로드 중입니다."}/>
         ) : 
         (
-            <main className="l-view">         
+            <main className="l-view">
                 <section className="section section-report" id="pdf-content">
                     <div className="inner">
-                
                         <h2 className="sub-tit">
-                        {isOneToOneMatch ? "1대 1 " : (<span>`${userInfo?.name} - ${matchResult.name}`</span>)} Ai매칭 결과
+                            {isOneToOneMatch ? "1대 1 " : (<span>{userInfo?.name} - {matchResult.name}</span>)} Ai매칭 결과
                         </h2>
                         <h3 className="tit-line">Ai MATCHING REPORT</h3>
                         <div className="icon-area">
-                            {
-                                isOneToOneMatch ? (
-                                    <>
-                                        <a href={oneResumeFile} className="btn btn-download" target="_blank" rel="noreferrer">
-                                            <GrDocumentPdf/>
-                                            <span>이력서<br/> 미리보기</span>
-                                        </a>
-                                        <span></span>
-                                        <a href={oneJobPostFile} className="btn btn-download" target="_blank" rel="noreferrer">
-                                            <GrDocumentPdf/>
-                                            <span>채용공고<br/> 미리보기</span>
-                                        </a>
-                                    </>
-                                ) : (
-                                    <a href={matchResult.uri} className="btn btn-download" target="_blank" rel="noreferrer">
-                                        <GrDocumentPdf/>
-                                        <span>{role==="HR" ? "이력서" : "채용공고"}<br/> 미리보기</span>
-                                    </a>   
-                                )
-                            }
-                            <span></span>                  
-                            <button type="button" className="btn btn-report-download" onClick={handleDownload}>
+                            {!isMock && isOneToOneMatch ? (
+                                <>
+                                    <a href={oneResumeFile} className="btn btn-download" target="_blank" rel="noreferrer">
+                                        <GrDocumentPdf />
+                                        <span>이력서<br /> 미리보기</span>
+                                    </a>
+                                    <span></span>
+                                    <a href={oneJobPostFile} className="btn btn-download" target="_blank" rel="noreferrer">
+                                        <GrDocumentPdf />
+                                        <span>채용공고<br /> 미리보기</span>
+                                    </a>
+                                </>
+                            ) : !isMock ? (
+                                <a href={matchResult.uri} className="btn btn-download" target="_blank" rel="noreferrer">
+                                    <GrDocumentPdf />
+                                    <span>{role === "HR" ? "이력서" : "채용공고"}<br /> 미리보기</span>
+                                </a>
+                            ) : (
+                                <div className="btn btn-download disabled">
+                                    <GrDocumentPdf />
+                                    <span>미리보기<br /> (비활성화)</span>
+                                </div>
+                            )}
+
+                            <span></span>
+
+                            <button
+                                type="button"
+                                className="btn btn-report-download"
+                                onClick={handleDownload}
+                                disabled={isMock}
+                            >
                                 <GrDocumentDownload />
-                                <span>매칭결과<br/>다운로드</span>
+                                <span>매칭결과<br />다운로드</span>
                             </button>
                         </div>
+
                         <div className="round-box">
-                            {role === "HR" ? (
-                                <p>
-                                    채용공고와 지원자가 얼마나 일치하는지{" "}
-                                    <strong>
+                            <p>
+                                {role === "HR"
+                                    ? "채용공고와 지원자가 얼마나 일치하는지"
+                                    : "나와 공고가 얼마나 일치하는지"}{" "}
+                                <strong>
                                     Ai 매칭률과
                                     <br />
                                     함께 추천사유
-                                    </strong>
-                                    를 속시원히 알려드립니다.
-                                </p>
-                                ) : (
-                                <p>
-                                    나와 공고가 얼마나 일치하는지{" "}
-                                    <strong>
-                                    Ai 매칭률과
-                                    <br />
-                                    함께 추천사유
-                                    </strong>
-                                    를 속시원히 알려드립니다.
-                                </p>
-                            )}
+                                </strong>
+                                를 속시원히 알려드립니다.
+                            </p>
                         </div>
                         <small>
-                            {role==="HR"? "": "*등록하신 이력서를 분석한 결과로, 실제 결과와 다를 수 있습니다."} 
+                            {role === "HR" ? "" : "*등록하신 이력서를 분석한 결과로, 실제 결과와 다를 수 있습니다."}
                         </small>
-                        
+
                         <div className="cont">
                             <h4>총평</h4>
-                            <DonutChart matchResult={matchResult} />
+                            <div className="chart-donut-wrapper">
+                                <DonutChart matchResult={matchResult} />
+                            </div>
                             <p className="total-summary">{matchResult.summary}</p>
                         </div>
 
                         <div className="cont">
                             <h4>항목별 평가</h4>
                             <div className="box">
-                                <div>
+                                <div className="resume-eval">
                                     <p className="key">이력서 - <strong>{matchResult.resume_score}점</strong></p>
                                     <p className="value">{matchResult.eval_resume}</p>
                                 </div>
-                                <div>
+                                <div className="selfintro-eval">
                                     <p className="key">자기소개서 - <strong>{matchResult.selfintro_score}점</strong></p>
                                     <p className="value">{matchResult.eval_selfintro}</p>
                                 </div>
-                                
                             </div>
+
                         </div>
                     </div>
-                    { role === "HR" ? "":
-                    (<div className="bg">
-                        <div className="inner">
-                            {loading ? (
-                                <Loading text={"결과를 분석중입니다."}/>
-                            ) : !agentFeedback ? (
-                                // 버튼 + 안내
-                                <>
+
+                    {role !== "HR" && (
+                        <div className="bg">
+                            <div className="inner">
+                                {loading ? (
+                                    <Loading text={"결과를 분석중입니다."} />
+                                ) : !agentFeedback ? (
+                                    <>
                                         <button
                                             type="button"
                                             className="btn-advisor"
                                             onClick={handleAnalyzeWithAgent}
-                                            disabled={loading || agentFeedback}
+                                            disabled={isMock}
                                         >
                                             <div>
                                                 <strong>Fit Advisor - AI 맞춤 로드맵 받기</strong>
                                                 <span>
-                                                    첫 2회 무료 제공 중! ✨ 회당 <RiCopperCoinLine /> 500
-                                                </span>
+                                                첫 2회 무료 제공 중! ✨ 회당 <RiCopperCoinLine /> 500
+                                            </span>
                                             </div>
                                             <MdKeyboardArrowRight className="icon-arrow" />
                                         </button>
                                         <small>
                                             Fit Advisor는 AI가 매칭 결과를 분석해, 앞으로의 성장 방향을
                                             제안해주는 프리미엄 기능입니다.
-                                        </small><br/>
+                                        </small><br />
                                         <small>※ 결제 후 페이지를 벗어나면 다시 결제가 필요합니다.</small>
-                                        
-
-                                </>
-                            ) : (
-                                // 분석 결과
-                                <div style={{ marginTop: "2rem" }}>
+                                    </>
+                                ) : (
+                                    <div style={{ marginTop: "2rem" }}>
                                         <h3 className="tit-line">Fit Advisor의 분석 결과</h3>
                                         <p className="caution">※ 이 페이지에서만 로드맵을 확인할 수 있으며, 새로고침하거나 나가면 다시 결제가 필요합니다.</p>
-                                        <MarkdownResult markdownText={agentFeedback}/>
-                                </div>
-                            )}
+                                        <MarkdownResult markdownText={agentFeedback} />
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>)
-                    }
+                    )}
                 </section>
-        </main>
+            </main>
         )
         // gpt
         // <main className="l-view">

@@ -45,7 +45,16 @@ const List = () => {
                     body: formData
                 });
 
-                if (!response.ok) throw new Error('매칭 요청 실패');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    const err = new Error(errorData.message || '매칭 요청 실패');
+                    handleClientError({
+                        error: err,
+                        toastMessage: 'AI 매칭 중 문제가 발생했어요.',
+                        contextUrl: role === 'APPLICANT' ? '/pdf/EtoC' : '/pdf/CtoE',
+                    });
+                    throw err;
+                }
 
                 const data = await response.json();
 
@@ -172,7 +181,7 @@ const List = () => {
                 //         "uri": "/uploads/file.pdf"
                 //     },
                 // ];
-                console.log(data);
+                
                 setMatchResults(data);
                 setReady(true);
             } catch (err) {

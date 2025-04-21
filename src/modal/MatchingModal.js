@@ -60,7 +60,7 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             // }];
 
             toast.success('매칭 요청 완료!');
-            localStorage.setItem("isOneToOneMatch", true);
+            localStorage.setItem("isOneToOneMatch", "true");
             const blobUrlResume = URL.createObjectURL(matchingFiles.resume);
             localStorage.setItem("oneResumeFile", blobUrlResume);
             const blobUrlJobPost = URL.createObjectURL(matchingFiles.jobPost);
