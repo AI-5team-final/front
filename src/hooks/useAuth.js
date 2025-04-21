@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { toast } from 'react-toastify';
 import axiosInstance from '../utils/axiosInstance';
 import config from '../config';
+import { jwtDecode } from 'jwt-decode';
 
 const useAuth = create(
   persist(
@@ -12,9 +13,13 @@ const useAuth = create(
       isInitializing: true,
 
       setUser: (userData) => {
-        // accessToken은 메모리에만 저장하고 persist에는 제외됨
         const { accessToken, ...rest } = userData;
-        set({ userInfo: { ...rest, accessToken }, isLoggedIn: true });
+        const isValid = accessToken && typeof accessToken === 'string' && accessToken.length > 0;
+      
+        set({
+          userInfo: { ...rest, accessToken },
+          isLoggedIn: isValid,
+        });
       },
 
       updateCredit: (newCredit) => {
@@ -39,7 +44,7 @@ const useAuth = create(
 
           console.log('로그인 상태 복원');
         } catch (err) {
-          console.warn('🚫 로그인 상태 복원 실패:', err);
+          console.warn('로그인 상태 복원 실패:', err);
           reportError({
             error: err,
             url: '/auth/token/me',
@@ -57,26 +62,35 @@ const useAuth = create(
             body: JSON.stringify({ username, password, role }),
           });
 
+          if (res.status === 401) {
+            throw new Error('아이디 또는 비밀번호가 잘못되었습니다.');
+          }
+
           if (!res.ok) throw new Error('로그인 실패');
 
           const data = await res.json();
 
-          // accessToken은 메모리에만 저장, persist 대상에서 제외됨
-          get().setUser({
-            ...data,
-            accessToken: data.accessToken,
-          });
+          // accessToken 유효성 검사
+          try {
+            jwtDecode(data.accessToken);
+          } catch {
+            throw new Error('유효하지 않은 accessToken');
+          }
 
-          toast.success('로그인 성공!');
+          return data;
         } catch (err) {
-          toast.error('로그인 실패: 아이디 또는 비밀번호 확인');
+            if (err.message === '아이디 또는 비밀번호가 잘못되었습니다.') {
+              throw err;
+            } else {
+              reportError({
+                error: err,
+                url: '/auth/login',
+              });
           
-          reportError({
-            error: err,
-            url: '/auth/login',
-          });
-          throw err;
-        }
+              get().logout();
+              throw err;
+            }
+          }
       },
 
       logout: async () => {

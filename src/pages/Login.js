@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import useAuth from '../hooks/useAuth';
 import '../styles/Login.scss';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login, isLoggedIn } = useAuth(); 
+    const { login, isLoggedIn, setUser } = useAuth(); 
     const [activeTab, setActiveTab] = useState('APPLICANT');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +18,6 @@ const Login = () => {
 
     // 로그인 상태면 로그인 페이지 접근 시 자동 리다이렉트
     useEffect(() => {
-    
         if (isLoggedIn) {
             navigate('/');
         }
@@ -41,9 +41,14 @@ const Login = () => {
 
         try {
             const userRole = activeTab === 'APPLICANT' ? 'APPLICANT' : 'HR';
-            await login(username, password, userRole);
+            const data = await login(username, password, userRole);
+            
+            setUser({ ...data, accessToken: data.accessToken });
+            toast.success('로그인 성공!');
+            
         } catch (err) {
             setError(err.message);
+            setUser({ userInfo: null, isLoggedIn: false });
             console.error('[CLIENT ERROR]', error);
         }
     };
