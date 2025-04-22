@@ -40,38 +40,71 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		console.warn("매칭 결과가 없습니다.")
 		return <Navigate to="/"/>;
 	}
-    // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
         if (isMock) {
             toast.info("튜토리얼에서는 다운로드가 비활성화되어 있습니다.");
             return;
         }
-
+        
         try {
+            await new Promise(resolve => setTimeout(resolve, 500));
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
-            const canvas = await html2canvas(element);
+            
+            if (!element) {
+                console.error("캡처 대상 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            const canvas = await html2canvas(element, {
+                useCORS: true,
+                scale: 2,
+                logging: true,
+                removeContainer: true
+            });
+
             const imgData = canvas.toDataURL("image/png");
         
-            const pdf = new jsPDF();
-            const imgProps = pdf.getImageProperties(imgData);
+            
+            const pdf = new jsPDF("p", "mm", "a4");
+            
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            const pdfName = `${matchResult.name}_매칭결과.pdf`;
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            if (!imgData || !imgData.startsWith("data:image/png")) {
+                throw new Error("이미지 데이터가 올바르지 않음");
+            }
+
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            const ratio = pdfWidth / imgWidth;
+            const scaledHeight = imgHeight * ratio;
+
+            
+
+            let position = 0;
+            while (position < scaledHeight) {
+                pdf.addImage(imgData, "PNG", 0, -position, pdfWidth, scaledHeight);
+                if (position + pdfHeight < scaledHeight) pdf.addPage();
+                position += pdfHeight;
+            }
+
+            const pdfName = matchResult.name
+            ? `${matchResult.name}_매칭결과.pdf`
+            : `1대1_매칭결과.pdf`;
         
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(pdfName);    
         }catch(error){
-            console.error('[CLIENT ERROR]', error);
+            console.error('[PDF 다운로드 오류]', error);
             toast.error(error.message);
         }finally {
             setIsLoading(false);
         }
         
-    }
+    };
 
-    console.log("matchResult", matchResult)
 
     const handleAnalyzeWithAgent = async () => {
         if (isMock) {
