@@ -23,38 +23,46 @@ export const refreshAccessToken = async () => {
 
     refreshPromise = new Promise(async (resolve, reject) => {
         try {
-        const response = await axios.post(`${config.baseURL}/auth/token/refresh`, null, {
-            withCredentials: true,
-        });
-
-        if (response.status !== 200 || !response.data?.accessToken) {
-            reportError({
-                error: new Error('refresh 실패: accessToken 없음 또는 비정상 응답'),
-                url: '/auth/token/refresh',
-                status: response.status
+            const response = await axios.post(`${config.baseURL}/auth/token/refresh`, null, {
+                withCredentials: true,
             });
-            logout();
-            reject(null);
-            return;
-        }
 
-        const { accessToken } = response.data;
+            const { accessToken } = response.data || {};
 
-        if (accessToken) {
+            if (response.status !== 200 || !accessToken) {
+                reportError({
+                    error: new Error('refresh 실패: accessToken 없음 또는 비정상 응답'),
+                    url: '/auth/token/refresh',
+                    status: response.status,
+                });
+        
+                // 비정상 응답일 경우만 logout
+                logout();
+                reject(null);
+                return;
+            }
+
+            // 정상적으로 accessToken 발급됨
             setUser({ ...userInfo, accessToken });
             resolve(accessToken);
-        } else {
-            logout();
-            reject(null);
-        }
         } catch (err) {
-            console.error('refreshAccessToken 실패:', err);
-            toast.info('세션이 만료되어 다시 로그인 해주세요.');
-            reportError({ error: err, url: '/auth/token/refresh' });
-            logout();
+            const isNetworkError = !err.response;
+
+            if (isNetworkError) {
+                toast.error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+            } else {
+                reportError({
+                    error: err,
+                    url: '/auth/token/refresh',
+                    status: err.response?.status,
+                });
+                toast.info('토큰 갱신에 실패했습니다. 다시 시도해주세요.');
+                logout(); 
+            }
+
             reject(err);
         } finally {
-        refreshPromise = null;
+            refreshPromise = null;
         }
     });
 

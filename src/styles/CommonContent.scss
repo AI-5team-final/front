@@ -22,8 +22,9 @@
                 color: Common.$pointColor;
             }
             .caution {
-                color: red;
+                color: Common.$gray;
                 margin-bottom: 40px;
+                font-size: 0.875rem;
             }
             .icon-area {
                 display: flex;
@@ -257,6 +258,98 @@
                     }
                 }
             }
+            .agent-message {
+                white-space: pre-line;
+                line-height: 1.6;
+                font-size: 1.125rem;
+                font-weight: 500;
+                color: Common.$pointColor;
+            }
+            .cont {
+                margin-top: 60px;
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            .agent-ol {
+                line-height: 1.8;
+            }
+            .roadmap-modern {
+                position: relative;
+                // padding: 2rem 1rem;
+                // background-color: #f9fafb;
+                width: 50%;
+                margin: 0 auto;
+                overflow: hidden;
+                
+            }
+            
+            .timeline-line {
+                position: absolute;
+                left: 24px;
+                top: 90PX;
+                // bottom: 0;
+                height: 100%;
+                width: 2px;
+                background-color: #3b82f6;
+            }
+            
+            .timeline-block {
+                position: relative;
+                margin-left: 60px;
+                margin-bottom: 2.5rem;
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            
+            .timeline-dot {
+                position: absolute;
+                left: -42px;
+                top: 90px;
+                width: 14px;
+                height: 14px;
+                background-color: #3b82f6;
+                
+                border-radius: 50%;
+                
+            }
+            
+            .timeline-card {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            }
+            
+            .timeline-header {
+            margin-bottom: 1rem;
+            }
+            
+            .timeline-week {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: Common.$gray;
+            }
+            
+            .timeline-focus {
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #1d4ed8;
+                margin: 0.25rem 0 0;
+            }
+            
+            .timeline-tasks {
+                padding-left: 1.5rem;
+            }
+            
+            .timeline-task {
+                font-size: 0.95rem;
+                color: #374151;
+                margin-bottom: 0.4rem;
+            }
+            
+
         }
         
     }
@@ -307,6 +400,9 @@
                             font-size: 1.25rem;
                         }
                     }
+                }
+                .roadmap-modern {
+                    width: 80%;
                 }
             }
         }
@@ -371,6 +467,25 @@
                         right: 20px;
                         font-size: 24px;
                     }
+                }
+                .roadmap-modern {
+                    width: 100%;
+                }
+                .timeline-block {
+                    margin-left: 30px;
+                }
+                .timeline-card {
+                    padding: 1.5rem 0.5rem;
+                }
+                .timeline-line {
+                    left: 10px;
+                    top: 120px;
+                }
+                .timeline-dot {
+                    left: -24px;
+                    top: 111px;
+                    width: 10px;
+                    height: 10px;
                 }
             }
         } 
