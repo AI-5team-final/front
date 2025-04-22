@@ -81,15 +81,23 @@ const useAuth = create(
         } catch (err) {
             if (err.message === '아이디 또는 비밀번호가 잘못되었습니다.') {
               throw err;
+            }  
+            
+            const isNetworkError = err instanceof TypeError && err.message.includes('Failed to fetch');
+
+            if (isNetworkError) {
+              toast.error('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+              // reportError는 호출하지 않음
             } else {
               reportError({
                 error: err,
                 url: '/auth/login',
               });
-          
               get().logout();
-              throw err;
             }
+
+            
+            throw err;
           }
       },
 
