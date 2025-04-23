@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMatch } from '../context/MatchContext';
 import { IoCloseSharp } from "react-icons/io5";
 import Loading from '../components/Loading';
+import { handleClientError } from '../utils/handleClientError';
 
 const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingModalOpen,setIsLoadModalOpen, matchingFiles, setIsMatching}) => {
 
@@ -37,7 +38,12 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
 			});
 
             if(!res.ok){
-                throw new Error("1대1매칭 실패");
+                const err = new Error("1대1매칭 실패");
+                handleClientError({
+                    error: err,
+                    toastMessage: "1대1매칭에 실패했습니다.",
+                    url: "/pdf/reEpo"
+                })
             }
 
             const data = await res.json();
@@ -54,7 +60,7 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             // }];
 
             toast.success('매칭 요청 완료!');
-            localStorage.setItem("isOneToOneMatch", true);
+            localStorage.setItem("isOneToOneMatch", "true");
             const blobUrlResume = URL.createObjectURL(matchingFiles.resume);
             localStorage.setItem("oneResumeFile", blobUrlResume);
             const blobUrlJobPost = URL.createObjectURL(matchingFiles.jobPost);
@@ -66,9 +72,12 @@ const MatchingModal = ({isOpen, onRequestClose, setMatchingFiles, setIsMatchingM
             setMatchResults(data);
             
             navigate(`/matching`);
-        }catch(e){
-            console.warn(`${e}: 1대1 매칭 중 에러가 발생했습니다.`);
-            toast.error(`1대1 매칭 중 에러가 발생했습니다.`);
+        }catch(err){
+            handleClientError({
+                error: err,
+                toastMessage: "1대1매칭에 실패했습니다.",
+                url: "/pdf/reEpo"
+            })
         }finally {
             setIsLoading(false);
         }

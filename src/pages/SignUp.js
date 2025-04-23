@@ -106,6 +106,10 @@ const SignUp = () => {
                 body: JSON.stringify(fullEmail),
             });
 
+            if (!res.ok) {
+                throw new Error('이메일 중복확인에 실패했습니다.');
+            }
+
             const isAvailable = await res.json();  // 👉 Boolean 값 그대로 받음
 
             if (isAvailable) {
@@ -116,7 +120,7 @@ const SignUp = () => {
                 setEmailCheckMessage('이미 사용 중인 이메일입니다.');
             }
         } catch (err) {
-            console.error(err);
+            console.error('[CLIENT ERROR]', error);
             setIsEmailAvailable(false);
             setEmailCheckMessage('이메일 확인 중 오류가 발생했습니다.');
         }
@@ -140,12 +144,15 @@ const SignUp = () => {
                 headers: {'Content-Type': 'application/json'},
             });
 
-            if (!res.ok) throw new Error('회원가입 실패');
+            if (!res.ok) {
+                throw new Error('회원 가입에 실패했습니다.');
+            }
 
             alert('회원가입 성공! 로그인 해주세요.');
             navigate('/login');
         } catch (err) {
             setError(err.message);
+            console.error('[CLIENT ERROR]', error);
         }
     };
     const domainList = ['gmail.com', 'naver.com', 'daum.net', '직접입력'];

@@ -7,12 +7,15 @@ import fetchClient from '../../utils/fetchClient';
 import UploadCheckModal from '../../modal/UploadCheckModal';
 import LoadModal from '../../modal/LoadModal';
 import MatchingModal from '../../modal/MatchingModal';
-import { handleAuthError, handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNetworkError, handleNoFileError } from './ErrorHandler';
+import { handleFileNotSelectedError, handleFileLoadError, handleListLoadingError, handleNoFileError } from './ErrorHandler';
 import { validateFile } from './FileValidation';
 import TutorialManager from '../Tutorial/TutorialManager';
 import TutorialButton from '../Tutorial/TutorialButton';
-import { APPLICANT_PAGE_STEPS } from '../Tutorial/ApplicantTutorialSteps';
+import {APPLICANT_DETAIL_STEPS, APPLICANT_LIST_STEPS, APPLICANT_PAGE_STEPS} from '../Tutorial/ApplicantTutorialSteps';
 import '../../styles/ContentApplicant.scss';
+import { toast } from 'react-toastify';
+import ListApplicantMock from "../../mock/ListApplicantMock";
+import DetailApplicantMock from "../../mock/DetailApplicantMock";
 
 
 const ContentApplicant = () => {
@@ -29,6 +32,8 @@ const ContentApplicant = () => {
     const navigate = useNavigate();
     const { setResumeFile } = useMatch();
     const [showTutorial, setShowTutorial] = useState(false);
+    const [tutorialFlow, setTutorialFlow] = useState(0); // 0: 튜토리얼 OFF, 1: PAGE, 2: LIST
+
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -54,12 +59,6 @@ const ContentApplicant = () => {
             return;
         }
 
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         localStorage.setItem('resumeFileUploaded', 'true');
         setResumeFile(fileState.file);
 
@@ -68,12 +67,6 @@ const ContentApplicant = () => {
     };
 
     const fetchResumes = async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            handleAuthError(null, navigate);
-            return;
-        }
-
         try {
             setIsLoading(true);
             const response = await fetchClient('/pdf/list');
@@ -82,18 +75,12 @@ const ContentApplicant = () => {
                 handleListLoadingError(new Error('BAD REQUEST : ' + response.status));
                 return;
             }
-            if (response.status === 401) {
-                handleAuthError(null, navigate);
-                return;
-            }
 
             const data = await response.json();
             setResumes(data.pdfs || []);
         } catch (error) {
-            if (error.response?.status === 401) {
-                handleAuthError(null, navigate);
-            } 
-            handleNetworkError(error, navigate);
+            console.error('[CLIENT ERROR]', error);
+            toast.error(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -110,22 +97,28 @@ const ContentApplicant = () => {
                 const response = await fetch(selectedResume.pdfUri);
                 if (!response.ok) {
                     handleFileLoadError(new Error('BAD REQUEST : ' + response.status));
-                    return;
+                    const responseData = await response.json();
+                    const error = new Error(responseData.message || "pdf 조회에 실패했습니다.");
+                    reportError({
+                        error,
+                        url: selectedResume.pdfUri
+                    });
+                    throw error;
                 }
-                if (response.status === 401) {
-                    handleAuthError(null, navigate);
-                    return;
-                }  
                 const blob = await response.blob();
                 const file = new File([blob], selectedResume.pdfFileName, { type: 'application/pdf' });
-                setFileState({ 
-                    name: selectedResume.pdfFileName, 
-                    file: file 
+                setFileState({
+                    name: selectedResume.pdfFileName,
+                    file: file
                 });
                 // setIsLoadModalOpen(false);
                 setIsUploadModalOpen(prev=>!prev);
             } catch (error) {
                 handleFileLoadError(error);
+                reportError({
+                    error,
+                    url: selectedResume.pdfUri
+                });
             }
         }
     };
@@ -135,7 +128,7 @@ const ContentApplicant = () => {
         setIsMatching(false);
         fetchResumes();
     };
-   
+
     const closeLoadModal = () => {setIsLoadModalOpen(false); setSelectedId(null);};
 
     const openMatchingModal = () => {
@@ -150,11 +143,49 @@ const ContentApplicant = () => {
 
     return (
         <div className='l-content-apply'>
-            <TutorialManager 
-                steps={APPLICANT_PAGE_STEPS} 
-                startImmediately={showTutorial} 
-            />
-            <TutorialButton onClick={() => setShowTutorial(true)} />
+            {tutorialFlow === 1 && (
+                <>
+                    <TutorialManager
+                        steps={APPLICANT_PAGE_STEPS}
+                        startImmediately={true}
+                        onComplete={() => {
+                            setTutorialFlow(2); // 먼저 flow 변경
+
+                            setTimeout(() => {
+                                const listElement = document.querySelector('.l-content-apply'); // 최상위 요소 기준
+                                if (listElement) {
+                                    listElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                }
+                            }, 100); // 100~200ms는 mock 렌더 타이밍 기다림
+                        }}
+                    />
+                </>
+            )}
+
+            {tutorialFlow === 2 && (
+                <>
+                    <ListApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_LIST_STEPS}
+                        startImmediately={true}
+                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 끝!
+                        isMockPage={true}
+                    />
+                </>
+            )}
+
+            {tutorialFlow === 3 && (
+                <>
+                    <DetailApplicantMock />
+                    <TutorialManager
+                        steps={APPLICANT_DETAIL_STEPS}
+                        startImmediately={true}
+                        onComplete={() => setTutorialFlow(0)} // 튜토리얼 종료
+                    />
+                </>
+            )}
+
+            <TutorialButton onClick={() => setTutorialFlow(1)} />
             <section className="hero">
                 <div className='inner'>
                     <div className="hero-content">
@@ -168,9 +199,9 @@ const ContentApplicant = () => {
                         </p>
                     </div>
                     <div className="hero-image">
-                        <img 
-                            src="/images/Applicant_MainContent_none.png" 
-                            alt="AI 매칭 서비스" 
+                        <img
+                            src="/images/Applicant_MainContent_none.png"
+                            alt="AI 매칭 서비스"
                             className="hero-img"
                         />
                     </div>
@@ -196,8 +227,8 @@ const ContentApplicant = () => {
                                     style={{ display: 'none' }}
                                 />
                             </div>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={handleLoadModalOpen}
                                 className="button active"
@@ -205,8 +236,8 @@ const ContentApplicant = () => {
                                 <FaCloudDownloadAlt className="cloud-icon" />
                                 <span>내 이력서<br/>불러오기</span>
                             </button>
-                        
-                            <button 
+
+                            <button
                                 type="button"
                                 onClick={openMatchingModal}
                                 className="button active"
@@ -225,11 +256,11 @@ const ContentApplicant = () => {
             </section>
 
             {/* 이력서 업로드 확인 모달 */}
-            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>            
+            <UploadCheckModal isOpen={isUploadModalOpen} onRequestClose={closeUploadCheckModal} fileState={fileState} handleSubmit={handleSubmit} fileType={"이력서"}/>
 
             {/* 이력서 불러오기 모달 */}
             <LoadModal isOpen={isLoadModalOpen} onRequestClose={closeLoadModal} isLoading={isLoading} resumes={resumes} selectedId={selectedId} setSelectedId={setSelectedId} handleLoadConfirm={handleLoadConfirm} fileType={"이력서"} isMatching={isMatching} setMatchingFiles={setMatchingFiles}/>
-            
+
             {/* 1대1 매칭 모달 */}
             <MatchingModal isOpen={isMatchingModalOpen} onRequestClose={closeMatchingModal} setMatchingFiles={setMatchingFiles} setIsMatchingModalOpen={setIsMatchingModalOpen} setIsLoadModalOpen={setIsLoadModalOpen} matchingFiles={matchingFiles} setIsMatching={setIsMatching}/>
         </div>

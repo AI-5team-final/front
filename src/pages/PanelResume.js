@@ -74,7 +74,12 @@ const PanelResume = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                const err =  new Error(errorData.message || '파일 업로드에 실패했습니다.');
+                reportError({
+                    err,
+                    url: '/pdf/upload'
+                });
+                throw err;
             }
             
             toast.success('이력서가 성공적으로 업로드되었습니다.');
@@ -86,6 +91,10 @@ const PanelResume = () => {
             setIsLoading(false)
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/upload'
+            });
         }
     };
 
@@ -105,7 +114,12 @@ const PanelResume = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || '삭제에 실패했습니다.');
+                const err = new Error(errorData.message || '삭제에 실패했습니다.');
+                reportError({
+                    err,
+                    url: '/pdf/delete'
+                });
+                throw err;
             }
             
             setResumes(prev => prev.filter(r => r.id !== deleteTarget.id));
@@ -113,6 +127,10 @@ const PanelResume = () => {
             
         } catch (error) {
             handleError(error);
+            reportError({
+                error,
+                url: '/pdf/delete'
+            });
         }
     };
 
@@ -123,8 +141,7 @@ const PanelResume = () => {
             const response = await fetchClient('/pdf/list');
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || '이력서 목록을 불러오는데 실패했습니다.');
+                throw new Error('이력서 목록을 불러오는데 실패했습니다.');
             }
 
             const data = await response.json();
