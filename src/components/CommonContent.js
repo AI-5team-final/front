@@ -129,7 +129,7 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             }
 
             
-            const feedback = await res.text();
+            const feedback = await res.json();
 
             setAgentFeedback(feedback);
             toast.success("Fit Advisor 분석 완료! 크레딧이 차감되었습니다.");
@@ -163,6 +163,11 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             setLoading(false);
         }        
     };
+
+    const gapList = agentFeedback ? agentFeedback.gapText.split(/(?=\d\.)/) : [];
+
+    const plan = agentFeedback ? agentFeedback.planText ? JSON.parse(agentFeedback.planText)
+    : null : null;
 
     return (
         isLoading ? (
@@ -330,8 +335,8 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                                                     return (
                                                         <div key={idx} className="feedback-block">
                                                             <p className="original"><strong>📝 원문:</strong> {original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
-                                                            <p className="reason"><strong>⚠ 감점 사유:</strong> {reason?.replace(/^- 감점 사유:\s?/, "")}</p>
-                                                            <p className="suggestion"><strong>💡 개선 제안:</strong> {suggestion?.replace(/^- 개선 제안:\s?/, "")}</p>
+                                                            <p className="reason"><strong>⚠ 감점 사유:</strong> {reason?.replace(/^[-\s]*감점 사유:\s*/, "")}</p>
+                                                            <p className="suggestion"><strong>💡 개선 제안:</strong> {suggestion?.replace(/^[-\s]*개선 제안:\s*/, "")}</p>
                                                         </div>
                                                     );
                                                 })}
