@@ -108,7 +108,13 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             const res = await fetchClient("/pdf/agent", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ gpt_answer: matchResult.summary }),
+                body: JSON.stringify({
+                    resume_eval: matchResult.eval_resume,
+                    selfintro_eval: matchResult.eval_selfintro,
+                    resume_score: matchResult.resume_score,
+                    selfintro_score: matchResult.selfintro_score,
+                    resume_text: matchResult.resume_text,
+                }),
             });
 
             if (!res.ok) {
@@ -280,7 +286,58 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                                     <div style={{ marginTop: "2rem" }}>
                                         <h3 className="tit-line">Fit Advisor의 분석 결과</h3>
                                         <p className="caution">※ 이 페이지에서만 로드맵을 확인할 수 있으며, 새로고침하거나 나가면 다시 결제가 필요합니다.</p>
-                                        <MarkdownResult markdownText={agentFeedback} />
+                                        {/* <MarkdownResult markdownText={agentFeedback} /> */}
+                                        <p className="agent-message">{agentFeedback.message}</p>
+                                        <div className="cont">
+                                            <h4>개선 포인트</h4>
+                                            <ol className="agent-ol">
+                                                {gapList.map((item, idx) => <li key={idx}>{item.trim()}</li>)}
+                                            </ol>
+                                        </div>
+                                        <div className="cont">
+                                            {plan && (
+                                                <>
+                                                    <h4>학습 로드맵</h4>
+                                                    <div className="roadmap-modern">
+                                                        <div className="timeline-line" />
+                                                            {plan.weeks.map((weekItem, idx) => (
+                                                                <div key={idx} className="timeline-block">
+                                                                    <div className="timeline-dot" />
+                                                                    <div className="timeline-card">
+                                                                        <div className="timeline-header">
+                                                                            <span className="timeline-week">{weekItem.week}</span>
+                                                                            <h3 className="timeline-focus">{weekItem.focus}</h3>
+                                                                        </div>
+                                                                        <ul className="timeline-tasks">
+                                                                            {weekItem.tasks.map((task, i) => (
+                                                                            <li key={i} className="timeline-task">{task}</li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    {agentFeedback?.selfIntroFeedback && (
+                                        <div className="cont">
+                                            <h4>자기소개서 첨삭 피드백</h4>
+                                            <div className="feedback-list">
+                                                {agentFeedback.selfIntroFeedback.split(/\n{2,}/).map((block, idx) => {
+                                                    const lines = block.split("\n").filter(Boolean);
+                                                    const [original, reason, suggestion] = lines;
+                                                    return (
+                                                        <div key={idx} className="feedback-block">
+                                                            <p className="original"><strong>📝 원문:</strong> {original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
+                                                            <p className="reason"><strong>⚠ 감점 사유:</strong> {reason?.replace(/^- 감점 사유:\s?/, "")}</p>
+                                                            <p className="suggestion"><strong>💡 개선 제안:</strong> {suggestion?.replace(/^- 개선 제안:\s?/, "")}</p>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
                                     </div>
                                 )}
                             </div>
