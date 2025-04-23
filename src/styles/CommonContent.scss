@@ -22,9 +22,8 @@
                 color: Common.$pointColor;
             }
             .caution {
-                color: Common.$gray;
+                color: red;
                 margin-bottom: 40px;
-                font-size: 0.875rem;
             }
             .icon-area {
                 display: flex;
@@ -348,8 +347,54 @@
                 color: #374151;
                 margin-bottom: 0.4rem;
             }
-            
 
+            .feedback-list {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                margin-top: 1rem;
+              
+                .feedback-block {
+                  width: 90%;
+                  max-width: 720px; 
+                  background-color: #f7f9fc;
+                  border-left: 4px solid #007bff;
+                  border-radius: 10px;
+                  padding: 1.2rem 1.5rem;
+                  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                  transition: background-color 0.2s ease;
+              
+                  &:hover {
+                    background-color: #eef6ff;
+                  }
+              
+                  p {
+                    margin: 0.5rem 0;
+                    font-size: 0.95rem;
+                    line-height: 1.5;
+              
+                    strong {
+                      display: inline-block;
+                      margin-right: 0.4rem;
+                      font-weight: 600;
+                    }
+                  }
+              
+                  .original {
+                    color: #333;
+                  }
+              
+                  .reason {
+                    color: #c9302c;
+                  }
+              
+                  .suggestion {
+                    color: #117a8b;
+                  }
+                }
+              }              
+              
         }
         
     }
@@ -400,9 +445,6 @@
                             font-size: 1.25rem;
                         }
                     }
-                }
-                .roadmap-modern {
-                    width: 80%;
                 }
             }
         }
@@ -467,25 +509,6 @@
                         right: 20px;
                         font-size: 24px;
                     }
-                }
-                .roadmap-modern {
-                    width: 100%;
-                }
-                .timeline-block {
-                    margin-left: 30px;
-                }
-                .timeline-card {
-                    padding: 1.5rem 0.5rem;
-                }
-                .timeline-line {
-                    left: 10px;
-                    top: 120px;
-                }
-                .timeline-dot {
-                    left: -24px;
-                    top: 111px;
-                    width: 10px;
-                    height: 10px;
                 }
             }
         } 

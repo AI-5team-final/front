@@ -21,16 +21,16 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
     // pdf에서 가져온 이름
     const [name] = useState("");
 	const [comment, setComment] = useState("");
-	const [agentFeedback, setAgentFeedback] = useState(null);
+	const [agentFeedback, setAgentFeedback] = useState("");
 	const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const isOneToOneMatch = localStorage.getItem("isOneToOneMatch")==="false"? false : true;
     const oneResumeFile = localStorage.getItem("oneResumeFile") ?? null;
     const oneJobPostFile = localStorage.getItem("oneJobPostFile") ?? null;
 
-    // const summaryItems = matchResult?.summary.split("/").map((item) => item.trim()).sort((a, b) =>
-	// 	a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0 
-	// );
+    const summaryItems = matchResult?.summary.split("/").map((item) => item.trim()).sort((a, b) =>
+		a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0 
+	);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -40,71 +40,36 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		console.warn("매칭 결과가 없습니다.")
 		return <Navigate to="/"/>;
 	}
+    // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
         if (isMock) {
             toast.info("튜토리얼에서는 다운로드가 비활성화되어 있습니다.");
             return;
         }
-        
+
         try {
-            await new Promise(resolve => setTimeout(resolve, 500));
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
-            
-            if (!element) {
-                console.error("캡처 대상 요소를 찾을 수 없습니다.");
-                return;
-            }
-
-            const canvas = await html2canvas(element, {
-                useCORS: true,
-                scale: 2,
-                logging: true,
-                removeContainer: true
-            });
-
+            const canvas = await html2canvas(element);
             const imgData = canvas.toDataURL("image/png");
         
-            
-            const pdf = new jsPDF("p", "mm", "a4");
-            
+            const pdf = new jsPDF();
+            const imgProps = pdf.getImageProperties(imgData);
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-
-            if (!imgData || !imgData.startsWith("data:image/png")) {
-                throw new Error("이미지 데이터가 올바르지 않음");
-            }
-
-            const imgWidth = canvas.width;
-            const imgHeight = canvas.height;
-
-            const ratio = pdfWidth / imgWidth;
-            const scaledHeight = imgHeight * ratio;
-
-            
-
-            let position = 0;
-            while (position < scaledHeight) {
-                pdf.addImage(imgData, "PNG", 0, -position, pdfWidth, scaledHeight);
-                if (position + pdfHeight < scaledHeight) pdf.addPage();
-                position += pdfHeight;
-            }
-
-            const pdfName = matchResult.name
-            ? `${matchResult.name}_매칭결과.pdf`
-            : `1대1_매칭결과.pdf`;
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            const pdfName = `${matchResult.name}_매칭결과.pdf`;
         
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(pdfName);    
         }catch(error){
-            console.error('[PDF 다운로드 오류]', error);
+            console.error('[CLIENT ERROR]', error);
             toast.error(error.message);
         }finally {
             setIsLoading(false);
         }
         
-    };
-
+    }
 
     const handleAnalyzeWithAgent = async () => {
         if (isMock) {
@@ -112,34 +77,33 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             return;
         }
 
-        // if(userInfo?.credit < 500){
-        //     toast.error("크레딧이 부족합니다.\n결제 후에 이용하실 수 있습니다.");
-        //     return;
-        // }
+        if(userInfo?.credit < 500){
+            toast.error("크레딧이 부족합니다.\n결제 후에 이용하실 수 있습니다.");
+            return;
+        }
 
         try {	
             // 1. 크레딧 차감 요청 (500원 차감)
-            // const res1 = await fetchClient('/payments/credit', {
-            //     method: 'POST',
-            // });
+            const res1 = await fetchClient('/payments/credit', {
+                method: 'POST',
+            });
 
-            // if (!res1.ok) {
-            //     const errData = await res1.json();
-            //     const err = new Error(errData.message || '크레딧 차감 실패');
-            //     handleClientError({
-            //         error: err,
-            //         toastMessage: '크레딧 차감에 실패했습니다.',
-            //         contextUrl: '/payments/credit'
-            //     });
-            //     throw err;
-            // }
-            // const data = await res1.json();
-            // toast.success("크레딧 차감 후 분석을 시작합니다.");
-            // updateCredit(data.balance);
+            if (!res1.ok) {
+                const errData = await res1.json();
+                const err = new Error(errData.message || '크레딧 차감 실패');
+                handleClientError({
+                    error: err,
+                    toastMessage: '크레딧 차감에 실패했습니다.',
+                    contextUrl: '/payments/credit'
+                });
+                throw err;
+            }
+            const data = await res1.json();
+            toast.success("크레딧 차감 후 분석을 시작합니다.");
+            updateCredit(data.balance);
 
             // 2. 에이전트 분석 요청
             console.log("에이전트 요청")
-            
             setLoading(true);
             const res = await fetchClient("/pdf/agent", {
                 method: "POST",
@@ -148,12 +112,13 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                     resume_eval: matchResult.eval_resume,
                     selfintro_eval: matchResult.eval_selfintro,
                     resume_score: matchResult.resume_score,
-                    selfintro_score: matchResult.selfintro_score
+                    selfintro_score: matchResult.selfintro_score,
+                    resume_text: matchResult.resume_text,
                 }),
             });
 
             if (!res.ok) {
-                const errData = await res.json();
+                const errData = await res1.json();
                 const err = new Error(errData.message || 'Agent 분석 실패');
                 handleClientError({
                     error: err,
@@ -164,14 +129,7 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             }
 
             
-            const feedback = await res.json();
-            // const feedback = {
-            //     "type": "full",
-            //     "message": "이력서와 자기소개서 분석 결과, 일부 개선이 필요한 항목이 확인되었습니다.\n아래 피드백과 함께, AI가 제안하는 맞춤형 학습 로드맵을 확인해보세요.",
-            //     "gap_text": "1. 클라우드 플랫폼에 대한 경험을 구체적으로 추가해야 합니다. 2. CI/CD 파이프라인 자동화에 대한 경험을 보강하여 서술해야 합니다. 3. 자기소개서에 구체적인 프로젝트 사례를 통해 본인의 역할과 기여도를 명확히 작성해야 합니다. 4. 기술적 전문성을 강조하는 부분에서 더 많은 세부사항을 포함해야 합니다. 5. 팀워크 경험을 구체적으로 서술하여 협업 능력을 강조해야 합니다.",
-            //     "plan_text": "{\"weeks\": [{\"week\": \"1주차\", \"focus\": \"클라우드 플랫폼 기초 학습\", \"tasks\": [\"AWS, Azure, GCP의 기본 개념 이해하기\", \"클라우드 서비스 모델(IaaS, PaaS, SaaS) 학습하기\", \"각 플랫폼의 무료 계정 생성 및 실습 환경 구축하기\"]}, {\"week\": \"2주차\", \"focus\": \"CI/CD 파이프라인 자동화 학습\", \"tasks\": [\"CI/CD의 기본 개념 및 중요성 이해하기\", \"Jenkins, GitLab CI, GitHub Actions 중 하나 선택하여 설치 및 설정하기\", \"간단한 애플리케이션을 위한 CI/CD 파이프라인 구축하기\"]}, {\"week\": \"3주차\", \"focus\": \"프로젝트 사례 분석 및 자기소개서 작성\", \"tasks\": [\"이전 프로젝트에서의 역할 및 기여도 정리하기\", \"구체적인 성과 및 기술적 도전 과제 서술하기\", \"자기소개서 초안 작성 및 피드백 받기\"]}, {\"week\": \"4주차\", \"focus\": \"팀워크 및 협업 경험 강화\", \"tasks\": [\"팀 프로젝트에서의 역할 및 협업 방식 정리하기\", \"팀워크의 중요성과 개인의 기여도를 강조하는 사례 작성하기\", \"자기소개서 최종 수정 및 제출 준비하기\"]}]}"
-                
-            // };
+            const feedback = await res.text();
 
             setAgentFeedback(feedback);
             toast.success("Fit Advisor 분석 완료! 크레딧이 차감되었습니다.");
@@ -205,12 +163,6 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             setLoading(false);
         }        
     };
-
-    const gapList = agentFeedback ? agentFeedback.gapText.split(/(?=\d\.)/) : [];
-
-    const plan = agentFeedback ? agentFeedback.planText ? JSON.parse(agentFeedback.planText)
-    : null : null;
-    
 
     return (
         isLoading ? (
@@ -368,6 +320,24 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                                                 </>
                                             )}
                                         </div>
+                                    {agentFeedback?.selfIntroFeedback && (
+                                        <div className="cont">
+                                            <h4>자기소개서 첨삭 피드백</h4>
+                                            <div className="feedback-list">
+                                                {agentFeedback.selfIntroFeedback.split(/\n{2,}/).map((block, idx) => {
+                                                    const lines = block.split("\n").filter(Boolean);
+                                                    const [original, reason, suggestion] = lines;
+                                                    return (
+                                                        <div key={idx} className="feedback-block">
+                                                            <p className="original"><strong>📝 원문:</strong> {original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
+                                                            <p className="reason"><strong>⚠ 감점 사유:</strong> {reason?.replace(/^- 감점 사유:\s?/, "")}</p>
+                                                            <p className="suggestion"><strong>💡 개선 제안:</strong> {suggestion?.replace(/^- 개선 제안:\s?/, "")}</p>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
                                     </div>
                                 )}
                             </div>
