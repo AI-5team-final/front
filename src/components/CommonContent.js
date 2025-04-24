@@ -32,6 +32,8 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0 
 	);
 
+    console.log("matchResult",matchResult)
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
@@ -40,7 +42,6 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		console.warn("매칭 결과가 없습니다.")
 		return <Navigate to="/"/>;
 	}
-    // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
         if (isMock) {
@@ -49,21 +50,51 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
         }
 
         try {
+            await new Promise(resolve => setTimeout(resolve, 500));
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
-            const canvas = await html2canvas(element);
+            
+            if (!element) {
+                console.error("캡처 대상 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            const canvas = await html2canvas(element, {
+                useCORS: true,
+                scale: 2,
+                logging: true,
+                removeContainer: true
+            });
+
             const imgData = canvas.toDataURL("image/png");
-        
-            const pdf = new jsPDF();
-            const imgProps = pdf.getImageProperties(imgData);
+            const pdf = new jsPDF("p", "mm", "a4");        
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            const pdfName = `${matchResult.name}_매칭결과.pdf`;
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            if (!imgData || !imgData.startsWith("data:image/png")) {
+                throw new Error("이미지 데이터가 올바르지 않음");
+            }
+
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            const ratio = pdfWidth / imgWidth;
+            const scaledHeight = imgHeight * ratio;
+
+            let position = 0;
+            while (position < scaledHeight) {
+                pdf.addImage(imgData, "PNG", 0, -position, pdfWidth, scaledHeight);
+                if (position + pdfHeight < scaledHeight) pdf.addPage();
+                position += pdfHeight;
+            }
+
+            const pdfName = matchResult.name
+            ? `${matchResult.name}_매칭결과.pdf`
+            : `1대1_매칭결과.pdf`;
         
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(pdfName);    
         }catch(error){
-            console.error('[CLIENT ERROR]', error);
+            console.error('[PDF 다운로드 오류]', error);
             toast.error(error.message);
         }finally {
             setIsLoading(false);
@@ -118,7 +149,7 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             });
 
             if (!res.ok) {
-                const errData = await res1.json();
+                const errData = await res.json();
                 const err = new Error(errData.message || 'Agent 분석 실패');
                 handleClientError({
                     error: err,
@@ -327,16 +358,17 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                                         </div>
                                     {agentFeedback?.selfIntroFeedback && (
                                         <div className="cont">
-                                            <h4>자기소개서 첨삭 피드백</h4>
+                                            <h4>자기소개서 피드백</h4>
                                             <div className="feedback-list">
                                                 {agentFeedback.selfIntroFeedback.split(/\n{2,}/).map((block, idx) => {
                                                     const lines = block.split("\n").filter(Boolean);
                                                     const [original, reason, suggestion] = lines;
                                                     return (
                                                         <div key={idx} className="feedback-block">
-                                                            <p className="original"><strong>📝 원문:</strong> {original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
-                                                            <p className="reason"><strong>⚠ 감점 사유:</strong> {reason?.replace(/^[-\s]*감점 사유:\s*/, "")}</p>
-                                                            <p className="suggestion"><strong>💡 개선 제안:</strong> {suggestion?.replace(/^[-\s]*개선 제안:\s*/, "")}</p>
+                                                            <h6>💡 피드백{idx+1}</h6>
+                                                            <p className="original">{original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
+                                                            <p className="suggestion">→ {suggestion?.replace(/^[-\s]*개선 제안:\s*/, "")}</p>
+                                                            <p className="reason">⚠ {reason?.replace(/^[-\s]*감점 사유:\s*/, "")}</p>
                                                         </div>
                                                     );
                                                 })}
