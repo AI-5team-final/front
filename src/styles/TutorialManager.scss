@@ -1,0 +1,12 @@
+/* Intro.js 건너뛰기 버튼 스타일 오버라이드 */
+.introjs-skipbutton {
+    font-size: 12px ;
+    margin-right: 8px ;
+}
+
+.introjs-tooltip {
+    width: 500px !important; // 기본은 250~300px
+    padding: 20px !important;
+    font-size: 16px !important;
+    border-radius: 30px !important;
+}

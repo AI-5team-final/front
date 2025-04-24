@@ -1,0 +1,561 @@
+@use '_Common';
+
+// Variables
+$secondary-color: #9fd3fd; // 이력서 bg
+$light-gray: #9ca3af;
+$white: #ffffff;
+
+// Mixins
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin flex-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+@mixin hover-transition {
+	transition: all 0.3s ease;
+
+	&:hover {
+		@content;
+	}
+}
+
+.l-panel {
+  	// Hero Section
+	.hero-section {
+		height: 380px;
+		background-color: $secondary-color;
+		padding: Common.$headerHeight 0 20px;
+		.inner {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 100%;
+			.hero-text {
+				flex: 1;
+				padding-right: 20px;
+				}
+			
+				.hero-img {
+				height: 100%;
+				width: auto;
+				object-fit: contain;
+				}
+			
+				.title {
+				font-size: 2.5rem;
+				color: Common.$pointColor;
+				margin-bottom: 15px;
+				font-weight: bold;
+				}
+			
+				.subtitle {
+				font-size: 1rem;
+				margin-top: 10px;
+				color: Common.$pointColor;
+				}
+		}
+	}
+
+	// Main Container
+	.section-upload {
+		// padding: 40px 20px 20px;
+		padding: 100px 0 0;
+		background-color: $white;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	// Upload Card
+	.upload-card {
+		background-color: Common.$bgColor;
+		border-radius: 12px;
+		padding: 20px;
+		margin-bottom: 40px;
+		width: 80%;
+		// max-width: 900px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 15px;
+		margin: 0 auto;
+	}
+
+	.upload-area {
+		border: 2px dashed Common.$borderColor;
+		border-radius: 12px;
+		padding: 40px 20px;
+		text-align: center;
+		cursor: pointer;
+		background-color: Common.$bgColor;
+		
+		@include hover-transition {
+			border-color: Common.$pointColor;
+			background-color: #f1f8ff;
+		}
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 15px;
+		width: 100%;
+		h5 {
+			font-size: 1.25rem;
+			font-weight: 600;
+		}
+	}
+
+	.upload-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+
+	.upload-paragraph {
+		color: #555;
+		font-size: 0.95rem;
+	}
+
+	.upload-note {
+		font-size: 0.75rem;
+		color: #999;
+	}
+
+	.icon {
+		font-size: 40px;
+		color: Common.$pointColor;
+	}
+
+	.section-list {
+		margin: 0 auto;
+		padding: 70px 0 100px;
+		.list {
+			border-top: 1px solid Common.$borderColor;
+			// border-bottom: 1px solid Common.$borderColor;
+			padding: 0;
+			// max-width: 900px;
+			width: 80%;
+			margin: 0 auto
+		}
+	}
+	
+
+	.item {
+		@include flex-between;
+		padding: 25px 20px;
+		border-bottom: 1px solid Common.$borderColor;
+		align-items: center;
+	}
+
+	.info {
+		@include flex-center;
+		gap: 24px;
+	}
+
+	
+	.date {
+		font-size: 0.8rem;
+		color: $light-gray;
+	}
+
+	.link {
+		color: Common.$pointColor;
+		text-decoration: none;
+		font-weight: 600;
+		cursor: pointer;
+		@include hover-transition {
+			text-decoration: underline;
+		}
+	}
+
+	// Buttons
+	.delete-button {
+		border: 1px solid Common.$borderColor;
+		border-radius: 6px;
+		padding: 5px 10px;
+		cursor: pointer;
+		background-color: $white;
+		font-size: 0.875rem;
+		@include hover-transition {
+			background-color: #f0f0f0;
+		}
+	}
+
+
+	// Loading State
+	.loading {
+		text-align: center;
+		padding: 20px;
+		color: Common.$gray;
+	}
+
+	// Empty State
+	.empty-state {
+		text-align: center;
+		padding: 20px;
+		color: Common.$gray;
+		border-bottom: 1px solid Common.$borderColor;
+	}
+
+	&-postings {
+		.hero-section {
+			background: #CDE1FF;
+		}
+
+		.section {
+			.inner {
+				> h2 {
+					font-size: 1.75rem;
+					font-weight: 600;
+					text-align: center;
+					margin-bottom: 50px;
+				}
+			}
+		}
+		.section-upload {
+			padding-top: 120px 0 0;
+			.inner {
+				.upload-area {
+					height: 250px;
+					justify-content: center;
+				}
+				.register-wrap {
+					display: flex;
+					justify-content: space-between;
+					width: 80%;
+					margin: 0 auto;
+					> div {
+						width: calc((100% - 20px) / 2);
+						h3 {
+							font-size: 1.125rem;
+							font-weight: 500;
+							margin-bottom: 20px;
+							svg {
+								vertical-align: middle;
+								margin-right: 5px;
+							}
+						}
+					}
+					.date-area {
+						position: relative;
+						display: flex;
+						justify-content: space-between;
+						flex-direction: column;
+						h4 {
+							font-size: 1.5rem;
+							font-weight: 600;
+							margin-bottom: 20px;
+						}
+						p {
+							line-height: 1.4;
+						}
+						small {
+							font-size: 0.875rem;
+							color: Common.$gray;
+						}
+						.checkbox-wrap {
+							display: flex;
+							align-items: center;
+							padding-bottom: 20px;
+							border-bottom: 1px solid Common.$borderColor;
+							margin-bottom: 20px;
+							height: 44px;
+							input {
+								padding-left: 24px;
+								height: 100%;
+								position: relative;
+								&::before, &::after {
+									content: '';
+									position: absolute;
+									left: 0;
+									top: 50%;
+									transform: translateY(-50%);
+									width: 24px;
+									height: 24px;
+									border-radius: 5px;
+									border: 1px solid Common.$borderColor;
+									cursor: pointer;
+								}
+								&::after {
+									display: none;
+								}
+								&:checked {
+									&::after {
+										display: block;
+										border-color: Common.$pointColor;
+										background: Common.$pointColor url("../images/icon-check.svg") center / contain;
+									}
+									+ label {
+										color: Common.$pointColor;
+										font-weight: 600;
+									}
+								}
+							}
+							label {
+								height: 100%;
+								margin-left: 10px;
+								font-weight: 500;
+								line-height: 24px;
+								cursor: pointer;
+							}
+						}
+						.date-wrap-box {
+							display: flex;
+						}
+						.date-wrap {
+							p {
+								// font-size: 1.125rem;
+								font-weight: 500;
+								margin-bottom: 5px;
+							}
+							input[type="date"] {
+								width: 100%;
+								// width: 80%;
+								border: 1px solid Common.$borderColor;
+								padding: 10px 15px;
+								border-radius: 5px;
+								cursor: pointer;
+								&:hover,&:focus {
+									box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+								}
+								&::-webkit-calendar-picker-indicator { 
+									cursor: pointer;
+									// width: 100%;
+									// height: 100%;
+								}
+							}
+							&.disabled {
+								p {
+									color: Common.$borderColor;
+								}
+								input {
+									pointer-events: none;
+									color: Common.$borderColor;
+									&::-webkit-calendar-picker-indicator {
+										background-image: none;
+									}
+								}
+							}
+							+ .date-wrap {
+								// margin-top: 20px;
+								margin-left: 20px;
+							}
+						}
+						
+						
+					}
+					.card-area {
+						.upload-card {
+							width: 100%;
+							margin: 0;
+						}
+					}
+				}
+				.btn-wrap {
+					margin: 50px auto 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					button {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						padding: 10px 20px;
+						border: 1px solid Common.$borderColor;
+						font-weight: 500;
+						border-radius: 5px;
+						cursor: pointer;
+						svg {
+							margin-right: 5px;
+						}
+						
+						&:hover {
+							@include hover-transition {
+								background-color: #f0f0f0;
+							}
+						}
+						&.disabled {
+							cursor: default;
+							background: #ccc;
+							border-color: #ccc;
+							color: #fff;
+							pointer-events: none;
+							&:hover {
+								background: #ccc;
+							}
+						}
+						
+						&.btn-register {
+							background: Common.$pointColor;
+							color: #fff;
+							margin-left: 20px;
+							border-color: Common.$pointColor;
+							
+							&:hover {
+								@include hover-transition {
+									background-color: Common.$pointHover;
+								}
+								border-color: Common.$pointHover;
+							}
+							&.disabled {
+								cursor: default;
+								background: #ccc;
+								border-color: #ccc;
+								pointer-events: none;
+								&:hover {
+									background: #ccc;
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		}
+		.section-list {
+			padding: 150px 0;
+		}
+	}
+} 
+
+@media (max-width: Common.$tablet){
+	.l-panel {
+		.hero-section {
+			padding: 80px 0 50px;
+			text-align: center;
+			height: auto;
+			.inner {
+				flex-direction: column;
+				.hero-text {
+					padding-right: 0;
+					.title {
+						font-size: 2rem;
+
+					}
+				}
+				.hero-img {
+					max-width: 300px;
+        			margin-top: 40px;
+				}
+				
+			}
+		}
+		.section-upload {
+			padding: 50px 0 0;
+			.upload-card {
+				width: 100%;
+			}
+			.upload-title {
+				font-size: 1.25rem;
+			}
+			.upload-area {
+				gap: 10px;
+			}
+			.inner {
+				.register-wrap {
+					width: 100%;
+					margin: 0;
+					flex-direction: column;
+					> div {
+						width: 100%;
+					}
+					.date-area {
+						>div {
+							+ div {
+								margin-top: 20px;
+							}
+						}
+					}
+					.card-area {
+						margin-top: 50px;
+					}
+				}
+			}
+			
+		}
+		.section-list {
+			padding: 30px 0;
+			
+			.list {
+				width: 100%;
+				
+				.item {
+					padding: 20px 10px;
+					.info {
+						width: 70%;
+						svg {
+							display: none;
+						}
+						> div {
+							width: 100%;
+						}
+						.link {
+							max-width: 100%;
+							display: block;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							overflow: hidden;
+						}
+					}
+					.delete-button {
+						max-width: 30%;
+					}
+				}
+				
+			}
+		}
+		&-postings {
+			.section-upload {
+				padding: 50px 0;
+			}
+		}
+	}
+}
+
+@media (max-width: Common.$mobile){
+	.l-panel {
+		&-postings {
+			.section {
+				.inner {
+					> h2 {
+						font-size: 1.5rem;
+						margin-bottom: 30px;
+					}
+					.register-wrap {
+						> div {
+							h3 {
+								font-size: 1rem;
+							}
+						}
+						.date-wrap-box {
+							
+							.date-wrap {
+								+.date-wrap {
+									margin-left: 10px;
+								}
+							}
+						}
+						.date-area  {
+							h4 {
+								font-size: 1.25rem;
+							}
+							
+							.date-wrap {
+								p {
+									font-size: 1rem;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+	}
+}

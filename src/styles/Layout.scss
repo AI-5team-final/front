@@ -1,0 +1,308 @@
+@use '_Common';
+
+// 공통
+.coin-display {
+    display: flex;
+    align-items: center;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+    &.active {
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    }
+
+
+    .inner {
+        height: Common.$headerHeight;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .logo {
+            width: 95px;
+        }
+        >div {
+            display: flex;
+            align-items: center;
+            p {
+                font-size: 20px;
+                line-height: 1.5;
+                display: flex;
+                align-items: center;
+                span {
+                    font-size: 1rem;
+                }
+                strong {
+                    font-weight: 700;
+                    margin-left: 5px;
+                }
+                a, button {
+                    line-height: 1.5;
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    font-size: 20px;
+                    margin: 0 5px;
+                }
+                svg {
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+                
+            }
+
+            > span {
+                display: block;
+                width: 1px;
+                height: 16px;
+                background: Common.$gray;
+                margin: 0 20px;
+            }
+            a {
+                font-size: 14px;
+            }
+            button {
+                cursor: pointer;
+                
+            }
+            .btn-logout {
+                font-size: 14px;
+                border-radius: 999px;
+                background: Common.$pointColor;
+                color: white;
+                padding: 6px 12px;
+                margin-left: 20px;
+                &:hover {
+                    background: Common.$pointHover;
+                }
+            }
+            .btn-menu {
+                display: none;
+                width: 30px;
+                height: 30px;
+                flex-direction: column;
+                justify-content: space-between;
+                cursor: pointer;
+                span {
+                    display: block;
+                    margin: 0;
+                    width: 100%;
+                    height: 2px;
+                    transition: 0.3s;
+                    &:nth-of-type(2){
+                        margin: 7px auto;
+                    }
+                }
+
+            }
+            
+            .coin-display, button:not(.btn-logout, .btn-menu){
+                &:hover {
+                    color: Common.$black;
+                    // font-weight: 500;
+                    text-shadow: 0 0 0 rgba(0,0,0,0.5);
+                }
+            }
+        }
+    }
+}
+
+.side-menu {
+    display: none;
+}
+
+main {
+    min-height: calc(100vh - Common.$footerHeight);
+}
+
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 24px;
+    
+    a {
+        + a {
+            margin-left: 15px;
+        }
+        &:hover {
+            color: Common.$gray;
+        }
+    }
+    small {
+        display: block;
+        font-size: 12px;
+        strong {
+            font-weight: 600;
+        }
+    }
+}
+
+
+@media (max-width: Common.$tablet) {
+    header {
+        .inner {
+            >div{
+                .btn-menu {
+                    display: flex;
+                }
+                &:not(.side-menu) {
+                    p, button:not(.btn-menu), span {
+                        display: none;
+                    }
+                }
+            }
+
+            .btn-menu {
+                display: block;
+                
+                .icon-menu,
+                .icon-close {
+                    font-size: 28px;
+                }
+            }
+            
+            
+        }
+    }
+    .side-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 60vw;
+        height: 100vh;
+        background: #fff;
+        padding: 70px 24px 24px;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1100;
+        border-bottom-left-radius: 12px;
+        border-top-left-radius: 12px;
+        transform: translateX(100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+
+        &.open {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        
+        button {
+            cursor: pointer;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        &-cont {
+            display: flex;
+            flex-direction: column;
+            // gap: 20px;
+
+            p {
+                margin-bottom: 20px;
+                strong {
+                    font-weight: 700;
+                }
+            }
+            .coin-display {
+                padding: 20px;
+                background: Common.$bgColor;
+    
+            }
+
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: 500;
+                padding: 10px 20px;
+                svg {
+                    font-size: 24px;
+                }
+            }
+        }
+        .btn-logout {
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+    }
+
+    
+    .dimmed-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1050;
+    }
+
+}
+
+@media (min-width: Common.$mobile) and (max-width: Common.$tablet) {
+    .side-menu {
+        p {
+            font-size: 1.25rem;
+            
+        }
+        &-cont {
+            button {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: Common.$mobile){
+    $headerHeight: 58px;
+    $footerHeight: 84px;
+    header {
+        .inner {
+            height: $headerHeight;
+            .logo {
+                width: 85px;
+                a {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .side-menu {
+        &-cont {
+            button {
+                padding: 10px;
+            }
+        }
+    }
+
+    main {
+        // padding-top: $headerHeight;
+        min-height: calc(100vh - $footerHeight);
+    }
+
+    footer {
+        padding: 20px 0;
+    }
+}

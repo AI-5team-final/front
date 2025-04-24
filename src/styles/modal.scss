@@ -1,0 +1,206 @@
+@use '_Common';
+
+// X button
+.btn-modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal {
+    width: 400px;
+    padding: 10px;
+
+    // 모달 전체 공통
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: Common.$pointColor;
+        margin-bottom: 20px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-filename {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: Common.$pointColor;
+        margin: 15px 0;
+        word-break: break-word;
+        button {
+            cursor: pointer;
+        }
+        svg {
+            vertical-align: middle;
+            margin-left: 20px;
+            color: Common.$gray;
+        }
+    }
+
+    .modal-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+
+        .modal-button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            background-color: Common.$pointColor;
+            color: #ffffff;
+            transition: all 0.2s ease;
+    
+            &.cancel-button {
+                background-color: Common.$gray;
+                &:hover {
+                    background: #888;
+                }
+            }
+            &:hover {
+                background: Common.$pointHover;
+            }
+        }
+    }
+
+
+        
+    // 1대1매칭, 불러오기 공통
+    &-match,
+    &-load {
+        .resume-list-header {
+            font-size: 1rem;
+            color: Common.$gray;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+    
+        
+        .divider {
+            border-bottom: 1px solid Common.$borderColor;
+            margin: 16px 0;
+        }
+    
+    }
+
+    // 이력서 매칭 모달
+    &-match {
+        width: 650px;
+        .btn{
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid Common.$black;
+            color: Common.$black;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+            &:hover {
+                background: Common.$black;
+                color: #fff;
+            }
+        }
+
+        .modal-subtitle {
+            font-size: 1.1rem;
+            color: Common.$gray;
+            margin-bottom: 30px;
+            text-align: left;
+            line-height: 1.6;
+            background-color: Common.$bgColor;
+            padding: 15px 20px;
+            border-radius: 8px;
+        }
+        .upload-section {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        
+                .load-button {
+                    border: 1px solid Common.$pointColor;
+                    background-color: #ffffff;
+                    color: Common.$pointColor;
+                    gap: 6px;
+                    &:hover {
+                        background: Common.$pointColor;
+                        color: #fff;
+                    }
+                }
+            }
+    }
+
+    // 이력서 불러오기 모달
+    &-load {
+        .resume-list-item {
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+    
+            &.selected-resume-item {
+                background-color: #f1f8ff;
+                border: 1px solid Common.$pointColor;
+            }
+            svg {
+                flex-shrink: 0;
+            }
+            span {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }    
+            
+    }
+    
+}
+
+@media (max-width: Common.$mobile2){
+    .ReactModal__Content {
+        width: calc(100% - 40px);
+    }
+    .modal {
+        width: 100%;
+        padding: 0;
+        .modal-title {
+            font-size: 1.25rem;
+        }
+        .modal-buttons {
+            .modal-button {
+                font-size: 0.875rem;
+                padding: 8px 15px;
+            }
+        }
+
+        &-match {
+            .modal-subtitle {
+                font-size: 1rem;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .upload-section {
+                flex-direction: column;
+                align-items: flex-start;
+                input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
+}
