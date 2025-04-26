@@ -181,7 +181,6 @@ const List = () => {
                 //         "uri": "/uploads/file.pdf"
                 //     },
                 // ];
-                
                 setMatchResults(data);
                 setReady(true);
             } catch (err) {
