@@ -32,6 +32,8 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		a.startsWith("종합 의견") ? -1 : b.startsWith("종합 의견") ? 1 : 0 
 	);
 
+    console.log("matchResult",matchResult)
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
@@ -40,7 +42,6 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
 		console.warn("매칭 결과가 없습니다.")
 		return <Navigate to="/"/>;
 	}
-    // console.log("matchResult", matchResult)
 
     const handleDownload = async () => {
         if (isMock) {
@@ -49,21 +50,51 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
         }
 
         try {
+            await new Promise(resolve => setTimeout(resolve, 500));
             setIsLoading(true);
             const element = document.getElementById("pdf-content");
-            const canvas = await html2canvas(element);
+            
+            if (!element) {
+                console.error("캡처 대상 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            const canvas = await html2canvas(element, {
+                useCORS: true,
+                scale: 2,
+                logging: true,
+                removeContainer: true
+            });
+
             const imgData = canvas.toDataURL("image/png");
-        
-            const pdf = new jsPDF();
-            const imgProps = pdf.getImageProperties(imgData);
+            const pdf = new jsPDF("p", "mm", "a4");        
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            const pdfName = `${matchResult.name}_매칭결과.pdf`;
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            if (!imgData || !imgData.startsWith("data:image/png")) {
+                throw new Error("이미지 데이터가 올바르지 않음");
+            }
+
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            const ratio = pdfWidth / imgWidth;
+            const scaledHeight = imgHeight * ratio;
+
+            let position = 0;
+            while (position < scaledHeight) {
+                pdf.addImage(imgData, "PNG", 0, -position, pdfWidth, scaledHeight);
+                if (position + pdfHeight < scaledHeight) pdf.addPage();
+                position += pdfHeight;
+            }
+
+            const pdfName = matchResult.name
+            ? `${matchResult.name}_매칭결과.pdf`
+            : `1대1_매칭결과.pdf`;
         
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(pdfName);    
         }catch(error){
-            console.error('[CLIENT ERROR]', error);
+            console.error('[PDF 다운로드 오류]', error);
             toast.error(error.message);
         }finally {
             setIsLoading(false);
@@ -108,11 +139,17 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             const res = await fetchClient("/pdf/agent", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ gpt_answer: matchResult.summary }),
+                body: JSON.stringify({
+                    resume_eval: matchResult.eval_resume,
+                    selfintro_eval: matchResult.eval_selfintro,
+                    resume_score: matchResult.resume_score,
+                    selfintro_score: matchResult.selfintro_score,
+                    resume_text: matchResult.resume_text,
+                }),
             });
 
             if (!res.ok) {
-                const errData = await res1.json();
+                const errData = await res.json();
                 const err = new Error(errData.message || 'Agent 분석 실패');
                 handleClientError({
                     error: err,
@@ -123,7 +160,7 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             }
 
             
-            const feedback = await res.text();
+            const feedback = await res.json();
 
             setAgentFeedback(feedback);
             toast.success("Fit Advisor 분석 완료! 크레딧이 차감되었습니다.");
@@ -157,6 +194,11 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
             setLoading(false);
         }        
     };
+
+    const gapList = agentFeedback ? agentFeedback.gapText.split(/(?=\d\.)/) : [];
+
+    const plan = agentFeedback ? agentFeedback.planText ? JSON.parse(agentFeedback.planText)
+    : null : null;
 
     return (
         isLoading ? (
@@ -280,7 +322,59 @@ const CommonContent = ({matchResult, role, isMock = false}) => {
                                     <div style={{ marginTop: "2rem" }}>
                                         <h3 className="tit-line">Fit Advisor의 분석 결과</h3>
                                         <p className="caution">※ 이 페이지에서만 로드맵을 확인할 수 있으며, 새로고침하거나 나가면 다시 결제가 필요합니다.</p>
-                                        <MarkdownResult markdownText={agentFeedback} />
+                                        {/* <MarkdownResult markdownText={agentFeedback} /> */}
+                                        <p className="agent-message">{agentFeedback.message}</p>
+                                        <div className="cont">
+                                            <h4>개선 포인트</h4>
+                                            <ol className="agent-ol">
+                                                {gapList.map((item, idx) => <li key={idx}>{item.trim()}</li>)}
+                                            </ol>
+                                        </div>
+                                        <div className="cont">
+                                            {plan && (
+                                                <>
+                                                    <h4>학습 로드맵</h4>
+                                                    <div className="roadmap-modern">
+                                                        <div className="timeline-line" />
+                                                            {plan.weeks.map((weekItem, idx) => (
+                                                                <div key={idx} className="timeline-block">
+                                                                    <div className="timeline-dot" />
+                                                                    <div className="timeline-card">
+                                                                        <div className="timeline-header">
+                                                                            <span className="timeline-week">{weekItem.week}</span>
+                                                                            <h3 className="timeline-focus">{weekItem.focus}</h3>
+                                                                        </div>
+                                                                        <ul className="timeline-tasks">
+                                                                            {weekItem.tasks.map((task, i) => (
+                                                                            <li key={i} className="timeline-task">{task}</li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    {agentFeedback?.selfIntroFeedback && (
+                                        <div className="cont">
+                                            <h4>자기소개서 피드백</h4>
+                                            <div className="feedback-list">
+                                                {agentFeedback.selfIntroFeedback.split(/\n{2,}/).map((block, idx) => {
+                                                    const lines = block.split("\n").filter(Boolean);
+                                                    const [original, reason, suggestion] = lines;
+                                                    return (
+                                                        <div key={idx} className="feedback-block">
+                                                            <h6>💡 피드백{idx+1}</h6>
+                                                            <p className="original">{original?.replace(/^(\d+)\.\s?원문:\s?/, "")}</p>
+                                                            <p className="suggestion">→ {suggestion?.replace(/^[-\s]*개선 제안:\s*/, "")}</p>
+                                                            <p className="reason">⚠ {reason?.replace(/^[-\s]*감점 사유:\s*/, "")}</p>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
                                     </div>
                                 )}
                             </div>
