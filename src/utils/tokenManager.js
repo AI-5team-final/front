@@ -16,6 +16,7 @@ export const isTokenExpired = (token) => {
     }
 };
 
+let isLoggingOut = false;
 export const refreshAccessToken = async () => {
     if (refreshPromise) return refreshPromise;
 
@@ -41,7 +42,6 @@ export const refreshAccessToken = async () => {
                 reject(null);
                 return;
             }
-
             // 정상적으로 accessToken 발급됨
             setUser({ ...userInfo, accessToken });
             resolve(accessToken);
